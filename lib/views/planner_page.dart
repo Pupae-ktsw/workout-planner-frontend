@@ -19,63 +19,46 @@ class PlannerPage extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.55,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20)),
-                  color: Colors.grey.shade900,
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 10.0,
-                      color: Colors.black,
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50)),
+                color: Colors.grey.shade900,
+                // boxShadow: const [
+                //   BoxShadow(
+                //     blurRadius: 10.0,
+                //     color: Colors.black,
+                //   ),
+                // ],
+              ),
+              child: ListView.separated(
+                padding: const EdgeInsets.all(12),
+                itemCount: 10,
+                separatorBuilder: ((context, index) {
+                  return const SizedBox(height: 12);
+                }),
+                itemBuilder: ((context, index) {
+                  return Container(
+                    height: 100,
+                    width: 20,
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image(
+                            image: NetworkImage(
+                                'https://www.purina.co.uk/sites/default/files/styles/ttt_image_510/public/2020-11/Hero-Small-Mobile-cats.jpg?itok=hEnG1ehe'),
+                          ),
+                        ),
+                        Text('data')
+                      ],
                     ),
-                  ]),
-              child: ListView(children: [
-                Container(
-                  height: 100,
-                  width: 20,
-                  decoration: BoxDecoration(color: Colors.amber),
-                ),
-                Container(
-                  height: 100,
-                  width: 20,
-                  decoration: BoxDecoration(color: Colors.amber.shade100),
-                ),
-                Container(
-                  height: 100,
-                  width: 20,
-                  decoration: BoxDecoration(color: Colors.amber.shade200),
-                ),
-                Container(
-                  height: 100,
-                  width: 20,
-                  decoration: BoxDecoration(color: Colors.amber.shade400),
-                ),
-                Container(
-                  height: 100,
-                  width: 20,
-                  decoration: BoxDecoration(color: Colors.amber),
-                ),
-                Container(
-                  height: 100,
-                  width: 20,
-                  decoration: BoxDecoration(color: Colors.amber.shade100),
-                ),
-                Container(
-                  height: 100,
-                  width: 20,
-                  decoration: BoxDecoration(color: Colors.amber.shade200),
-                ),
-                Container(
-                  height: 100,
-                  width: 20,
-                  decoration: BoxDecoration(color: Colors.amber.shade400),
-                ),
-              ]),
+                  );
+                }),
+              ),
             ),
           ],
         ),
       ),
     );
-    // );
   }
 }
