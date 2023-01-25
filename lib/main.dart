@@ -39,38 +39,36 @@ class _BottomNavState extends State<BottomNav> {
     ProgramPage(),
     ProfilePage(),
   ];
+  final items = <Widget>[
+    const Icon(Icons.home, color: Colors.white),
+    const Icon(Icons.calendar_month_rounded, color: Colors.white),
+    const Icon(Icons.whatshot_sharp, color: Colors.white),
+    const Icon(Icons.person, color: Colors.white),
+  ];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(appBarTheme: AppBarTheme(color: Colors.red.shade600)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: screens[currentIndex],
-        bottomNavigationBar: CurvedNavigationBar(
-          color: Colors.red.shade600,
-          backgroundColor: Colors.transparent,
-          animationDuration: Duration(milliseconds: 300),
-          onTap: (index) => setState(() => currentIndex = index),
-          items: [
-            Icon(
-              Icons.home,
-              color: Colors.white,
-            ),
-            Icon(
-              Icons.calendar_month_rounded,
-              color: Colors.white,
-            ),
-            Icon(
-              Icons.whatshot_sharp,
-              color: Colors.white,
-            ),
-            Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
-          ],
-        ),
-      ),
-    );
+        theme: ThemeData(appBarTheme: AppBarTheme(color: Colors.red.shade600)),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          extendBody: true,
+          backgroundColor: Colors.white,
+          body: Stack(
+            children: [
+              screens[currentIndex],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: CurvedNavigationBar(
+                  height: 60,
+                  color: Colors.red.shade600,
+                  backgroundColor: Colors.transparent,
+                  animationDuration: Duration(milliseconds: 300),
+                  onTap: (index) => setState(() => currentIndex = index),
+                  items: items,
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }
