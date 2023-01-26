@@ -12,6 +12,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+    final urlImage = 'lib/images/google.png';
+    final urlImage2 = 'lib/images/facebook.png';
+
     return Scaffold(
       backgroundColor: Colors.red,
       body: SafeArea(
@@ -128,14 +131,32 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   //google
-                  CircleTile(imagePath: 'lib/images/google.png'),
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage(urlImage),
+                      backgroundColor: Colors.white,
+                      radius: 20,
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  CircleAvatar(
+                    backgroundImage: AssetImage(urlImage2),
+                    backgroundColor: Colors.white,
+                    radius: 30,
+                  ),
+
                   //facebook
-                  CircleTile(imagePath: 'lib/images/facebook.png')
                 ],
-              )
+              ),
             ],
           ),
         ),
