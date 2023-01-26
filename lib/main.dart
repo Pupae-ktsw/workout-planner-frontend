@@ -4,6 +4,7 @@ import 'package:frontend/views/home_page.dart';
 import 'package:frontend/views/planner_page.dart';
 import 'package:frontend/views/profile_page.dart';
 import 'package:frontend/views/program_page.dart';
+import 'package:frontend/views/signup_page.dart';
 import 'views/login_page.dart';
 
 void main() {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
       ),
       debugShowCheckedModeBanner: false,
-      home: const LoginPage(),
+      home: const SignupPage(),
     );
   }
 }

@@ -153,8 +153,6 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Colors.white,
                     radius: 30,
                   ),
-
-                  //facebook
                 ],
               ),
             ],
