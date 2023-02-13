@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/components/circle_tile.dart';
+import 'package:frontend/views/signup_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       backgroundColor: Colors.red,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -27,7 +29,11 @@ class _LoginPageState extends State<LoginPage> {
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
                   )),
-
+              SizedBox(height: 20),
+              CircleAvatar(
+                radius: 80,
+                backgroundColor: Colors.white.withOpacity(0.8),
+              ),
               SizedBox(height: 20),
 
               //username
@@ -42,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: TextField(
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Username',
+                        hintText: 'Email',
                       ),
                     ),
                   ),
@@ -76,19 +82,22 @@ class _LoginPageState extends State<LoginPage> {
               //log in button
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Center(
-                      child: Text(
-                    'Log in',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
-                  )),
+                child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Center(
+                        child: Text(
+                      'Log in',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    )),
+                  ),
                 ),
               ),
               SizedBox(height: 10),
@@ -99,16 +108,24 @@ class _LoginPageState extends State<LoginPage> {
                     'Not a member?',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                  Text(
-                    ' Register now',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 25, 103, 167),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return SignupPage();
+                      }));
+                    },
+                    child: Text(
+                      ' Register now',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 122, 161, 194),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
                   )
                 ],
               ),
-              SizedBox(height: 60),
+              SizedBox(height: 40),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 52.0),
                 child: Row(
@@ -147,12 +164,13 @@ class _LoginPageState extends State<LoginPage> {
                       radius: 20,
                     ),
                   ),
-                  SizedBox(width: 20),
-                  CircleAvatar(
-                    backgroundImage: AssetImage(urlImage2),
-                    backgroundColor: Colors.white,
-                    radius: 30,
+                  SizedBox(
+                    width: 20,
                   ),
+                  Text(
+                    'Log in with Google',
+                    style: TextStyle(fontSize: 16),
+                  )
                 ],
               ),
             ],
