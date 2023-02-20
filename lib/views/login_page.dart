@@ -26,9 +26,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Text('Welcome!',
                   style: GoogleFonts.lobster(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                  )),
+                      textStyle: Theme.of(context).textTheme.headline1)),
               SizedBox(height: 20),
               CircleAvatar(
                 radius: 80,
@@ -92,10 +90,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: Center(
                         child: Text(
                       'Log in',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
+                      style: GoogleFonts.prompt(
+                          textStyle: Theme.of(context).textTheme.bodyText1,
+                          color: Colors.white),
                     )),
                   ),
                 ),
@@ -106,7 +103,11 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     'Not a member?',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: GoogleFonts.prompt(
+                        textStyle: Theme.of(context).textTheme.bodyText1),
+                  ),
+                  SizedBox(
+                    width: 10,
                   ),
                   InkWell(
                     onTap: () {
@@ -116,11 +117,11 @@ class _LoginPageState extends State<LoginPage> {
                       }));
                     },
                     child: Text(
-                      ' Register now',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 122, 161, 194),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
+                      'Register now',
+                      style: GoogleFonts.prompt(
+                          textStyle: Theme.of(context).textTheme.bodyText1,
+                          color: Colors.white,
+                          decoration: TextDecoration.underline),
                     ),
                   )
                 ],
@@ -132,17 +133,19 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Expanded(
                       child: Divider(
-                        thickness: 0.5,
+                        thickness: 1.0,
                         color: Colors.black,
                       ),
                     ),
                     Text(
                       'Or Log in with',
-                      style: TextStyle(color: Colors.black),
+                      style: GoogleFonts.prompt(
+                        textStyle: Theme.of(context).textTheme.bodyText2,
+                      ),
                     ),
                     Expanded(
                         child: Divider(
-                      thickness: 0.5,
+                      thickness: 1.0,
                       color: Colors.black,
                     ))
                   ],
@@ -167,10 +170,10 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     width: 20,
                   ),
-                  Text(
-                    'Log in with Google',
-                    style: TextStyle(fontSize: 16),
-                  )
+                  Text('Log in with Google',
+                      style: GoogleFonts.prompt(
+                        textStyle: Theme.of(context).textTheme.bodyText2,
+                      ))
                 ],
               ),
             ],
