@@ -1,12 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/components/formart_text.dart';
 import 'package:frontend/views/home_page.dart';
 import 'package:frontend/views/planner_page.dart';
 import 'package:frontend/views/profile_page.dart';
 import 'package:frontend/views/program_page.dart';
-import 'package:frontend/views/signup_page.dart';
-import 'views/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,9 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: appTheme(),
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: const BottomNav(),
     );
   }
 }
