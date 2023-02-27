@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProgramPage extends StatelessWidget {
   @override
@@ -7,7 +8,17 @@ class ProgramPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Program Page'),
       ),
-      body: Center(child: Text('Programs', style: TextStyle(fontSize: 20))),
+      body: Container(
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            'ADD PROGRAM',
+            style: GoogleFonts.prompt(
+              fontSize: 24,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
