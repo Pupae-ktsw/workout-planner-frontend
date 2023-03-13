@@ -1,7 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:frontend/views/program_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class addProgram extends StatelessWidget {
+  const addProgram({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,6 +17,7 @@ class addProgram extends StatelessWidget {
 }
 
 class showAddProgramPage extends StatefulWidget {
+  const showAddProgramPage({super.key});
   @override
   _AddProgramPageState createState() => _AddProgramPageState();
 }
@@ -21,7 +27,46 @@ class _AddProgramPageState extends State<showAddProgramPage> {
   String _selectedValue = "weekly";
   bool? _isChecked = false;
   DateTime _dateTime = DateTime.now();
+  Color colorPick = Colors.red;
+  Color currentColor = Colors.red;
   TimeOfDay _time = TimeOfDay(hour: 10, minute: 30);
+  List<String> _selectedOptionsDays = [];
+
+  List<String> _optionsDays = ['M', 'T', 'W', 'T', 'F', 'S', 'SU'];
+
+  Future pickColor() {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0.0),
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    BlockPicker(
+                      pickerColor: colorPick,
+                      onColorChanged: (color) {
+                        setState(() {
+                          colorPick = color;
+                        });
+                      },
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "OK",
+                          style: GoogleFonts.prompt(
+                            fontSize: 16,
+                          ),
+                        ))
+                  ],
+                ),
+              ),
+            ));
+  }
 
   void _showDatePicker() {
     showDatePicker(
@@ -65,22 +110,23 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                 ),
               ),
               SizedBox(height: 10),
-              Container(
-                height: 25,
-                width: 300,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color.fromARGB(255, 206, 203, 203)),
-                child: Text('Progran name',
-                    style: GoogleFonts.prompt(fontSize: 16)),
+              InkWell(
+                onTap: (() {}),
+                child: Container(
+                  height: 25,
+                  width: 300,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color.fromARGB(255, 206, 203, 203)),
+                ),
               ),
               SizedBox(height: 20),
               Container(
                 height: 150,
                 width: 260,
                 child: Image.network(
-                    'https://static.chloeting.com/videos/61bbdc7e2cb3b78eb6ac2bba/efca6f80-5ed1-11ec-b182-df31ae6aab45.jpeg',
+                    'http://i3.ytimg.com/vi/2MoGxae-zyo/hqdefault.jpg',
                     fit: BoxFit.cover),
               ),
               SizedBox(height: 10),
@@ -131,6 +177,44 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                       )),
                 ],
               ),
+              // Container(
+              //   height: 150,
+              //   child: ListView.builder(
+              //       shrinkWrap: true,
+              //       scrollDirection: Axis.horizontal,
+              //       itemCount: _optionsDays.length,
+              //       itemBuilder: (context, int index) {
+              //         final option = _optionsDays[index];
+              //         return GestureDetector(
+              //           onTap: () {
+              //             setState(() {
+              //               if (_selectedOptionsDays.contains(option)) {
+              //                 _selectedOptionsDays.remove(option);
+              //               } else {
+              //                 _selectedOptionsDays.add(option);
+              //               }
+              //             });
+              //           },
+              //           child: Container(
+              //               margin: EdgeInsets.all(8.0),
+              //               padding: EdgeInsets.all(8.0),
+              //               decoration: BoxDecoration(
+              //                 // color:
+              //                 borderRadius: BorderRadius.circular(10),
+              //               ),
+              //               child: Text(
+              //                 _selectedOptionsDays[index],
+              //                 style: GoogleFonts.prompt(
+              //                   color: _selectedOptionsDays.contains(option)
+              //                       ? Colors.white
+              //                       : Colors.black,
+              //                   fontSize: 16,
+              //                   fontWeight: FontWeight.bold,
+              //                 ),
+              //               )),
+              //         );
+              //       }),
+              // ),
               SizedBox(height: 10),
               Align(
                 alignment: Alignment.topLeft,
@@ -193,75 +277,178 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                       ],
                     ),
                     SizedBox(height: 10),
-                    Text('Color',
-                        style: GoogleFonts.prompt(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
                     Row(
                       children: [
-                        Checkbox(
-                            value: _isChecked,
-                            tristate: true,
-                            onChanged: (value) {
-                              setState(() {
-                                _isChecked = value;
-                              });
-                            }),
-                        Text(
-                          'Remind me',
-                          style: GoogleFonts.prompt(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                        Text('Color',
+                            style: GoogleFonts.prompt(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        SizedBox(width: 50),
+                        InkWell(
+                          onTap: () {
+                            pickColor();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: colorPick,
+                            ),
+                            width: 20,
+                            height: 20,
+                          ),
                         )
                       ],
                     ),
-                    SizedBox(height: 5),
-                    Row(
-                      children: [
-                        Text('Before Workout',
-                            style: GoogleFonts.prompt(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                        SizedBox(width: 10),
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            height: 25,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 206, 203, 203),
-                            ),
-                            child: Text('time',
-                                style: GoogleFonts.prompt(fontSize: 16)),
-                          ),
-                        ),
-                      ],
-                    ),
                     SizedBox(height: 10),
                     Row(
                       children: [
-                        Text(
-                          'After Workout',
-                          style: GoogleFonts.prompt(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(width: 22),
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            height: 25,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 206, 203, 203),
-                            ),
-                            child: Text('time',
-                                style: GoogleFonts.prompt(fontSize: 16)),
-                          ),
-                        ),
+                        // Checkbox(
+                        //     value: _isChecked,
+                        //     tristate: true,
+                        //     onChanged: (value) {
+                        //       setState(() {
+                        //         _isChecked = value;
+                        //       });
+                        //     }),
+                        // Text(
+                        //   'Remind me',
+                        //   style: GoogleFonts.prompt(
+                        //       fontSize: 16, fontWeight: FontWeight.bold),
+                        // ),
+                        Expanded(
+                          child: ExpansionTile(
+                              title: Row(
+                                children: [
+                                  Checkbox(
+                                      value: _isChecked,
+                                      tristate: true,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _isChecked = value;
+                                        });
+                                      }),
+                                  Text(
+                                    'Remind me',
+                                    style: GoogleFonts.prompt(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(left: 20),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text('Before Workout',
+                                              style: GoogleFonts.prompt(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold)),
+                                          SizedBox(width: 10),
+                                          Container(
+                                            height: 25,
+                                            width: 50,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.grey),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: Color.fromARGB(
+                                                  255, 206, 203, 203),
+                                            ),
+                                            child: Text('time',
+                                                style: GoogleFonts.prompt(
+                                                    fontSize: 16)),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'After Workout',
+                                            style: GoogleFonts.prompt(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(width: 22),
+                                          InkWell(
+                                            onTap: () {},
+                                            child: Container(
+                                              height: 25,
+                                              width: 50,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.grey),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Color.fromARGB(
+                                                    255, 206, 203, 203),
+                                              ),
+                                              child: Text('time',
+                                                  style: GoogleFonts.prompt(
+                                                      fontSize: 16)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                    ],
+                                  ),
+                                )
+                              ]),
+                        )
                       ],
                     ),
+                    const SizedBox(height: 5),
+                    // Row(
+                    //   children: [
+                    //     Text('Before Workout',
+                    //         style: GoogleFonts.prompt(
+                    //             fontSize: 16, fontWeight: FontWeight.bold)),
+                    //     SizedBox(width: 10),
+                    //     InkWell(
+                    //       onTap: () {},
+                    //       child: Container(
+                    //         height: 25,
+                    //         width: 50,
+                    //         decoration: BoxDecoration(
+                    //           border: Border.all(color: Colors.grey),
+                    //           borderRadius: BorderRadius.circular(10),
+                    //           color: Color.fromARGB(255, 206, 203, 203),
+                    //         ),
+                    //         child: Text('time',
+                    //             style: GoogleFonts.prompt(fontSize: 16)),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // SizedBox(height: 10),
+                    // Row(
+                    //   children: [
+                    //     Text(
+                    //       'After Workout',
+                    //       style: GoogleFonts.prompt(
+                    //           fontSize: 16, fontWeight: FontWeight.bold),
+                    //     ),
+                    //     SizedBox(width: 22),
+                    //     InkWell(
+                    //       onTap: () {},
+                    //       child: Container(
+                    //         height: 25,
+                    //         width: 50,
+                    //         decoration: BoxDecoration(
+                    //           border: Border.all(color: Colors.grey),
+                    //           borderRadius: BorderRadius.circular(10),
+                    //           color: Color.fromARGB(255, 206, 203, 203),
+                    //         ),
+                    //         child: Text('time',
+                    //             style: GoogleFonts.prompt(fontSize: 16)),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -269,7 +456,12 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                         OutlinedButton(
                           style: OutlinedButton.styleFrom(
                               backgroundColor: Colors.white),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProgramPage()));
+                          },
                           child: Text(
                             "CANCEL",
                             style: TextStyle(color: Colors.black),
@@ -285,6 +477,7 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                             ))
                       ],
                     ),
+                    SizedBox(height: 20),
                   ],
                 ),
               ),
@@ -293,14 +486,3 @@ class _AddProgramPageState extends State<showAddProgramPage> {
     );
   }
 }
-
-// _number() {
-//   return Wrap(
-//     direction: Axis.horizontal,
-//     children: [
-//       List.generate(5, (index) {
-//         return Container();
-//       })
-//     ],
-//   );
-// }

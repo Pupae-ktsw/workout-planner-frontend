@@ -51,12 +51,19 @@ class HomePage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: testData.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      width: 200,
-                      child: Card(
-                        child: ListTile(
-                          title: Text(testData[index]['name']),
-                          subtitle: Text(testData[index]['Type']),
+                    return InkWell(
+                      onTap: () {
+                        debugPrint('tapped');
+                      },
+                      child: Container(
+                        width: 200,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: ListTile(
+                            title: Text(testData[index]['name']),
+                            subtitle: Text(testData[index]['Type']),
+                          ),
                         ),
                       ),
                     );
@@ -81,12 +88,19 @@ class HomePage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: testData.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      width: 300,
-                      child: Card(
-                        child: ListTile(
-                          title: Text(testData[index]['name']),
-                          subtitle: Text(testData[index]['Type']),
+                    return InkWell(
+                      onTap: () {
+                        debugPrint('tapped');
+                      },
+                      child: Container(
+                        width: 300,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: ListTile(
+                            title: Text(testData[index]['name']),
+                            subtitle: Text(testData[index]['Type']),
+                          ),
                         ),
                       ),
                     );
@@ -111,12 +125,19 @@ class HomePage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: testData.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      width: 300,
-                      child: Card(
-                        child: ListTile(
-                          title: Text(testData[index]['name']),
-                          subtitle: Text(testData[index]['Type']),
+                    return InkWell(
+                      onTap: () {
+                        debugPrint('tapped');
+                      },
+                      child: Container(
+                        width: 300,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: ListTile(
+                            title: Text(testData[index]['name']),
+                            subtitle: Text(testData[index]['Type']),
+                          ),
                         ),
                       ),
                     );
@@ -141,12 +162,19 @@ class HomePage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: testData.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      width: 300,
-                      child: Card(
-                        child: ListTile(
-                          title: Text(testData[index]['name']),
-                          subtitle: Text(testData[index]['Type']),
+                    return InkWell(
+                      onTap: () {
+                        debugPrint('tapped');
+                      },
+                      child: Container(
+                        width: 300,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: ListTile(
+                            title: Text(testData[index]['name']),
+                            subtitle: Text(testData[index]['Type']),
+                          ),
                         ),
                       ),
                     );

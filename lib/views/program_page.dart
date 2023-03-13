@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/views/addProgram_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProgramPage extends StatelessWidget {
@@ -15,6 +16,7 @@ class ProgramPage extends StatelessWidget {
 }
 
 class showProgramPage extends StatefulWidget {
+  const showProgramPage({Key? key}) : super(key: key);
   @override
   _ProgramPageState createState() => _ProgramPageState();
 }
@@ -48,6 +50,30 @@ class _ProgramPageState extends State<showProgramPage> {
       "status": "finished",
       "imgPath": "lib/images/cardio.jpg"
     },
+    {
+      "name": "Program3",
+      "startDate": "1/3/2022",
+      "endDate": "14/3/2022",
+      "numberOfDay": "20/20",
+      "status": "finished",
+      "imgPath": "lib/images/cardio.jpg"
+    },
+    {
+      "name": "Program3",
+      "startDate": "1/3/2022",
+      "endDate": "14/3/2022",
+      "numberOfDay": "20/20",
+      "status": "finished",
+      "imgPath": "lib/images/cardio.jpg"
+    },
+    {
+      "name": "Program3",
+      "startDate": "1/3/2022",
+      "endDate": "14/3/2022",
+      "numberOfDay": "20/20",
+      "status": "finished",
+      "imgPath": "lib/images/cardio.jpg"
+    },
   ];
 
   @override
@@ -56,7 +82,6 @@ class _ProgramPageState extends State<showProgramPage> {
       body: Container(
         padding: EdgeInsets.only(left: 16, top: 25, right: 16),
         child: SafeArea(
-            child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -81,17 +106,18 @@ class _ProgramPageState extends State<showProgramPage> {
                               side: BorderSide(color: Colors.red),
                             )),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return addProgram();
+                            }));
+                          },
                           child: Text(
                             'Add Program',
                             style: TextStyle(color: Colors.white),
                           ))
                     ],
                   ),
-                ],
-              ),
-              Column(
-                children: [
                   SizedBox(
                     height: 20,
                   ),
@@ -122,60 +148,62 @@ class _ProgramPageState extends State<showProgramPage> {
                   SizedBox(
                     height: 20,
                   ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: _testData.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          height: 150,
-                          child: InkWell(
-                            onTap: () {
-                              debugPrint('tapped');
-                            },
-                            child: Card(
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: ListTile(
-                                dense: true,
-                                // leading: _testData[index]['imgPath'] != null
-                                //     ? Container(
-                                //         decoration: BoxDecoration(
-                                //             borderRadius: BorderRadius.circular(10),
-                                //             image: DecorationImage(
-                                //                 image: FileImage(File(
-                                //                     _testData[index]['imgPath'])),
-                                //                 fit: BoxFit.cover)),
-                                //         width: 100,
-                                //         height: 100,
-                                //         child: null)
-                                //     : Container(
-                                //         width: 100,
-                                //         height: 100,
-                                //         decoration: BoxDecoration(
-                                //             borderRadius: BorderRadius.circular(10),
-                                //             image: DecorationImage(
-                                //                 image: FileImage(File(
-                                //                     _testData[index]['imgPath'])),
-                                //                 fit: BoxFit.cover)),
-                                //       ),
-                                title: Text(_testData[index]['name']),
-                                subtitle: Text(_testData[index]['startDate'] +
-                                    "-" +
-                                    _testData[index]['endDate']),
-                                trailing: Text(
-                                    "Day : " + _testData[index]['numberOfDay']),
-                              ),
+                ],
+              ),
+              Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: _testData.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        height: 150,
+                        child: InkWell(
+                          onTap: () {
+                            debugPrint('tapped');
+                          },
+                          child: Card(
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            child: ListTile(
+                              dense: true,
+                              // leading: _testData[index]['imgPath'] != null
+                              //     ? Container(
+                              //         decoration: BoxDecoration(
+                              //             borderRadius: BorderRadius.circular(10),
+                              //             image: DecorationImage(
+                              //                 image: FileImage(File(
+                              //                     _testData[index]['imgPath'])),
+                              //                 fit: BoxFit.cover)),
+                              //         width: 100,
+                              //         height: 100,
+                              //         child: null)
+                              //     : Container(
+                              //         width: 100,
+                              //         height: 100,
+                              //         decoration: BoxDecoration(
+                              //             borderRadius: BorderRadius.circular(10),
+                              //             image: DecorationImage(
+                              //                 image: FileImage(File(
+                              //                     _testData[index]['imgPath'])),
+                              //                 fit: BoxFit.cover)),
+                              //       ),
+                              title: Text(_testData[index]['name']),
+                              subtitle: Text(_testData[index]['startDate'] +
+                                  "-" +
+                                  _testData[index]['endDate']),
+                              trailing: Text(
+                                  "Day : " + _testData[index]['numberOfDay']),
                             ),
                           ),
-                        );
-                      }),
-                ],
+                        ),
+                      );
+                    }),
               ),
             ],
           ),
-        )),
+        ),
       ),
     );
   }

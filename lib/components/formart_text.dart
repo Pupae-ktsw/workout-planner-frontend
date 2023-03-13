@@ -8,8 +8,11 @@ ThemeData appTheme() {
       // login and register screen
       headline1: TextStyle(
           fontSize: 62.0, fontWeight: FontWeight.w700, color: Colors.black),
-      // app bar
-      // error msg
+
+      headline2: TextStyle(fontSize: 16, color: Colors.black),
+
+      headline3: TextStyle(fontSize: 20, color: Colors.black),
+
       bodyText1: TextStyle(fontSize: 18.0),
 
       bodyText2: TextStyle(fontSize: 16.0),
