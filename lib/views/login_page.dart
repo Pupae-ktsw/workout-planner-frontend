@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/components/circle_tile.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:frontend/components/circle_tile.dart';
+import 'package:frontend/config.dart';
+import 'package:frontend/views/home_page.dart';
 import 'package:frontend/views/signup_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,6 +16,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController pwController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final urlImage = 'lib/images/google.png';
@@ -34,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 20),
 
-              //username
+              //Email
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Container(
@@ -43,7 +51,14 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(15)),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0),
-                    child: TextField(
+                    child: TextFormField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (input) => input != null
+                          ? !input.contains("@")
+                              ? "Invalid Email"
+                              : null
+                          : "Please, enter your Email",
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Email',
@@ -64,7 +79,8 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(15)),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0),
-                    child: TextField(
+                    child: TextFormField(
+                      controller: pwController,
                       obscureText: true,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -79,24 +95,28 @@ class _LoginPageState extends State<LoginPage> {
 
               //log in button
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: InkWell(
-                  onTap: () {},
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Center(
-                        child: Text(
-                      'Log in',
-                      style: GoogleFonts.prompt(
-                          textStyle: Theme.of(context).textTheme.bodyText1,
-                          color: Colors.white),
-                    )),
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: ElevatedButton(
+                    onPressed: (() {
+                      login();
+                    }),
+                    child: const Text('Login'),
+                  )
+                  /*Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Center(
+                      child: Text(
+                    'Log in',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  )),
+                ),*/
                   ),
-                ),
-              ),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -181,5 +201,31 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<void> login() async {
+    var url = Config.apiURL + Config.loginAPI;
+    if (emailController.text.isNotEmpty && pwController.text.isNotEmpty) {
+      var response = await http.post(Uri.parse(url),
+          body: ({
+            "email": emailController.text,
+            "password": pwController.text
+          }));
+      if (response.statusCode == 200) {
+        final storage = FlutterSecureStorage();
+        var body = json.decode(response.body);
+        String token = body['accessToken'];
+        print(token);
+        await storage.write(key: 'accessToken', value: token);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Invalid Credentials')));
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please enter your email and password')));
+    }
   }
 }
