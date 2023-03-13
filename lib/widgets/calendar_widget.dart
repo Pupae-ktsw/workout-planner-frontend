@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../models/calendarEvent.dart';
+import 'package:http/http.dart' as http;
 
 /*class CalendarWidget extends StatelessWidget {
   DateTime today = DateTime.now();
@@ -38,8 +40,22 @@ class CalendarWidget extends StatefulWidget {
 }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
+  Map<DateTime, List<CalendarEvent>> selectedEvents = {};
   DateTime selectedDay = DateTime.now();
   DateTime today = DateTime.now();
+
+  CalendarController calendarController = calendarController();
+
+  Future<List<CalendarEvent>> _fetchEvents() async {
+    final response = await http.get(Uri.parse(uri));
+    final events = await db.query('events');
+    return events.map((e) => CalendarEvent.fromMap(e)).toList();
+  }
+
+  // List<Event> _getEventsFromDay(DateTime date) {
+  //   return selectedEvents[date] ?? [];
+  // }
+
   void _onDaySelected(DateTime day, DateTime focusedDay) {
     setState(() {
       selectedDay = day;
@@ -54,6 +70,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         firstDay: DateTime(today.year - 2),
         lastDay: DateTime(today.year + 2),
         focusedDay: selectedDay,
+        // eventLoader: _,
         headerStyle:
             HeaderStyle(formatButtonVisible: false, titleCentered: true),
         availableGestures: AvailableGestures.all,
