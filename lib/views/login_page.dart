@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // import 'package:frontend/components/circle_tile.dart';
 import 'package:frontend/config.dart';
-import 'package:frontend/views/home_page.dart';
+// import 'package:frontend/views/home_page.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/views/signup_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -21,8 +22,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final urlImage = 'lib/images/google.png';
-    final urlImage2 = 'lib/images/facebook.png';
+    const urlImage = 'lib/images/google.png';
+    // const urlImage2 = 'lib/images/facebook.png';
 
     return Scaffold(
       backgroundColor: Colors.red,
@@ -47,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 36, 27, 26),
+                      color: Color.fromARGB(255, 255, 174, 169),
                       borderRadius: BorderRadius.circular(15)),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0),
@@ -218,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
         print(token);
         await storage.write(key: 'accessToken', value: token);
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+            context, MaterialPageRoute(builder: (context) => BottomNav()));
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Invalid Credentials')));
