@@ -5,4 +5,5 @@ class Config {
   static const String loginAPI = "/users/login";
   static const String signupAPI = "/users/signup";
   // static const String userProfileAPI = "/users/:id";
+  static const String eventAPI = "/events";
 }

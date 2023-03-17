@@ -39,6 +39,12 @@ class _BottomNavState extends State<BottomNav> {
     ProgramPage(),
     ProfilePage(),
   ];
+  final items = <Widget>[
+    const Icon(Icons.home, color: Colors.white),
+    const Icon(Icons.calendar_month_rounded, color: Colors.white),
+    const Icon(Icons.whatshot_sharp, color: Colors.white),
+    const Icon(Icons.person, color: Colors.white),
+  ];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
