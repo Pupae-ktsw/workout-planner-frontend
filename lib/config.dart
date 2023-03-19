@@ -4,6 +4,6 @@ class Config {
   static const String apiURL = "http://10.0.2.2:5000";
   static const String loginAPI = "/users/login";
   static const String signupAPI = "/users/signup";
-  // static const String userProfileAPI = "/users/:id";
+  static const String userAPI = "$apiURL/users";
   static const String eventAPI = "/events";
 }

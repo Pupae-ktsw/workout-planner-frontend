@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/user_controller.dart';
+import 'package:frontend/repositories/user_repo.dart';
 import 'package:frontend/views/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../models/user.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -19,6 +23,22 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   bool showPassword = false;
+  User thisUser = User();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    var userController = UserController(UserRepo());
+    User user = await userController.getLoginUser();
+    setState(() {
+      thisUser = user;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,9 +57,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SizedBox(
                 height: 80,
               ),
-              buildTextField("Full Name", "Pupae Chilly", false),
-              buildTextField("E-mail", "pupae@gmail.com", false),
-              buildTextField("Password", "********", true),
+              buildTextField("Full Name", thisUser.name ?? "Who?", false),
+              buildTextField("E-mail", thisUser.email ?? "gmail", false),
+              // buildTextField("Password", user.password!, true),
               SizedBox(
                 height: 35,
               ),
