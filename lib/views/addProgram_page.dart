@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_selector/widget/flutter_single_select.dart';
 import 'package:frontend/views/program_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -9,7 +10,7 @@ class addProgram extends StatelessWidget {
   const addProgram({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: "Add Program",
       home: showAddProgramPage(),
     );
@@ -23,16 +24,18 @@ class showAddProgramPage extends StatefulWidget {
 }
 
 class _AddProgramPageState extends State<showAddProgramPage> {
-  final _retitionList = ["weekly", "everyday"];
-  String _selectedValue = "weekly";
+  final _retitionList = ["weekly", "Daily"];
+  String _selectedRetition = "weekly";
+  final _dailyList = ["1", "2", "3", "4", "5", "6", "7"];
+  String _selectDaily = "1";
   bool? _isChecked = false;
   DateTime _dateTime = DateTime.now();
   Color colorPick = Colors.red;
   Color currentColor = Colors.red;
-  TimeOfDay _time = TimeOfDay(hour: 10, minute: 30);
+  TimeOfDay _time = const TimeOfDay(hour: 10, minute: 30);
   List<String> _selectedOptionsDays = [];
 
-  List<String> _optionsDays = ['M', 'T', 'W', 'T', 'F', 'S', 'SU'];
+  List<String> _optionsDays = ['M', 'T', 'W', 'TH', 'F', 'SA', 'S'];
 
   Future pickColor() {
     return showDialog(
@@ -75,17 +78,20 @@ class _AddProgramPageState extends State<showAddProgramPage> {
             firstDate: DateTime(2019),
             lastDate: DateTime(2025))
         .then((value) => setState(() {
-              _dateTime = value!;
+              _dateTime = value ?? DateTime.now();
             }));
   }
+
+  // void pickTime() {}
 
   @override
   Widget build(BuildContext context) {
     final hours = _time.hour.toString().padLeft(2, '0');
     final minutes = _time.minute.toString().padLeft(2, '0');
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
-          padding: EdgeInsets.only(left: 16, top: 25, right: 16),
+          padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
           child: SafeArea(
               child: SingleChildScrollView(
                   child: Column(
@@ -99,7 +105,7 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                       )),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 child: Align(
                   alignment: Alignment.topLeft,
@@ -109,19 +115,18 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                       )),
                 ),
               ),
-              SizedBox(height: 10),
-              InkWell(
-                onTap: (() {}),
-                child: Container(
-                  height: 25,
-                  width: 300,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color.fromARGB(255, 206, 203, 203)),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 30,
+                child: TextField(
+                  style: TextStyle(fontSize: 16),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 height: 150,
                 width: 260,
@@ -129,7 +134,7 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                     'http://i3.ytimg.com/vi/2MoGxae-zyo/hqdefault.jpg',
                     fit: BoxFit.cover),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 'Epic Endgame',
                 style: GoogleFonts.prompt(
@@ -147,22 +152,22 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                       color: Colors.blue),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text('Repetition',
                       style: GoogleFonts.prompt(
                           fontSize: 16, fontWeight: FontWeight.bold)),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   SizedBox(
-                      width: 100,
+                      width: 80,
                       child: DropdownButtonFormField(
                         //   decoration: InputDecoration(
                         //     border: OutlineInputBorder(
                         //         borderRadius: BorderRadius.circular(15)),
                         //   ),
-                        value: _selectedValue,
+                        value: _selectedRetition,
                         items: _retitionList
                             .map(((e) => DropdownMenuItem(
                                   child: Text(e),
@@ -171,63 +176,116 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                             .toList(),
                         onChanged: (value) {
                           setState(() {
-                            _selectedValue = value as String;
+                            _selectedRetition = value as String;
                           });
                         },
                       )),
                 ],
               ),
-              // Container(
-              //   height: 150,
-              //   child: ListView.builder(
-              //       shrinkWrap: true,
-              //       scrollDirection: Axis.horizontal,
-              //       itemCount: _optionsDays.length,
-              //       itemBuilder: (context, int index) {
-              //         final option = _optionsDays[index];
-              //         return GestureDetector(
-              //           onTap: () {
-              //             setState(() {
-              //               if (_selectedOptionsDays.contains(option)) {
-              //                 _selectedOptionsDays.remove(option);
-              //               } else {
-              //                 _selectedOptionsDays.add(option);
-              //               }
-              //             });
-              //           },
-              //           child: Container(
-              //               margin: EdgeInsets.all(8.0),
-              //               padding: EdgeInsets.all(8.0),
-              //               decoration: BoxDecoration(
-              //                 // color:
-              //                 borderRadius: BorderRadius.circular(10),
-              //               ),
-              //               child: Text(
-              //                 _selectedOptionsDays[index],
-              //                 style: GoogleFonts.prompt(
-              //                   color: _selectedOptionsDays.contains(option)
-              //                       ? Colors.white
-              //                       : Colors.black,
-              //                   fontSize: 16,
-              //                   fontWeight: FontWeight.bold,
-              //                 ),
-              //               )),
-              //         );
-              //       }),
-              // ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
+              Visibility(
+                visible: _selectedRetition == "weekly",
+                child: Container(
+                  height: 50,
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _optionsDays.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final option = _optionsDays[index];
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (_selectedOptionsDays.contains(option)) {
+                                  _selectedOptionsDays.remove(option);
+                                } else {
+                                  _selectedOptionsDays.add(option);
+                                }
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                    margin: const EdgeInsets.all(3.0),
+                                    padding: const EdgeInsets.all(8.0),
+                                    decoration: BoxDecoration(
+                                        color: _selectedOptionsDays
+                                                .contains(option)
+                                            ? Colors.red
+                                            : Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                        border: Border.all(
+                                            width: 2,
+                                            color: _selectedOptionsDays
+                                                    .contains(option)
+                                                ? Colors.red
+                                                : Colors.black)),
+                                    child: Text(
+                                      _optionsDays[index],
+                                      style: GoogleFonts.prompt(
+                                        color: _selectedOptionsDays
+                                                .contains(option)
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )),
+                                SizedBox(width: 10)
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: _selectedRetition == "Daily",
+                child: Row(
+                  children: [
+                    Text('Daily',
+                        style: GoogleFonts.prompt(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    const SizedBox(width: 50),
+                    SizedBox(
+                      width: 80,
+                      child: DropdownButtonFormField(
+                          value: _selectDaily,
+                          items: _dailyList
+                              .map(((e) => DropdownMenuItem(
+                                    child: Text(
+                                      e,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    value: e,
+                                  )))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectDaily = value as String;
+                            });
+                          }),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
               Align(
                 alignment: Alignment.topLeft,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         Text('Start Date',
                             style: GoogleFonts.prompt(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         InkWell(
                           onTap: _showDatePicker,
                           child: Container(
@@ -236,21 +294,22 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 206, 203, 203),
+                              color: const Color.fromARGB(255, 206, 203, 203),
                             ),
                             child: Text(_dateTime.toString(),
+                                textAlign: TextAlign.center,
                                 style: GoogleFonts.prompt(fontSize: 16)),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         Text('Time',
                             style: GoogleFonts.prompt(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
-                        SizedBox(width: 50),
+                        const SizedBox(width: 50),
                         InkWell(
                           onTap: () async {
                             TimeOfDay? newTime = await showTimePicker(
@@ -268,21 +327,22 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 206, 203, 203),
+                              color: const Color.fromARGB(255, 206, 203, 203),
                             ),
                             child: Text('${hours}:${minutes}',
+                                textAlign: TextAlign.center,
                                 style: GoogleFonts.prompt(fontSize: 16)),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         Text('Color',
                             style: GoogleFonts.prompt(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
-                        SizedBox(width: 50),
+                        const SizedBox(width: 50),
                         InkWell(
                           onTap: () {
                             pickColor();
@@ -298,107 +358,116 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                         )
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Row(
+                    const SizedBox(height: 10),
+                    ExpansionPanelList(
+                      // expansionCallback: (int index, bool status) {
+                      //   setState(() {
+                      //     if (status) {
+                      //       _isExpanded = !status;
+                      //     } else {
+                      //       _isExpanded = true;
+                      //     }
+                      //   });
+                      // },
                       children: [
-                        // Checkbox(
-                        //     value: _isChecked,
-                        //     tristate: true,
-                        //     onChanged: (value) {
-                        //       setState(() {
-                        //         _isChecked = value;
-                        //       });
-                        //     }),
-                        // Text(
-                        //   'Remind me',
-                        //   style: GoogleFonts.prompt(
-                        //       fontSize: 16, fontWeight: FontWeight.bold),
-                        // ),
-                        Expanded(
-                          child: ExpansionTile(
-                              title: Row(
-                                children: [
-                                  Checkbox(
-                                      value: _isChecked,
-                                      tristate: true,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _isChecked = value;
-                                        });
-                                      }),
-                                  Text(
-                                    'Remind me',
-                                    style: GoogleFonts.prompt(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(left: 20),
-                                  child: Column(
+                        ExpansionPanel(
+                            isExpanded: _isChecked == null
+                                ? false
+                                : _isChecked == false
+                                    ? false
+                                    : true,
+                            headerBuilder:
+                                (BuildContext context, bool isExpanded) {
+                              return Container(
+                                  padding: const EdgeInsets.only(left: 15.0),
+                                  alignment: Alignment.centerLeft,
+                                  child: Row(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Text('Before Workout',
-                                              style: GoogleFonts.prompt(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold)),
-                                          SizedBox(width: 10),
-                                          Container(
-                                            height: 25,
-                                            width: 50,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.grey),
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: Color.fromARGB(
-                                                  255, 206, 203, 203),
-                                            ),
-                                            child: Text('time',
-                                                style: GoogleFonts.prompt(
-                                                    fontSize: 16)),
-                                          )
-                                        ],
+                                      Checkbox(
+                                          value: _isChecked,
+                                          tristate: true,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              if (value == null) {
+                                                // _isExpanded = false;
+                                                _isChecked = false;
+                                              } else {
+                                                // _isExpanded = true;
+                                                _isChecked = true;
+                                              }
+                                              debugPrint(_isChecked.toString());
+                                            });
+                                          }),
+                                      Text(
+                                        'Remind me',
+                                        style: GoogleFonts.prompt(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ));
+                            },
+                            body: Container(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        height: 10,
                                       ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'After Workout',
-                                            style: GoogleFonts.prompt(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(width: 22),
-                                          InkWell(
-                                            onTap: () {},
-                                            child: Container(
-                                              height: 25,
-                                              width: 50,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.grey),
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                color: Color.fromARGB(
-                                                    255, 206, 203, 203),
-                                              ),
-                                              child: Text('time',
-                                                  style: GoogleFonts.prompt(
-                                                      fontSize: 16)),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
+                                      Text('Before Workout',
+                                          style: GoogleFonts.prompt(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold)),
+                                      const SizedBox(width: 10),
+                                      SizedBox(
+                                        height: 30,
+                                        width: 150,
+                                        child: CustomSingleSelectField<String>(
+                                          items: ['15 min', '30 min'],
+                                          title: "Time",
+                                          onSelectionDone: (value) {
+                                            // selectedString = value;
+                                            setState(() {});
+                                          },
+                                          itemAsString: (item) => item,
+                                        ),
+                                      )
                                     ],
                                   ),
-                                )
-                              ]),
-                        )
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'After Workout',
+                                        style: GoogleFonts.prompt(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(width: 22),
+                                      InkWell(
+                                        onTap: () {},
+                                        child: SizedBox(
+                                            height: 30,
+                                            width: 150,
+                                            child:
+                                                CustomSingleSelectField<String>(
+                                              items: ['15 min', '30 min'],
+                                              title: "Time",
+                                              onSelectionDone: (value) {
+                                                // selectedString = value;
+                                                setState(() {});
+                                              },
+                                              itemAsString: (item) => item,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                ],
+                              ),
+                            )),
                       ],
                     ),
                     const SizedBox(height: 5),
@@ -449,7 +518,7 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                     //     ),
                     //   ],
                     // ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -462,7 +531,7 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                                 MaterialPageRoute(
                                     builder: (context) => ProgramPage()));
                           },
-                          child: Text(
+                          child: const Text(
                             "CANCEL",
                             style: TextStyle(color: Colors.black),
                           ),
@@ -471,13 +540,13 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.black),
                             onPressed: () {},
-                            child: Text(
+                            child: const Text(
                               "SAVE",
                               style: TextStyle(color: Colors.white),
                             ))
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

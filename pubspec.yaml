@@ -39,6 +39,7 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   google_fonts: ^2.0.0
   flutter_colorpicker : ^1.0.3
+  flutter_custom_selector: ^0.0.3
 
 dev_dependencies:
   flutter_test:
