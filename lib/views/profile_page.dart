@@ -1,28 +1,36 @@
+import 'dart:convert';
+
+// import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/controllers/user_controller.dart';
-import 'package:frontend/repositories/user_repo.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:frontend/controllers/user_controller.dart';
+// import 'package:frontend/repositories/user_repo.dart';
 import 'package:frontend/views/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../models/user.dart';
 
-class ProfilePage extends StatelessWidget {
+// class ProfilePage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Profile',
+//       home: EditProfilePage(),
+//     );
+//   }
+// }
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Profile",
-      home: EditProfilePage(),
-    );
-  }
+  State<ProfilePage> createState() => _EditProfilePageState();
+  // _EditProfilePageState createState() => _EditProfilePageState();
 }
 
-class EditProfilePage extends StatefulWidget {
-  @override
-  _EditProfilePageState createState() => _EditProfilePageState();
-}
-
-class _EditProfilePageState extends State<EditProfilePage> {
+class _EditProfilePageState extends State<ProfilePage> {
   bool showPassword = false;
+  bool isEdited = false;
   User thisUser = User();
   @override
   void initState() {
@@ -32,8 +40,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> loadData() async {
-    var userController = UserController(UserRepo());
-    User user = await userController.getLoginUser();
+    const storage = FlutterSecureStorage();
+    String? userJson = await storage.read(key: 'user');
+    User user = User.fromJson(json.decode(userJson!));
     setState(() {
       thisUser = user;
     });
@@ -43,7 +52,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: const Text('Profile'),
         backgroundColor: Colors.red,
       ),
       body: Container(
@@ -57,32 +66,43 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SizedBox(
                 height: 80,
               ),
-              buildTextField("Full Name", thisUser.name ?? "Name", false),
-              buildTextField("E-mail", thisUser.email ?? "E-mail", false),
-              // buildTextField("Password", user.password!, true),
+              buildTextField('Name', thisUser.name ?? 'Name', false),
+              buildTextField('E-mail', thisUser.email ?? 'E-mail', false),
+              // buildTextField('Password', user.password!, true),
               SizedBox(
                 height: 35,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  OutlinedButton(
-                    style:
-                        OutlinedButton.styleFrom(backgroundColor: Colors.white),
-                    onPressed: () {},
-                    child: Text(
-                      "CANCEL",
-                      style: TextStyle(color: Colors.black),
+                  if (isEdited) ...[
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.white),
+                      onPressed: () => setState(() => isEdited = !isEdited),
+                      child: const Text(
+                        'CANCEL',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
-                  ),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black),
-                      onPressed: () {},
-                      child: Text(
-                        "SAVE",
-                        style: TextStyle(color: Colors.white),
-                      ))
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black),
+                        onPressed: () {},
+                        child: const Text(
+                          'SAVE',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ],
+                  if (!isEdited) ...[
+                    GestureDetector(
+                      onTap: () => setState((() => isEdited = !isEdited)),
+                      child: const Text(
+                        'Edit',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ],
                 ],
               ),
               SizedBox(
@@ -120,6 +140,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 35.0),
       child: TextField(
+        enabled: isEdited ? true : false,
         obscureText: isPasswordTextField ? showPassword : false,
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField

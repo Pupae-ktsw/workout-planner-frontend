@@ -19,4 +19,10 @@ class UserRepo implements Repository {
     user = User.fromJson(body);
     return user;
   }
+
+  @override
+  Future<Object> updateObject(Object obj) {
+    // TODO: implement updateObject
+    throw UnimplementedError();
+  }
 }
