@@ -57,8 +57,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SizedBox(
                 height: 80,
               ),
-              buildTextField("Full Name", thisUser.name ?? "Who?", false),
-              buildTextField("E-mail", thisUser.email ?? "gmail", false),
+              buildTextField("Full Name", thisUser.name ?? "Name", false),
+              buildTextField("E-mail", thisUser.email ?? "E-mail", false),
               // buildTextField("Password", user.password!, true),
               SizedBox(
                 height: 35,
