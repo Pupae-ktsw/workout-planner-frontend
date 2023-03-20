@@ -13,11 +13,16 @@ class UserRepo implements Repository {
     User user = User();
     const storage = FlutterSecureStorage();
     String? token = await storage.read(key: 'accessToken');
-    print("token: $token");
     var response = await http
         .get(Uri.parse(url), headers: {'Authorization': "Bearer $token"});
     var body = json.decode(response.body);
     user = User.fromJson(body);
     return user;
+  }
+
+  @override
+  Future<Object> updateObject(Object obj) {
+    // TODO: implement updateObject
+    throw UnimplementedError();
   }
 }

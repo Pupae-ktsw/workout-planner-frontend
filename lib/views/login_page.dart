@@ -9,6 +9,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../controllers/user_controller.dart';
+import '../models/user.dart';
+import '../repositories/user_repo.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -56,10 +60,10 @@ class _LoginPageState extends State<LoginPage> {
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       validator: (input) => input != null
-                          ? !input.contains("@")
-                              ? "Invalid Email"
+                          ? !input.contains('@')
+                              ? 'Invalid Email'
                               : null
-                          : "Please, enter your Email",
+                          : 'Please, enter your Email',
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Email',
@@ -209,15 +213,17 @@ class _LoginPageState extends State<LoginPage> {
     if (emailController.text.isNotEmpty && pwController.text.isNotEmpty) {
       var response = await http.post(Uri.parse(url),
           body: ({
-            "email": emailController.text,
-            "password": pwController.text
+            'email': emailController.text,
+            'password': pwController.text
           }));
       if (response.statusCode == 200) {
         final storage = FlutterSecureStorage();
         var body = json.decode(response.body);
         String token = body['accessToken'];
-        print(token);
         await storage.write(key: 'accessToken', value: token);
+        var userController = UserController(UserRepo());
+        User user = await userController.getLoginUser();
+        await storage.write(key: 'user', value: json.encode(user));
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => BottomNav()));
       } else {
