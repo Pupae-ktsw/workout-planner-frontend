@@ -34,7 +34,6 @@ class _EditProfilePageState extends State<ProfilePage> {
   User thisUser = User();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loadData();
   }
