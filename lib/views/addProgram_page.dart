@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_selector/widget/flutter_single_select.dart';
+import 'package:frontend/views/manageProgram_page.dart';
 import 'package:frontend/views/program_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -24,8 +25,8 @@ class showAddProgramPage extends StatefulWidget {
 }
 
 class _AddProgramPageState extends State<showAddProgramPage> {
-  final _retitionList = ["weekly", "Daily"];
-  String _selectedRetition = "weekly";
+  final _retitionList = ["Weekly", "Daily"];
+  String _selectedRetition = "Weekly";
   final _dailyList = ["1", "2", "3", "4", "5", "6", "7"];
   String _selectDaily = "1";
   bool? _isChecked = false;
@@ -144,7 +145,12 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                   style: GoogleFonts.prompt(
                       textStyle: Theme.of(context).textTheme.bodyText1)),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => manageProgram()),
+                  );
+                },
                 child: Text(
                   'Customize/Select Video',
                   style: GoogleFonts.prompt(
@@ -184,7 +190,7 @@ class _AddProgramPageState extends State<showAddProgramPage> {
               ),
               const SizedBox(height: 10),
               Visibility(
-                visible: _selectedRetition == "weekly",
+                visible: _selectedRetition == "Weekly",
                 child: Container(
                   height: 50,
                   width: double.infinity,
@@ -471,53 +477,6 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                       ],
                     ),
                     const SizedBox(height: 5),
-                    // Row(
-                    //   children: [
-                    //     Text('Before Workout',
-                    //         style: GoogleFonts.prompt(
-                    //             fontSize: 16, fontWeight: FontWeight.bold)),
-                    //     SizedBox(width: 10),
-                    //     InkWell(
-                    //       onTap: () {},
-                    //       child: Container(
-                    //         height: 25,
-                    //         width: 50,
-                    //         decoration: BoxDecoration(
-                    //           border: Border.all(color: Colors.grey),
-                    //           borderRadius: BorderRadius.circular(10),
-                    //           color: Color.fromARGB(255, 206, 203, 203),
-                    //         ),
-                    //         child: Text('time',
-                    //             style: GoogleFonts.prompt(fontSize: 16)),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    // SizedBox(height: 10),
-                    // Row(
-                    //   children: [
-                    //     Text(
-                    //       'After Workout',
-                    //       style: GoogleFonts.prompt(
-                    //           fontSize: 16, fontWeight: FontWeight.bold),
-                    //     ),
-                    //     SizedBox(width: 22),
-                    //     InkWell(
-                    //       onTap: () {},
-                    //       child: Container(
-                    //         height: 25,
-                    //         width: 50,
-                    //         decoration: BoxDecoration(
-                    //           border: Border.all(color: Colors.grey),
-                    //           borderRadius: BorderRadius.circular(10),
-                    //           color: Color.fromARGB(255, 206, 203, 203),
-                    //         ),
-                    //         child: Text('time',
-                    //             style: GoogleFonts.prompt(fontSize: 16)),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
