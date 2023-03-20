@@ -40,6 +40,10 @@ dependencies:
   google_fonts: ^2.0.0
   flutter_colorpicker : ^1.0.3
   flutter_custom_selector: ^0.0.3
+  http: ^0.13.5
+  table_calendar: ^3.0.9
+  google_fonts: ^4.0.3
+  flutter_secure_storage: ^8.0.0
 
 dev_dependencies:
   flutter_test:
