@@ -6,4 +6,5 @@ class Config {
   static const String signupAPI = "/users/signup";
   static const String userAPI = "$apiURL/users";
   static const String eventAPI = "/events";
+  static const String programAPI = "$apiURL/programs";
 }
