@@ -2,14 +2,14 @@ import 'dart:convert';
 
 Program programFromJson(String str) => Program.fromJson(json.decode(str));
 
-String programToJson(Program data) => json.encode(data.toJson());
+// String programToJson(Program data) => json.encode(data.toJson());
 
 class Program {
   Program({
     this.id,
     this.programName,
     this.programStatus,
-    required this.startEndDate,
+    this.startEndDate,
     this.color,
     this.workoutTime,
     this.isReminder,
@@ -25,7 +25,7 @@ class Program {
   String? id;
   String? programName;
   String? programStatus;
-  List<StartEndDate> startEndDate;
+  List<StartEndDate>? startEndDate;
   String? color;
   String? workoutTime;
   bool? isReminder;
@@ -55,32 +55,32 @@ class Program {
         userId: json["user_id"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "programName": programName,
-        "programStatus": programStatus,
-        "startEndDate": List<dynamic>.from(startEndDate.map((x) => x.toJson())),
-        "color": color,
-        "workoutTime": workoutTime,
-        "isReminder": isReminder,
-        "repeatType": repeatType,
-        "repeatDaily": repeatDaily,
-        "repeatWeekly": repeatWeekly,
-        "totalDays": totalDays,
-        "thumbnail": thumbnail,
-        "latestDay": latestDay,
-        "user_id": userId,
-      };
+//   Map<String, dynamic> toJson() => {
+//         "_id": id,
+//         "programName": programName,
+//         "programStatus": programStatus,
+//         "startEndDate": List<dynamic>.from(startEndDate.map((x) => x.toJson())),
+//         "color": color,
+//         "workoutTime": workoutTime,
+//         "isReminder": isReminder,
+//         "repeatType": repeatType,
+//         "repeatDaily": repeatDaily,
+//         "repeatWeekly": repeatWeekly,
+//         "totalDays": totalDays,
+//         "thumbnail": thumbnail,
+//         "latestDay": latestDay,
+//         "user_id": userId,
+//       };
 }
 
 class StartEndDate {
   StartEndDate({
-    required this.startDate,
-    required this.id,
+    this.startDate,
+    this.id,
   });
 
-  DateTime startDate;
-  String id;
+  DateTime? startDate;
+  String? id;
 
   factory StartEndDate.fromJson(Map<String, dynamic> json) => StartEndDate(
         startDate: DateTime.parse(json["startDate"]),
@@ -88,7 +88,7 @@ class StartEndDate {
       );
 
   Map<String, dynamic> toJson() => {
-        "startDate": startDate.toIso8601String(),
+        "startDate": startDate.toString(),
         "_id": id,
       };
 }

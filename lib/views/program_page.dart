@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/controllers/program_controller.dart';
+import 'package:frontend/models/program.dart';
+import 'package:frontend/repositories/program_repo.dart';
 import 'package:frontend/views/addProgram_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,62 +28,14 @@ class showProgramPage extends StatefulWidget {
 }
 
 class _ProgramPageState extends State<showProgramPage> {
-  final _programList = ["All", "On going", "Finished"];
+  final _programTypeList = ["All", "Challenging", "Completed"];
   String _selectedValue = "All";
-
-  final List _testData = [
-    {
-      "name": "Program1",
-      "startDate": "1/3/2022",
-      "endDate": "14/3/2022",
-      "numberOfDay": "50/50",
-      "status": "onGoing",
-      "imgPath": "lib/images/cardio.jpg"
-    },
-    {
-      "name": "Program2",
-      "startDate": "1/3/2022",
-      "endDate": "14/3/2022",
-      "numberOfDay": "40/50",
-      "status": "finished",
-      "imgPath": "lib/images/cardio.jpg"
-    },
-    {
-      "name": "Program3",
-      "startDate": "1/3/2022",
-      "endDate": "14/3/2022",
-      "numberOfDay": "20/20",
-      "status": "finished",
-      "imgPath": "lib/images/cardio.jpg"
-    },
-    {
-      "name": "Program3",
-      "startDate": "1/3/2022",
-      "endDate": "14/3/2022",
-      "numberOfDay": "20/20",
-      "status": "finished",
-      "imgPath": "lib/images/cardio.jpg"
-    },
-    {
-      "name": "Program3",
-      "startDate": "1/3/2022",
-      "endDate": "14/3/2022",
-      "numberOfDay": "20/20",
-      "status": "finished",
-      "imgPath": "lib/images/cardio.jpg"
-    },
-    {
-      "name": "Program3",
-      "startDate": "1/3/2022",
-      "endDate": "14/3/2022",
-      "numberOfDay": "20/20",
-      "status": "finished",
-      "imgPath": "lib/images/cardio.jpg"
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
+    var programController = ProgramController(ProgramRepo());
+    programController.getAllProgram();
+
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(left: 16, top: 25, right: 16),
@@ -109,7 +67,7 @@ class _ProgramPageState extends State<showProgramPage> {
                           onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return addProgram();
+                              return showAddProgramPage();
                             }));
                           },
                           child: Text(
@@ -124,10 +82,10 @@ class _ProgramPageState extends State<showProgramPage> {
                   Align(
                     alignment: Alignment.topLeft,
                     child: SizedBox(
-                      width: 100,
+                      width: 120,
                       child: DropdownButtonFormField(
                         value: _selectedValue,
-                        items: _programList
+                        items: _programTypeList
                             .map((e) => DropdownMenuItem(
                                   child: Text(e),
                                   value: e,
@@ -150,57 +108,55 @@ class _ProgramPageState extends State<showProgramPage> {
                   ),
                 ],
               ),
-              Expanded(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: _testData.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        height: 150,
-                        child: InkWell(
-                          onTap: () {
-                            debugPrint('tapped');
-                          },
-                          child: Card(
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: ListTile(
-                              dense: true,
-                              // leading: _testData[index]['imgPath'] != null
-                              //     ? Container(
-                              //         decoration: BoxDecoration(
-                              //             borderRadius: BorderRadius.circular(10),
-                              //             image: DecorationImage(
-                              //                 image: FileImage(File(
-                              //                     _testData[index]['imgPath'])),
-                              //                 fit: BoxFit.cover)),
-                              //         width: 100,
-                              //         height: 100,
-                              //         child: null)
-                              //     : Container(
-                              //         width: 100,
-                              //         height: 100,
-                              //         decoration: BoxDecoration(
-                              //             borderRadius: BorderRadius.circular(10),
-                              //             image: DecorationImage(
-                              //                 image: FileImage(File(
-                              //                     _testData[index]['imgPath'])),
-                              //                 fit: BoxFit.cover)),
-                              //       ),
-                              title: Text(_testData[index]['name']),
-                              subtitle: Text(_testData[index]['startDate'] +
-                                  "-" +
-                                  _testData[index]['endDate']),
-                              trailing: Text(
-                                  "Day : " + _testData[index]['numberOfDay']),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              ),
+              FutureBuilder<List<Object>>(
+                  future: programController.getAllProgram(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasError) {
+                      return Center(child: Text("Error"));
+                    }
+                    if (_selectedValue == 'Completed') {
+                      snapshot.data?.removeWhere((element) =>
+                          (element as Program).programStatus == 'Challenging');
+                    }
+                    if (_selectedValue == 'Challenging') {
+                      snapshot.data?.removeWhere((element) =>
+                          (element as Program).programStatus == 'Completed');
+                    }
+
+                    return snapshot.hasData
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: snapshot.data?.length ?? 0,
+                            itemBuilder: ((context, index) {
+                              var program = snapshot.data?[index] as Program;
+
+                              return Container(
+                                  height: 160,
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height: 130,
+                                        width: 180,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0)),
+                                        ),
+                                        child: Image.network(program
+                                                .thumbnail ??
+                                            "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%"),
+                                      ),
+                                      Text(program.programName ?? "No program"),
+                                    ],
+                                  ));
+                            }))
+                        : Center(
+                            child: Text('No program'),
+                          );
+                  }),
             ],
           ),
         ),

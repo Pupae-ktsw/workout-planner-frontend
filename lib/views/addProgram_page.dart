@@ -7,17 +7,6 @@ import 'package:frontend/views/program_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-class addProgram extends StatelessWidget {
-  const addProgram({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: "Add Program",
-      home: showAddProgramPage(),
-    );
-  }
-}
-
 class showAddProgramPage extends StatefulWidget {
   const showAddProgramPage({super.key});
   @override
@@ -148,7 +137,8 @@ class _AddProgramPageState extends State<showAddProgramPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => manageProgram()),
+                    MaterialPageRoute(
+                        builder: (context) => showManageProgram()),
                   );
                 },
                 child: Text(
