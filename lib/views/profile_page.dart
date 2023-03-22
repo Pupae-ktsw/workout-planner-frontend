@@ -32,6 +32,7 @@ class _EditProfilePageState extends State<ProfilePage> {
   bool showPassword = false;
   bool isEdited = false;
   User thisUser = User();
+
   @override
   void initState() {
     super.initState();

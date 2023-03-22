@@ -30,4 +30,10 @@ class UserRepo implements Repository {
     // TODO: implement updateObject
     throw UnimplementedError();
   }
+
+  @override
+  Future<List<Object>> getAllObject() {
+    // TODO: implement getAllObject
+    throw UnimplementedError();
+  }
 }
