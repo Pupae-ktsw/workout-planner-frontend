@@ -1,5 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:frontend/components/format_text.dart';
 import 'package:frontend/views/home_page.dart';
 import 'package:frontend/views/login_page.dart';
@@ -13,6 +15,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  static const storage = FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,8 @@ class MyApp extends StatelessWidget {
       theme: appTheme(),
       debugShowCheckedModeBanner: false,
       home: const LoginPage(),
+      navigatorObservers: [FlutterSmartDialog.observer],
+      builder: FlutterSmartDialog.init(),
     );
   }
 }

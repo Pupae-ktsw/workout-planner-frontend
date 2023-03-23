@@ -1,8 +1,6 @@
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/config.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/repositories/repository.dart';
-// import 'package:http/http.dart' as http;
 import 'package:frontend/services/api_service.dart';
 import 'dart:convert';
 
@@ -13,21 +11,43 @@ class UserRepo implements Repository {
   // GET User
   @override
   Future<Object> getObject() async {
-    User user = User();
-    // const storage = FlutterSecureStorage();
-    // String? token = await storage.read(key: 'accessToken');
-    var response = await http.get(Uri.parse(url));
-    var body = json.decode(response.body);
-    user = User.fromJson(body);
-    return user;
+    try {
+      var response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+        User user = User.fromJson(body);
+        return user;
+      }
+    } catch (err) {
+      print(err);
+    }
+    return Null;
   }
 
   // PUT User
   @override
-  Future<Object> updateObject(Object obj) {
+  Future<Object?> updateObject(Object obj) async {
     User user = obj as User;
+    String jsonReq = json.encode(user);
+    var response = await http.put(Uri.parse(url), body: jsonReq);
+    var body = await json.decode(response.body);
+    if (response.statusCode == 200) {
+      User updatedUser = User.fromJson(body);
+      return updatedUser;
+    }
+    return null;
+  }
 
-    // TODO: implement updateObject
-    throw UnimplementedError();
+  Future<Object?> updateObjectByJson(String jsonText) async {
+    var response =
+        await http.put(Uri.parse('$url/changePassword'), body: jsonText);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else if (response.statusCode == 400) {
+      var body = json.decode(response.body);
+      print('res body msg: ${body['message']}');
+      return body['message'];
+    }
+    return null;
   }
 }

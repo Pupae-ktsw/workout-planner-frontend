@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // import 'package:frontend/components/circle_tile.dart';
 import 'package:frontend/config.dart';
 // import 'package:frontend/views/home_page.dart';
@@ -34,12 +34,14 @@ class _LoginPageState extends State<LoginPage> {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Welcome!',
-                  style: GoogleFonts.lobster(
-                      textStyle: Theme.of(context).textTheme.headline1)),
+              Text(
+                'Welcome!',
+                style: GoogleFonts.lobster(textStyle: TextStyle(fontSize: 20)),
+              ),
+              // Theme.of(context).textTheme.headline1)),
               SizedBox(height: 20),
               CircleAvatar(
                 radius: 80,
@@ -106,6 +108,8 @@ class _LoginPageState extends State<LoginPage> {
                       login();
                     }),
                     child: const Text('Login'),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.black),
                   )
                   /*Container(
                   padding: EdgeInsets.all(10),
@@ -217,13 +221,15 @@ class _LoginPageState extends State<LoginPage> {
             'password': pwController.text
           }));
       if (response.statusCode == 200) {
-        final storage = FlutterSecureStorage();
+        // final storage = FlutterSecureStorage();
         var body = json.decode(response.body);
         String token = body['accessToken'];
-        await storage.write(key: 'accessToken', value: token);
+        print('token: $token');
+        await MyApp.storage.write(key: 'accessToken', value: token);
         var userController = UserController(UserRepo());
         User user = await userController.getLoginUser();
-        await storage.write(key: 'user', value: json.encode(user));
+        print('user encode: ${json.encode(user)}');
+        await MyApp.storage.write(key: 'user', value: json.encode(user));
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => BottomNav()));
       } else {
