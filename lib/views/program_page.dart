@@ -10,6 +10,7 @@ import 'package:frontend/models/program.dart';
 import 'package:frontend/repositories/program_repo.dart';
 import 'package:frontend/views/addProgram_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class ProgramPage extends StatelessWidget {
   @override
@@ -133,23 +134,56 @@ class _ProgramPageState extends State<showProgramPage> {
                             itemCount: snapshot.data?.length ?? 0,
                             itemBuilder: ((context, index) {
                               var program = snapshot.data?[index] as Program;
+                              DateTime? startDate;
+
+                              for (var i in program.startEndDate!) {
+                                startDate = i.startDate;
+                              }
+
+                              String? formattedStartDate =
+                                  DateFormat('dd/MM/yyyy').format(startDate!);
 
                               return Container(
-                                  height: 160,
+                                  height: 140,
                                   child: Row(
                                     children: [
-                                      Container(
-                                        height: 130,
-                                        width: 180,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10.0)),
-                                        ),
+                                      Expanded(
                                         child: Image.network(program
                                                 .thumbnail ??
                                             "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%"),
                                       ),
-                                      Text(program.programName ?? "No program"),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                program.programName ??
+                                                    "No program",
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                formattedStartDate == null
+                                                    ? "No date"
+                                                    : formattedStartDate,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ));
                             }))

@@ -26,6 +26,7 @@ class Program {
   String? programName;
   String? programStatus;
   List<StartEndDate>? startEndDate;
+  // List<StartEndDate>? startEndDateList;
   String? color;
   String? workoutTime;
   bool? isReminder;
@@ -37,23 +38,61 @@ class Program {
   int? latestDay;
   String? userId;
 
-  factory Program.fromJson(Map<String, dynamic> json) => Program(
-        id: json["_id"],
-        programName: json["programName"],
-        programStatus: json["programStatus"],
-        startEndDate: List<StartEndDate>.from(
-            json["startEndDate"].map((x) => StartEndDate.fromJson(x))),
-        color: json["color"],
-        workoutTime: json["workoutTime"],
-        isReminder: json["isReminder"],
-        repeatType: json["repeatType"],
-        repeatDaily: json["repeatDaily"],
-        repeatWeekly: json["repeatWeekly"],
-        totalDays: json["totalDays"],
-        thumbnail: json["thumbnail"],
-        latestDay: json["latestDay"],
-        userId: json["user_id"],
-      );
+  Program.fromJson(Map<String, dynamic> json) {
+    // return Program(
+    id = json["_id"];
+    programName = json["programName"];
+    programStatus = json["programStatus"];
+
+    if (json['startEndDate'] != null) {
+      List startEndDateList =
+          json['startEndDate'].entries.map((e) => e.value).toList();
+
+      startEndDate = startEndDateList
+          .map((e) => StartEndDate.fromJson(e))
+          .toList()
+          .cast<StartEndDate>();
+    }
+
+    color = json["color"];
+    workoutTime = json["workoutTime"];
+    isReminder = json["isReminder"];
+    repeatType = json["repeatType"];
+    repeatDaily = json["repeatDaily"];
+    repeatWeekly = json["repeatWeekly"];
+    totalDays = json["totalDays"];
+    thumbnail = json["thumbnail"];
+    latestDay = json["latestDay"];
+    userId = json["user_id"];
+    // );
+    // id = json["_id"];
+    // programName = json["programName"];
+    // programStatus = json["programStatus"];
+    // // startEndDate = List<StartEndDate>.from(
+    // //     json["startEndDate"].map((x) => StartEndDate.fromJson(x)).toList());
+    // if (json['startEndDate'] != null) {
+    //   // startEndDate = <StartEndDate>[];
+    //   // json['startEndDate'].isNotEmpty
+    //   //     ? json['startEndDate'].forEach((v) {
+    //   //         startEndDate!.add(StartEndDate.fromJson(v));
+    //   //       })
+    //   //     : null;
+    //   json['startEndDate'].forEach((v) {
+    //     startEndDate!.add(StartEndDate.fromJson(v));
+    //   });
+    // }
+    // color = json["color"];
+    // workoutTime = json["workoutTime"];
+    // isReminder = json["isReminder"];
+    // repeatType = json["repeatType"];
+    // repeatDaily = json["repeatDaily"];
+    // repeatWeekly = json["repeatWeekly"];
+    // totalDays = json["totalDays"];
+    // thumbnail = json["thumbnail"];
+    // latestDay = json["latestDay"];
+    // userId = json["user_id"];
+    // // );
+  }
 
 //   Map<String, dynamic> toJson() => {
 //         "_id": id,
@@ -72,6 +111,14 @@ class Program {
 //         "user_id": userId,
 //       };
 }
+
+// class StartEndDateMap {
+//   StartEndDateMap({
+//     this.startEndDateMap,
+//   });
+
+//   String? startEndDateMap;
+// }
 
 class StartEndDate {
   StartEndDate({
