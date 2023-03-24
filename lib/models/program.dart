@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Program {
   Program({
     this.id,
@@ -43,10 +41,8 @@ class Program {
       List startEndDateList =
           json['startEndDate'].entries.map((e) => e.value).toList();
 
-      startEndDate = startEndDateList
-          .map((e) => StartEndDate.fromJson(e))
-          .toList()
-          .cast<StartEndDate>();
+      startEndDate =
+          startEndDateList.map((e) => StartEndDate.fromJson(e)).toList();
     }
 
     color = json["color"];
@@ -84,18 +80,21 @@ class StartEndDate {
   StartEndDate({
     this.startDate,
     this.id,
+    this.endDate,
   });
 
-  DateTime? startDate;
+  DateTime? startDate, endDate;
   String? id;
 
   factory StartEndDate.fromJson(Map<String, dynamic> json) => StartEndDate(
         startDate: DateTime.parse(json["startDate"]),
+        endDate: DateTime.parse(json["endDate"]),
         id: json["_id"],
       );
 
   Map<String, dynamic> toJson() => {
         "startDate": startDate.toString(),
+        "endDate": endDate.toString(),
         "_id": id,
       };
 }
