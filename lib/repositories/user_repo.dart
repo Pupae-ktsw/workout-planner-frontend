@@ -36,4 +36,16 @@ class UserRepo implements Repository {
     // TODO: implement getAllObject
     throw UnimplementedError();
   }
+
+  @override
+  Future<Object> getObjectById(String id) {
+    // TODO: implement getObjectById
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Object>> getAllObjectById(String id) {
+    // TODO: implement getAllObjectById
+    throw UnimplementedError();
+  }
 }
