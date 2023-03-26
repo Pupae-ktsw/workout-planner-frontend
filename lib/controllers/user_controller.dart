@@ -17,9 +17,11 @@ class UserController {
 
   Future<User?> updateUser(Object obj) async {
     User user = obj as User;
-    User? updatedUser = await _repository.updateObject(user) as User?;
-    if (updatedUser != null) {
+    User? updatedUser = await _repository.updateObject(user) as User;
+    if (updatedUser.email != null) {
       MyApp.storage.write(key: 'user', value: json.encode(updatedUser));
+    } else {
+      updatedUser = null;
     }
     return updatedUser;
   }

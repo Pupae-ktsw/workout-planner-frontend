@@ -1,36 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../controllers/calendarEvent_controller.dart';
 import '../models/calendarEvent.dart';
 import 'package:http/http.dart' as http;
-
-/*class CalendarWidget extends StatelessWidget {
-  DateTime today = DateTime.now();
-
-  @override
-  Widget build(BuildContext context) {
-    return TableCalendar(
-      firstDay: DateTime(today.year - 2),
-      lastDay: DateTime(today.year + 1),
-      focusedDay: today,
-      headerStyle: HeaderStyle(formatButtonVisible: false, titleCentered: true),
-      availableGestures: AvailableGestures.all,
-      availableCalendarFormats: const {
-        CalendarFormat.week: 'Week',
-        CalendarFormat.month: 'Month',
-      },
-      // initialCalendarFormat: CalendarFormat.month,
-    );
-    // return SfCalendar(
-    //   view: CalendarView.month,
-    //   cellBorderColor: Colors.transparent,
-    //   todayHighlightColor: Colors.red.shade600,
-    //   selectionDecoration: BoxDecoration(
-    //     color: Colors.transparent,
-    //     border: Border.all(color: Colors.red.shade600),
-    //   ),
-    // );
-  }
-}*/
 
 class CalendarWidget extends StatefulWidget {
   const CalendarWidget({super.key});
@@ -40,56 +12,101 @@ class CalendarWidget extends StatefulWidget {
 }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
-  Map<DateTime, List<CalendarEvent>> selectedEvents = {};
+  late Map<DateTime, List<String>> selectedEvents;
   DateTime selectedDay = DateTime.now();
-  DateTime today = DateTime.now();
+  DateTime focusedDay = DateTime.now();
+  // DateTime today = DateTime.now();
 
-  // CalendarController calendarController = calendarController();
+  TextEditingController _eventController = TextEditingController();
 
-  // Future<List<CalendarEvent>> _fetchEvents() async {
-  //   final response = await http.get(Uri.parse(uri));
-  //   final events = await db.query('events');
-  //   return events.map((e) => CalendarEvent.fromMap(e)).toList();
-  // }
+  @override
+  void initState() {
+    selectedEvents = {};
+    // CalendarEventController.get
+    /* Mock data
+    const programs = ['EPIC Heat', 'Epic EndGame', 'Fuel Series'];
+    DateTime today = DateTime.now();
+    DateTime next2days = today.add(Duration(days: 2));
 
-  // List<Event> _getEventsFromDay(DateTime date) {
-  //   return selectedEvents[date] ?? [];
-  // }
+    CalendarEvent calendar = CalendarEvent(
+        programs: programs,
+        eventDate: DateTime.utc(today.year, today.month, today.day));
+    CalendarEvent calendar2 = CalendarEvent(
+        programs: programs,
+        eventDate:
+            DateTime.utc(next2days.year, next2days.month, next2days.day));
 
-  void _onDaySelected(DateTime day, DateTime focusedDay) {
+    List<CalendarEvent> calendarList = [calendar, calendar2];
     setState(() {
-      selectedDay = day;
+      calendarList.forEach((item) {
+        selectedEvents[item.eventDate!] = item.programs;
+      });
     });
+    // print('SelectedEvents: $selectedEvents');
+
+    _onDaySelected(DateTime.utc(today.year, today.month, today.day),
+        DateTime.utc(today.year, today.month, today.day));*/
+    super.initState();
+  }
+
+  List<String> _getEventsFromDay(DateTime date) {
+    // print('getevents from: $date');
+    // print('event is: ${selectedEvents[date]}');
+    return selectedEvents[date] ?? [];
+  }
+
+  @override
+  void dispose() {
+    _eventController.dispose();
+    super.dispose();
+  }
+
+  void _onDaySelected(DateTime selectDay, DateTime focusDay) {
+    setState(() {
+      selectedDay = selectDay;
+      focusedDay = focusDay;
+    });
+    print('focusedDay: $focusedDay');
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: TableCalendar(
-        firstDay: DateTime(today.year - 2),
-        lastDay: DateTime(today.year + 2),
-        focusedDay: selectedDay,
-        // eventLoader: _,
-        headerStyle:
-            HeaderStyle(formatButtonVisible: false, titleCentered: true),
-        availableGestures: AvailableGestures.all,
-        onDaySelected: _onDaySelected,
-        selectedDayPredicate: ((day) => isSameDay(day, selectedDay)),
-        calendarStyle: CalendarStyle(
-          todayDecoration: BoxDecoration(
-              color: today == selectedDay
-                  ? Colors.red.shade600
-                  : Colors.red.shade200,
-              shape: BoxShape.circle),
-          selectedDecoration:
-              BoxDecoration(color: Colors.red.shade600, shape: BoxShape.circle),
-        ),
-        daysOfWeekStyle: DaysOfWeekStyle(
-          weekdayStyle: TextStyle(fontWeight: FontWeight.bold),
-          weekendStyle: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.red.shade600),
-        ),
+      child: Column(
+        children: [
+          TableCalendar(
+            firstDay: DateTime(2000),
+            lastDay: DateTime(2050),
+            focusedDay: selectedDay,
+            calendarFormat: CalendarFormat.month,
+            startingDayOfWeek: StartingDayOfWeek.sunday,
+            daysOfWeekVisible: true,
+            eventLoader: _getEventsFromDay,
+            availableGestures: AvailableGestures.all,
+            onDaySelected: _onDaySelected,
+            selectedDayPredicate: ((date) => isSameDay(selectedDay, date)),
+            headerStyle: const HeaderStyle(
+                formatButtonVisible: false, titleCentered: true),
+            calendarStyle: CalendarStyle(
+              isTodayHighlighted: true,
+              defaultDecoration: const BoxDecoration(shape: BoxShape.circle),
+              todayDecoration: BoxDecoration(
+                  color: Colors.red.shade200, shape: BoxShape.circle),
+              todayTextStyle: const TextStyle(color: Colors.black),
+              selectedDecoration: BoxDecoration(
+                  color: Colors.red.shade600, shape: BoxShape.circle),
+              selectedTextStyle: const TextStyle(color: Colors.white),
+            ),
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(fontWeight: FontWeight.bold),
+              weekendStyle: TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.red.shade600),
+            ),
+          ),
+          ..._getEventsFromDay(selectedDay)
+              .map((e) => ListTile(title: Text(e))),
+        ],
       ),
     );
   }

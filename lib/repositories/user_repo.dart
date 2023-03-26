@@ -26,16 +26,16 @@ class UserRepo implements Repository {
 
   // PUT User
   @override
-  Future<Object?> updateObject(Object obj) async {
+  Future<Object> updateObject(Object obj) async {
     User user = obj as User;
+    User updatedUser = User();
     String jsonReq = json.encode(user);
     var response = await http.put(Uri.parse(url), body: jsonReq);
-    var body = await json.decode(response.body);
     if (response.statusCode == 200) {
-      User updatedUser = User.fromJson(body);
-      return updatedUser;
+      var body = await json.decode(response.body);
+      updatedUser = User.fromJson(body);
     }
-    return null;
+    return updatedUser;
   }
 
   Future<Object?> updateObjectByJson(String jsonText) async {
@@ -49,5 +49,11 @@ class UserRepo implements Repository {
       return body['message'];
     }
     return null;
+  }
+
+  @override
+  Future<List<Object>> getAllObject() {
+    // TODO: implement getAllObject
+    throw UnimplementedError();
   }
 }
