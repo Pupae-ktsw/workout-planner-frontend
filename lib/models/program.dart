@@ -1,8 +1,8 @@
 class Program {
   Program({
-    this.id,
+    // this.id,
     this.programName,
-    this.programStatus,
+    // this.programStatus,
     this.startEndDate,
     this.color,
     this.workoutTime,
@@ -10,10 +10,12 @@ class Program {
     this.repeatType,
     this.repeatDaily,
     this.repeatWeekly,
-    this.totalDays,
-    this.thumbnail,
-    this.latestDay,
-    this.userId,
+    this.remindAf,
+    this.remindBf,
+    // this.totalDays,
+    // this.thumbnail,
+    // this.latestDay,
+    // this.userId,
   });
 
   String? id;
@@ -30,6 +32,8 @@ class Program {
   String? thumbnail;
   int? latestDay;
   String? userId;
+  String? remindAf;
+  String? remindBf;
 
   Program.fromJson(Map<String, dynamic> json) {
     // return Program(
@@ -38,8 +42,7 @@ class Program {
     programStatus = json["programStatus"];
 
     if (json['startEndDate'] != null) {
-      List startEndDateList =
-          json['startEndDate'].entries.map((e) => e.value).toList();
+      List startEndDateList = json['startEndDate'].toList();
 
       startEndDate =
           startEndDateList.map((e) => StartEndDate.fromJson(e)).toList();
@@ -55,12 +58,14 @@ class Program {
     thumbnail = json["thumbnail"];
     latestDay = json["latestDay"];
     userId = json["user_id"];
+    remindAf = json["remindAf"];
+    remindBf = json["remindBf"];
   }
 
   Map<String, dynamic> toJson() => {
-        "_id": id,
+        // "_id": id,
         "programName": programName,
-        "programStatus": programStatus,
+        // "programStatus": programStatus,
         "startEndDate":
             List<dynamic>.from(startEndDate!.map((x) => x.toJson())),
         "color": color,
@@ -69,10 +74,12 @@ class Program {
         "repeatType": repeatType,
         "repeatDaily": repeatDaily,
         "repeatWeekly": repeatWeekly,
-        "totalDays": totalDays,
-        "thumbnail": thumbnail,
-        "latestDay": latestDay,
-        "user_id": userId,
+        "remindAf": remindAf,
+        "remindBf": remindBf,
+        // "totalDays": totalDays,
+        // "thumbnail": thumbnail,
+        // "latestDay": latestDay,
+        // "user_id": userId,
       };
 }
 
@@ -95,6 +102,6 @@ class StartEndDate {
   Map<String, dynamic> toJson() => {
         "startDate": startDate.toString(),
         "endDate": endDate.toString(),
-        "_id": id,
+        // "_id": id,
       };
 }
