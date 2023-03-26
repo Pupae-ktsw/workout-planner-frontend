@@ -32,8 +32,8 @@ class Program {
   String? thumbnail;
   int? latestDay;
   String? userId;
-  String? remindAf;
-  String? remindBf;
+  int? remindAf;
+  int? remindBf;
 
   Program.fromJson(Map<String, dynamic> json) {
     // return Program(

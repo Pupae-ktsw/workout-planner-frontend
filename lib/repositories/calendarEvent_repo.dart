@@ -35,4 +35,16 @@ class CalendarEventRepo implements Repository {
     // TODO: implement updateObject
     throw UnimplementedError();
   }
+
+  @override
+  Future<List<Object>> getAllObjectById(String id) {
+    // TODO: implement getAllObjectById
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Object> getObjectById(String id) {
+    // TODO: implement getObjectById
+    throw UnimplementedError();
+  }
 }

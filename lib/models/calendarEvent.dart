@@ -1,16 +1,36 @@
+import 'dart:convert';
+
+import 'package:frontend/models/dayOfProgram.dart';
+import 'package:frontend/models/program.dart';
+
 class CalendarEvent {
   String? id;
   DateTime? eventDate;
   String? userId;
-  late List<String> programs;
+  List<Program> programs = [];
+  List<DayOfProgram> dayProgram = [];
 
-  CalendarEvent({this.id, this.eventDate, this.userId, required this.programs});
+  CalendarEvent(
+      {this.id,
+      this.eventDate,
+      this.userId,
+      required this.programs,
+      required this.dayProgram});
 
   CalendarEvent.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
-    eventDate = json['eventDate'];
+    eventDate = DateTime.parse(json['eventDate']);
     userId = json['user_id'];
-    programs = json['programs'].cast<String>();
+
+    List<dynamic> programList = json['programs'];
+    for (var pg in programList) {
+      programs.add(Program.fromJson(jsonDecode(jsonEncode(pg))));
+    }
+
+    List<dynamic> dayProgramList = json['dayProgram'];
+    for (var dayPg in dayProgramList) {
+      dayProgram.add(DayOfProgram.fromJson(jsonDecode(jsonEncode(dayPg))));
+    }
   }
 
   Map<String, dynamic> toJson() {

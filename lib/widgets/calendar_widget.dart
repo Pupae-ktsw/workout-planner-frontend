@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/dayOfProgram.dart';
+import 'package:frontend/models/program.dart';
+import 'package:frontend/repositories/calendarEvent_repo.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../controllers/calendarEvent_controller.dart';
-import '../models/calendarEvent.dart';
-import 'package:http/http.dart' as http;
 
 class CalendarWidget extends StatefulWidget {
   const CalendarWidget({super.key});
@@ -12,53 +13,35 @@ class CalendarWidget extends StatefulWidget {
 }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
-  late Map<DateTime, List<String>> selectedEvents;
+  late Map<DateTime, List<Program>> selectedEvents;
+  // Map<DateTime, Map<String, List<DayOfProgram>>> selectedEvents = {};
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
-  // DateTime today = DateTime.now();
 
-  TextEditingController _eventController = TextEditingController();
+  CalendarEventController calendarEventController =
+      CalendarEventController(CalendarEventRepo());
 
   @override
   void initState() {
     selectedEvents = {};
-    // CalendarEventController.get
-    /* Mock data
-    const programs = ['EPIC Heat', 'Epic EndGame', 'Fuel Series'];
-    DateTime today = DateTime.now();
-    DateTime next2days = today.add(Duration(days: 2));
-
-    CalendarEvent calendar = CalendarEvent(
-        programs: programs,
-        eventDate: DateTime.utc(today.year, today.month, today.day));
-    CalendarEvent calendar2 = CalendarEvent(
-        programs: programs,
-        eventDate:
-            DateTime.utc(next2days.year, next2days.month, next2days.day));
-
-    List<CalendarEvent> calendarList = [calendar, calendar2];
-    setState(() {
-      calendarList.forEach((item) {
-        selectedEvents[item.eventDate!] = item.programs;
-      });
-    });
-    // print('SelectedEvents: $selectedEvents');
-
-    _onDaySelected(DateTime.utc(today.year, today.month, today.day),
-        DateTime.utc(today.year, today.month, today.day));*/
+    loadData();
     super.initState();
   }
 
-  List<String> _getEventsFromDay(DateTime date) {
-    // print('getevents from: $date');
-    // print('event is: ${selectedEvents[date]}');
-    return selectedEvents[date] ?? [];
+  void loadData() async {
+    selectedEvents = await calendarEventController.getEventsByProgram();
+    print('selectedEvent init: $selectedEvents');
+    selectedDay =
+        DateTime.utc(focusedDay.year, focusedDay.month, focusedDay.day);
+    focusedDay =
+        DateTime.utc(focusedDay.year, focusedDay.month, focusedDay.day);
+
+    _onDaySelected(selectedDay, focusedDay);
+    // _getEventsFromDay(selectedDay);
   }
 
-  @override
-  void dispose() {
-    _eventController.dispose();
-    super.dispose();
+  List<Program> _getEventsFromDay(DateTime date) {
+    return selectedEvents[date] ?? [];
   }
 
   void _onDaySelected(DateTime selectDay, DateTime focusDay) {
@@ -66,7 +49,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       selectedDay = selectDay;
       focusedDay = focusDay;
     });
-    print('focusedDay: $focusedDay');
+    print('focusedDay: $focusedDay, selectedDay: $selectedDay');
   }
 
   @override
@@ -105,7 +88,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             ),
           ),
           ..._getEventsFromDay(selectedDay)
-              .map((e) => ListTile(title: Text(e))),
+              .map((e) => ListTile(title: Text(e.programName!))),
         ],
       ),
     );
