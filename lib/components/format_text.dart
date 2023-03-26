@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 ThemeData appTheme() {
   return ThemeData(
+    fontFamily: GoogleFonts.prompt().fontFamily,
     primarySwatch: Colors.red,
     textTheme: const TextTheme(
       // login and register screen

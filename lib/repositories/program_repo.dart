@@ -39,4 +39,23 @@ class ProgramRepo implements Repository {
     // TODO: implement updateObject
     throw UnimplementedError();
   }
+
+  @override
+  Future<Object> getObjectById(String id) async {
+    Program program = Program();
+    String getByIdUrl = url + "/" + id;
+
+    var response = await http.get(Uri.parse(getByIdUrl));
+    var body = json.decode(response.body);
+    // print(body);
+    program = Program.fromJson(body);
+
+    return program;
+  }
+
+  @override
+  Future<List<Object>> getAllObjectById(String id) {
+    // TODO: implement getAllObjectById
+    throw UnimplementedError();
+  }
 }

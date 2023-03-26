@@ -12,4 +12,8 @@ class ProgramController {
   Future<List<Object>> getAllProgram() async {
     return await _repository.getAllObject();
   }
+
+  Future<Object> getProgramById(String id) async {
+    return await _repository.getObjectById(id);
+  }
 }
