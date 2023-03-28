@@ -41,7 +41,7 @@ class DayOfProgramPage extends StatelessWidget {
                     size: 32,
                   )),
               Text('${program.programName}',
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               Container()
             ],
           ),

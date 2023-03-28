@@ -224,6 +224,7 @@ class _LoginPageState extends State<LoginPage> {
         var userController = UserController(UserRepo());
         User user = await userController.getLoginUser();
         await storage.write(key: 'user', value: json.encode(user));
+
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => BottomNav()));
       } else {

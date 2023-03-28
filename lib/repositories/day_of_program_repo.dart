@@ -50,4 +50,10 @@ class DayOfProgramRepo implements Repository {
     // TODO: implement getObjectById
     throw UnimplementedError();
   }
+
+  @override
+  Future postObject(Object obj) {
+    // TODO: implement createObject
+    throw UnimplementedError();
+  }
 }

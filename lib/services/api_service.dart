@@ -8,7 +8,11 @@ class CustomHttp extends http.BaseClient {
     Map<String, String> headMap = new Map();
     const storage = FlutterSecureStorage();
     String? token = await storage.read(key: 'accessToken');
-    headMap = {'Authorization': 'Bearer $token'};
+    headMap = {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=UTF-8',
+    };
     return headMap;
   }
 
