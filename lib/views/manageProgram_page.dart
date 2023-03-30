@@ -42,11 +42,12 @@ class _ManageProgramState extends State<showManageProgram> {
                 child: Container(
                   height: 50,
                   width: 100,
-                  child: FloatingActionButton(
-                    backgroundColor: Colors.red,
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10.0), // Set the border radius
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                     ),
                     onPressed: () {},
                     child: Text('next'),
@@ -59,11 +60,12 @@ class _ManageProgramState extends State<showManageProgram> {
                 child: Container(
                   height: 50,
                   width: 100,
-                  child: FloatingActionButton(
-                    backgroundColor: Colors.grey,
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10.0), // Set the border radius
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.grey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                     ),
                     onPressed: () {},
                     child: Text(

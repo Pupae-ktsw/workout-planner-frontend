@@ -1,3 +1,7 @@
+import 'package:frontend/controllers/program_controller.dart';
+import 'package:frontend/models/program.dart';
+import 'package:frontend/repositories/program_repo.dart';
+
 class Config {
   static const String appName = "Workout Planner";
   // base url http://localhost:5000 or http://127.0.0.1:5000

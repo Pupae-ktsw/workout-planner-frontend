@@ -68,4 +68,10 @@ class UserRepo implements Repository {
     // TODO: implement getAllObjectById
     throw UnimplementedError();
   }
+
+  @override
+  Future postObject(Object obj) {
+    // TODO: implement createObject
+    throw UnimplementedError();
+  }
 }

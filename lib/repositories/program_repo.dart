@@ -11,13 +11,9 @@ class ProgramRepo implements Repository {
   var http = CustomHttp();
 
   @override
-  Future<Object> getObject() async {
-    Program program = Program();
-
-    var response = await http.get(Uri.parse(url));
-    var body = json.decode(response.body);
-    program = Program.fromJson(body);
-    return program;
+  Future<Object> getObject() {
+    // TODO: implement getObject
+    throw UnimplementedError();
   }
 
   @override
@@ -25,9 +21,7 @@ class ProgramRepo implements Repository {
     List<Program> programList = [];
 
     var response = await http.get(Uri.parse(url));
-    // print('status code: ${response.statusCode}');
     var body = json.decode(response.body);
-    // print('body: $body');
     for (var i = 0; i < body.length; i++) {
       programList.add(Program.fromJson(body[i]));
     }
@@ -47,10 +41,18 @@ class ProgramRepo implements Repository {
 
     var response = await http.get(Uri.parse(getByIdUrl));
     var body = json.decode(response.body);
-    // print(body);
     program = Program.fromJson(body);
 
     return program;
+  }
+
+  @override
+  Future postObject(Object obj) async {
+    Program program = Program();
+    program = obj as Program;
+
+    var response =
+        await http.post(Uri.parse(url), body: jsonEncode(program.toJson()));
   }
 
   @override

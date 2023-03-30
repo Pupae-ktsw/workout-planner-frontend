@@ -6,4 +6,5 @@ abstract class Repository {
   Future<List<Object>> getAllObjectById(String id);
   Future<Object> updateObject(Object obj);
   Future<List<Object>> getAllObject();
+  Future postObject(Object obj);
 }

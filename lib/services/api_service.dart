@@ -10,7 +10,8 @@ class CustomHttp extends http.BaseClient {
     String? token = await storage.read(key: 'accessToken');
     headMap = {
       'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=UTF-8',
     };
     return headMap;
   }

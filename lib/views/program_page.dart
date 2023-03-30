@@ -32,12 +32,10 @@ class showProgramPage extends StatefulWidget {
 class _ProgramPageState extends State<showProgramPage> {
   final _programTypeList = ["All", "Challenging", "Completed"];
   String _selectedValue = "All";
+  var _programController = ProgramController(ProgramRepo());
 
   @override
   Widget build(BuildContext context) {
-    var programController = ProgramController(ProgramRepo());
-    programController.getAllProgram();
-
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -112,7 +110,7 @@ class _ProgramPageState extends State<showProgramPage> {
               ),
               Expanded(
                 child: FutureBuilder<List<Object>>(
-                    future: programController.getAllProgram(),
+                    future: _programController.getAllProgram(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -137,7 +135,7 @@ class _ProgramPageState extends State<showProgramPage> {
                               itemCount: snapshot.data?.length ?? 0,
                               itemBuilder: ((context, index) {
                                 var program = snapshot.data?[index] as Program;
-                                programController.getProgramById(program.id!);
+                                // _programController.getProgramById(program.id!);
                                 DateTime? startDate;
 
                                 for (var i in program.startEndDate!) {
@@ -163,7 +161,7 @@ class _ProgramPageState extends State<showProgramPage> {
                                           Expanded(
                                             child: Image.network(program
                                                     .thumbnail ??
-                                                "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%"),
+                                                "https://www.shape.com/thmb/DjCIHGX6cWaIniuqHeBAAreNE08=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/best-cardio-exercises-promo-2000-498cbfb8f07541b78572bf810e7fb600.jpg"),
                                           ),
                                           SizedBox(
                                             width: 10,
