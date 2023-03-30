@@ -52,103 +52,78 @@ class DayOfProgramPage extends StatelessWidget {
               child: FutureBuilder<List<Object>>(
                   future: dayOfProgramController.getDayOfProgram(program.id!),
                   builder: (context, snapshot) {
-                    return Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: snapshot.data?.length ?? 0,
-                              itemBuilder: (context, index) {
-                                var dayOfProgram =
-                                    snapshot.data![index] as DayOfProgram;
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      'Day' +
-                                          ' ' +
-                                          '${dayOfProgram.numberOfDay}',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    ListView.builder(
-                                      physics: ClampingScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: dayOfProgram.workouts!.length,
-                                      itemBuilder: (context, index) {
-                                        return Container(
-                                          width: 140,
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                height: 130,
-                                                width: 160,
-                                                child: Image.network(
-                                                  dayOfProgram
-                                                          .workouts![index]
-                                                          .youtubeVid!
-                                                          .thumbnail ??
-                                                      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%",
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: Column(children: [
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Align(
-                                                    alignment:
-                                                        Alignment.topLeft,
-                                                    child: Text(
-                                                      dayOfProgram
-                                                              .workouts![index]
-                                                              .youtubeVid!
-                                                              .title ??
-                                                          "No program",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Align(
-                                                    alignment:
-                                                        Alignment.topLeft,
-                                                    child: Text(
-                                                      dayOfProgram
-                                                              .workouts![index]
-                                                              .youtubeVid!
-                                                              .channel ??
-                                                          "No program",
-                                                    ),
-                                                  ),
-                                                ]),
-                                              )
-                                            ],
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: snapshot.data?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              var dayOfProgram =
+                                  snapshot.data![index] as DayOfProgram;
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'Day' + ' ' + '${dayOfProgram.numberOfDay}',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 130,
+                                        width: 160,
+                                        child: Image.network(
+                                          dayOfProgram.youtubeVid!.thumbnail ??
+                                              "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%",
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        child: Column(children: [
+                                          SizedBox(
+                                            height: 20,
                                           ),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
-                        ),
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              dayOfProgram.youtubeVid!.title ??
+                                                  "No program",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              dayOfProgram
+                                                      .youtubeVid!.channel ??
+                                                  "No program",
+                                            ),
+                                          ),
+                                        ]),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     );
                   }),
