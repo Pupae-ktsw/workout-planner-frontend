@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     const urlImage = 'lib/images/google.png';
-    // const urlImage2 = 'lib/images/facebook.png';
+    const logoApp = 'lib/images/app_logo.png';
 
     return Scaffold(
       backgroundColor: Colors.red,
@@ -37,17 +37,23 @@ class _LoginPageState extends State<LoginPage> {
           child: ListView(
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Welcome!',
-                style: GoogleFonts.lobster(textStyle: TextStyle(fontSize: 20)),
+              SizedBox(height: 50),
+              Center(
+                child: Text(
+                  'Welcome!',
+                  style:
+                      GoogleFonts.lobster(textStyle: TextStyle(fontSize: 50)),
+                ),
               ),
               // Theme.of(context).textTheme.headline1)),
-              SizedBox(height: 20),
-              CircleAvatar(
-                radius: 80,
-                backgroundColor: Colors.white.withOpacity(0.8),
+              const SizedBox(height: 40),
+              Container(
+                height: 100,
+                width: 100,
+                child: Image.asset(logoApp),
+                // backgroundColor: Colors.white.withOpacity(0.8),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 30),
 
               //Email
               Padding(
