@@ -8,34 +8,54 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  String programName = 'programName';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Icon(Icons.arrow_back_ios),
-                  Expanded(
-                    // height: 30,
-                    // width: 300,
-                    child: TextField(
-                      controller: null,
-                      decoration: InputDecoration(
-                          hintText: 'Search',
-                          prefixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color: Colors.blue))),
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  Icons.arrow_back,
+                  size: 36,
+                ),
+                Text(programName, style: TextStyle(fontSize: 18)),
+                Container()
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  height: 40,
+                  width: 350,
+                  child: TextFormField(
+                    onChanged: (value) {
+                      setState(() {
+                        programName = value;
+                      });
+                    },
+                    // controller: null,
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(color: Colors.blue))),
+                  ),
+                ),
+                Container(
+                  width: 20,
+                )
+              ],
+            )
+          ],
         ),
       ),
     );
