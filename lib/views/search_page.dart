@@ -12,8 +12,22 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          child: Text(''),
+        child: Column(
+          children: [
+            Container(
+              // height: 30,
+              // width: 300,
+              child: TextField(
+                controller: null,
+                decoration: InputDecoration(
+                    hintText: 'Search',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: Colors.blue))),
+              ),
+            )
+          ],
         ),
       ),
     );

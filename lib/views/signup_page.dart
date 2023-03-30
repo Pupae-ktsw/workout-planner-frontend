@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/model/profile.dart';
+// import 'package:frontend/model/profile.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SignupPage extends StatefulWidget {
@@ -11,7 +11,7 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final formKey = GlobalKey<FormState>();
-  Profile profile = Profile('', '', '');
+  // Profile profile = Profile('', '', '');
 
   @override
   Widget build(BuildContext context) {
