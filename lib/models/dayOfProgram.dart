@@ -22,15 +22,15 @@ class DayOfProgram {
 
   DayOfProgram.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
-    programId = json['program_id'];
     numberOfDay = json['numberOfDay'];
     dateCalendar = json['dateCalendar'];
     workoutStatus = json['workoutStatus'];
     youtubeVid = json['youtubeVid'] != null
         ? YoutubeVid.fromJson(json['youtubeVid'])
         : null;
-    program =
-        json['program_id'] != null ? Program.fromJson(json['program']) : null;
+    program = json['program_id'] != null
+        ? Program.fromJson(json['program_id'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
