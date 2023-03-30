@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/calendarEvent.dart';
 import 'package:frontend/models/dayOfProgram.dart';
 import 'package:frontend/models/program.dart';
 import 'package:frontend/repositories/calendarEvent_repo.dart';
@@ -13,8 +14,8 @@ class CalendarWidget extends StatefulWidget {
 }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
-  late Map<DateTime, List<Program>> selectedEvents;
-  // Map<DateTime, Map<String, List<DayOfProgram>>> selectedEvents = {};
+  Map<DateTime, List<Program>> selectedEvents = {};
+  Map<DateTime, List<DayOfProgram>> selectedWorkouts = {};
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
 
@@ -24,12 +25,17 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   @override
   void initState() {
     selectedEvents = {};
-    loadData();
+    // loadData();
     super.initState();
   }
 
   void loadData() async {
-    selectedEvents = await calendarEventController.getEventsByProgram();
+    List<CalendarEvent> events = await calendarEventController.getAllEvents();
+    for (var event in events) {
+      selectedWorkouts[event.eventDate!] = event.dayProgram;
+    }
+
+    // selectedEvents = await calendarEventController.getEventsByProgram();
     print('selectedEvent init: $selectedEvents');
     selectedDay =
         DateTime.utc(focusedDay.year, focusedDay.month, focusedDay.day);
@@ -37,11 +43,14 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         DateTime.utc(focusedDay.year, focusedDay.month, focusedDay.day);
 
     _onDaySelected(selectedDay, focusedDay);
-    // _getEventsFromDay(selectedDay);
   }
 
-  List<Program> _getEventsFromDay(DateTime date) {
-    return selectedEvents[date] ?? [];
+  // List<Program> _getEventsFromDay(DateTime date) {
+  //   return selectedEvents[date] ?? [];
+  // }
+
+  List<DayOfProgram> _getEventsFromDay(DateTime date) {
+    return selectedWorkouts[date] ?? [];
   }
 
   void _onDaySelected(DateTime selectDay, DateTime focusDay) {
@@ -65,7 +74,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             calendarFormat: CalendarFormat.month,
             startingDayOfWeek: StartingDayOfWeek.sunday,
             daysOfWeekVisible: true,
-            eventLoader: _getEventsFromDay,
+            // eventLoader: _getEventsFromDay,
             availableGestures: AvailableGestures.all,
             onDaySelected: _onDaySelected,
             selectedDayPredicate: ((date) => isSameDay(selectedDay, date)),
@@ -82,13 +91,53 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               selectedTextStyle: const TextStyle(color: Colors.white),
             ),
             daysOfWeekStyle: DaysOfWeekStyle(
-              weekdayStyle: TextStyle(fontWeight: FontWeight.bold),
+              weekdayStyle: const TextStyle(fontWeight: FontWeight.bold),
               weekendStyle: TextStyle(
                   fontWeight: FontWeight.bold, color: Colors.red.shade600),
             ),
           ),
-          ..._getEventsFromDay(selectedDay)
-              .map((e) => ListTile(title: Text(e.programName!))),
+          /*Container(child: ListView.separated(itemBuilder: ((context,(context, index) {
+            
+          })), separatorBuilder: separatorBuilder, itemCount: itemCount),
+              padding: EdgeInsets.all(20),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.55,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50)),
+                color: Colors.grey.shade900,
+                // boxShadow: const [
+                //   BoxShadow(
+                //     blurRadius: 10.0,
+                //     color: Colors.black,
+                //   ),
+                // ],
+              ),
+
+          ),*/
+
+          // ..._getEventsFromDay(selectedDay)
+          //   .map((e) => null))
+
+          // ..._getEventsFromDay(selectedDay)
+          //     .map((e) => ListTile(title: Text(e.programName!))),
+
+          // ..._getEventsFromDay(selectedDay)
+          //     .map((e) => Column(
+          //       children: [ Text(e.programName!),
+          //         // var workouts = _getWorkoutsByPgId(selectedDay, e.id);
+          //         // for(int i = 0 ; _getWorkoutsByPgId(selectedDay, e.id));
+          //         for(var workout in _getWorkoutsByPgId(selectedDay, e.id!)) ...[
+          //           Row(
+          //             children: [
+          //               Image.network(workout.)
+          //             ],
+          //           ),
+          //         ]
+
+          //       ],
+          //     )),
         ],
       ),
     );

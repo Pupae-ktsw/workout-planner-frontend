@@ -8,15 +8,24 @@ class CalendarEventController {
   final Repository _repository;
 
   CalendarEventController(this._repository);
-  Future<Map<DateTime, List<Program>>> getEventsByProgram() async {
-    Map<DateTime, List<Program>> programEventList = {};
+  Future<List<CalendarEvent>> getAllEvents() async {
     List<CalendarEvent> events =
         await _repository.getAllObject() as List<CalendarEvent>;
-    for (var event in events) {
-      programEventList[event.eventDate!] = event.programs;
-    }
-    return programEventList;
+    return events;
   }
+
+  // Map<String, List<DayOfProgram>> getWorkoutsByDate(
+  //     List<CalendarEvent> events, String programId, DateTime selectedDay) {
+  //   Map<String, List<DayOfProgram>> workouts = {};
+  //   CalendarEvent event =
+  //       events.singleWhere((e) => e.eventDate!.compareTo(selectedDay) == 0);
+  //   List<DayOfProgram> dayPgList = event.dayProgram;
+  //   dayPgList.where((dayPg) => dayPg.programId == programId);
+  //   for (var dayPgs in event.dayProgram) {
+  //     dayPgs.where;
+  //   }
+  //   return workouts;
+  // }
 
   // Future<Map<DateTime, Map<String, List<DayOfProgram>>>> getEvents() async {
   //   Map<DateTime, Map<String, List<DayOfProgram>>> events = {};
