@@ -6,13 +6,16 @@ import 'dart:math';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/controllers/day_of_program_controller.dart';
 import 'package:frontend/controllers/program_controller.dart';
+import 'package:frontend/models/dayOfProgram.dart';
 import 'package:frontend/models/program.dart';
+import 'package:frontend/repositories/day_of_program_repo.dart';
 import 'package:frontend/repositories/program_repo.dart';
 import 'package:frontend/views/addProgram_page.dart';
 import 'package:frontend/views/dayOfProgram_page.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gradients/gradients.dart';
+// import 'package:gradients/gradients.dart';
 import 'package:intl/intl.dart';
 
 class ProgramPage extends StatelessWidget {
@@ -36,8 +39,11 @@ class _ProgramPageState extends State<showProgramPage> {
   String _selectedValue = "All";
   Color color1 = Colors.black.withOpacity(0.85);
   Color color2 = Colors.black.withOpacity(0);
+  int dayCount = 0;
 
-  var _programController = ProgramController(ProgramRepo());
+  ProgramController _programController = ProgramController(ProgramRepo());
+  DayOfProgramController _dayOfProgramController =
+      DayOfProgramController(DayOfProgramRepo());
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +146,8 @@ class _ProgramPageState extends State<showProgramPage> {
                               itemCount: snapshot.data?.length ?? 0,
                               itemBuilder: ((context, index) {
                                 var program = snapshot.data?[index] as Program;
-                                // _programController.getProgramById(program.id!);
+
+                                // int dayCount = _checkDay(program);
                                 DateTime? startDate;
 
                                 for (var i in program.startEndDate!) {
@@ -241,5 +248,15 @@ class _ProgramPageState extends State<showProgramPage> {
         ),
       ),
     );
+  }
+
+  Future<int> _checkDay(Program program) async {
+    List<DayOfProgram> dayOfProgramList = await _dayOfProgramController
+        .getDayOfProgram(program.id!) as List<DayOfProgram>;
+    int dayCount = 0;
+    for (var i = 0; i < dayOfProgramList.length; i++) {
+      if (dayOfProgramList[i].workoutStatus == "Undone") dayCount++;
+    }
+    return dayCount;
   }
 }

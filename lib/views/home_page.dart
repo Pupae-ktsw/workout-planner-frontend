@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/day_of_program_controller.dart';
+import 'package:frontend/controllers/program_controller.dart';
+import 'package:frontend/models/program.dart';
+import 'package:frontend/repositories/day_of_program_repo.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../repositories/program_repo.dart';
 
 class HomePage extends StatelessWidget {
   List testData = [
@@ -9,6 +15,9 @@ class HomePage extends StatelessWidget {
     {'name': 'Program 4', 'Type': 'Workout'},
     {'name': 'Program 5', 'Type': 'Workout'}
   ];
+  DayOfProgramController dayOfProgramController =
+      DayOfProgramController(DayOfProgramRepo());
+  ProgramController programController = ProgramController(ProgramRepo());
 
   @override
   Widget build(BuildContext context) {
@@ -45,26 +54,24 @@ class HomePage extends StatelessWidget {
                 height: 10,
               ),
               Container(
-                height: 100,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: testData.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        debugPrint('tapped');
-                      },
-                      child: Container(
-                        width: 200,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                            title: Text(testData[index]['name']),
-                            subtitle: Text(testData[index]['Type']),
-                          ),
-                        ),
+                height: 145,
+                child: FutureBuilder(
+                  // future: ,
+                  builder: (context, snapshot) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: InkWell(
+                        onTap: () {
+                          debugPrint('tapped');
+                        },
+                        child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              color: Colors.black,
+                            ),
+                            child: SizedBox(
+                              width: 200,
+                            )),
                       ),
                     );
                   },

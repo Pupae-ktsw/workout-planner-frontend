@@ -42,8 +42,10 @@ class DayOfProgramPage extends StatelessWidget {
                     size: 32,
                   )),
               Text('${program.programName}',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Container()
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              Container(
+                width: 30,
+              )
             ],
           ),
           SizedBox(height: 10),
@@ -63,21 +65,38 @@ class DayOfProgramPage extends StatelessWidget {
                             itemBuilder: (context, index) {
                               var dayOfProgram =
                                   snapshot.data![index] as DayOfProgram;
+
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
                               return Padding(
-                                padding: const EdgeInsets.only(bottom: 20.0),
+                                padding: const EdgeInsets.only(bottom: 15.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      'Day' +
-                                          ' ' +
-                                          '${dayOfProgram.numberOfDay}',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          'Day' +
+                                              ' ' +
+                                              '${dayOfProgram.numberOfDay}',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        dayOfProgram.workoutStatus == "Done"
+                                            ? Icon(Icons.check_circle_outline,
+                                                color: Colors.green)
+                                            : Container(),
+                                      ],
                                     ),
                                     SizedBox(
                                       height: 10,
@@ -113,26 +132,20 @@ class DayOfProgramPage extends StatelessWidget {
                                                   width: 200,
                                                 ),
                                               ),
-                                              Positioned(
-                                                top: 32,
-                                                left: 62,
-                                                child: BorderedText(
-                                                  strokeWidth: 3,
-                                                  strokeColor: Colors.black,
-                                                  child: dayOfProgram
-                                                              .workoutStatus ==
-                                                          "Done"
-                                                      ? Text(
-                                                          dayOfProgram
-                                                              .workoutStatus!,
-                                                          style: TextStyle(
-                                                              fontSize: 20,
-                                                              color:
-                                                                  Colors.white),
-                                                        )
-                                                      : Text(''),
-                                                ),
-                                              ),
+                                              // Positioned(
+                                              //   top: 20,
+                                              //   left: 62,
+                                              //   child: dayOfProgram
+                                              //               .workoutStatus ==
+                                              //           "Done"
+                                              //       ? Icon(
+                                              //           Icons
+                                              //               .local_fire_department_outlined,
+                                              //           color: Colors.red,
+                                              //           size: 62,
+                                              //         )
+                                              //       : Text(''),
+                                              // ),
                                             ],
                                           ),
                                         ),
