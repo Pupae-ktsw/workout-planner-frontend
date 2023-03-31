@@ -15,6 +15,8 @@ class CalendarWidget extends StatefulWidget {
   State<CalendarWidget> createState() => _CalendarWidgetState();
 }
 
+enum Actions { Done, Undone }
+
 class _CalendarWidgetState extends State<CalendarWidget> {
   Map<DateTime, List<DayOfProgram>> selectedWorkouts = {};
   DateTime selectedDay = DateTime.now();
@@ -105,65 +107,104 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   topLeft: Radius.circular(25), topRight: Radius.circular(25)),
               color: Colors.grey.shade900,
             ),
-            child: ListView(children: [
-              ..._getEventsFromDay(selectedDay).map(
-                (e) => Slidable(
-                  child: InkWell(
-                    onTap: () async {
-                      final youtubeUrl = Uri.parse(e.youtubeVid!.url!);
-                      await launchUrl(youtubeUrl);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(7.0),
-                            child: Image.network(
-                              e.youtubeVid!.thumbnail!,
-                              height: 100,
-                              fit: BoxFit.cover,
+            child: SlidableAutoCloseBehavior(
+              closeWhenOpened: true,
+              child: ListView(children: [
+                ..._getEventsFromDay(selectedDay).map(
+                  (e) => Slidable(
+                    endActionPane: ActionPane(
+                      motion: StretchMotion(),
+                      children: [
+                        SlidableAction(
+                            backgroundColor: Colors.green,
+                            icon: Icons.check,
+                            label: "Done",
+                            onPressed: (context) =>
+                                _changeStatus(e, Actions.Done)),
+                        SlidableAction(
+                          backgroundColor: Colors.red,
+                          icon: Icons.self_improvement_sharp,
+                          label: "Skip",
+                          onPressed: (context) =>
+                              _changeStatus(e, Actions.Undone),
+                        ),
+                      ],
+                    ),
+                    child: InkWell(
+                      onTap: () async {
+                        final youtubeUrl = Uri.parse(e.youtubeVid!.url!);
+                        await launchUrl(youtubeUrl);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(7.0),
+                              child: Image.network(
+                                e.youtubeVid!.thumbnail!,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(
-                                  e.program!.programName!,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                Text(
-                                  'Day ${e.numberOfDay}/${e.program!.totalDays!}',
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  e.youtubeVid!.title!,
-                                  // overflow: TextOverflow.ellipsis,
-                                  // maxLines: 2,
-                                  // softWrap: true,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ],
+                            const SizedBox(
+                              width: 10,
                             ),
-                          )
-                        ],
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    e.program!.programName!,
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'Day ${e.numberOfDay}/${e.program!.totalDays!}',
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    e.youtubeVid!.title!,
+                                    // overflow: TextOverflow.ellipsis,
+                                    // maxLines: 2,
+                                    // softWrap: true,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              )
-            ]),
+                )
+              ]),
+            ),
           ),
         ],
       ),
     );
+  }
+
+  _changeStatus(DayOfProgram dayOfProgram, Actions action) {
+    setState(() {
+      //call controller to update status
+    });
+
+    switch (action) {
+      case Actions.Done:
+        //call controller to update status
+        break;
+      case Actions.Undone:
+        //call controller to update status
+        break;
+    }
   }
 }
 /*Container(child: ListView.separated(itemBuilder: ((context,(context, index) {
