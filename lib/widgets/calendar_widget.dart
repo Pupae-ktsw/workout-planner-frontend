@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:frontend/models/calendarEvent.dart';
 import 'package:frontend/models/dayOfProgram.dart';
 import 'package:frontend/models/program.dart';
 import 'package:frontend/repositories/calendarEvent_repo.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../controllers/calendarEvent_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CalendarWidget extends StatefulWidget {
   const CalendarWidget({super.key});
@@ -14,7 +16,6 @@ class CalendarWidget extends StatefulWidget {
 }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
-  Map<DateTime, List<Program>> selectedEvents = {};
   Map<DateTime, List<DayOfProgram>> selectedWorkouts = {};
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
@@ -24,8 +25,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   @override
   void initState() {
-    selectedEvents = {};
-    // loadData();
+    loadData();
     super.initState();
   }
 
@@ -36,7 +36,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     }
 
     // selectedEvents = await calendarEventController.getEventsByProgram();
-    print('selectedEvent init: $selectedEvents');
+    // print('selectedEvent init: $selectedEvents');
     selectedDay =
         DateTime.utc(focusedDay.year, focusedDay.month, focusedDay.day);
     focusedDay =
@@ -74,7 +74,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             calendarFormat: CalendarFormat.month,
             startingDayOfWeek: StartingDayOfWeek.sunday,
             daysOfWeekVisible: true,
-            // eventLoader: _getEventsFromDay,
+            eventLoader: _getEventsFromDay,
             availableGestures: AvailableGestures.all,
             onDaySelected: _onDaySelected,
             selectedDayPredicate: ((date) => isSameDay(selectedDay, date)),
@@ -96,7 +96,77 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   fontWeight: FontWeight.bold, color: Colors.red.shade600),
             ),
           ),
-          /*Container(child: ListView.separated(itemBuilder: ((context,(context, index) {
+          Container(
+            // padding: const EdgeInsets.all(20),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.55,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+              color: Colors.grey.shade900,
+            ),
+            child: ListView(children: [
+              ..._getEventsFromDay(selectedDay).map(
+                (e) => Slidable(
+                  child: InkWell(
+                    onTap: () async {
+                      final youtubeUrl = Uri.parse(e.youtubeVid!.url!);
+                      await launchUrl(youtubeUrl);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(7.0),
+                            child: Image.network(
+                              e.youtubeVid!.thumbnail!,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  e.program!.programName!,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                Text(
+                                  'Day ${e.numberOfDay}/${e.program!.totalDays!}',
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  e.youtubeVid!.title!,
+                                  // overflow: TextOverflow.ellipsis,
+                                  // maxLines: 2,
+                                  // softWrap: true,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ]),
+          ),
+        ],
+      ),
+    );
+  }
+}
+/*Container(child: ListView.separated(itemBuilder: ((context,(context, index) {
             
           })), separatorBuilder: separatorBuilder, itemCount: itemCount),
               padding: EdgeInsets.all(20),
@@ -138,8 +208,3 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
           //       ],
           //     )),
-        ],
-      ),
-    );
-  }
-}

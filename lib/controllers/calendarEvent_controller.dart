@@ -8,6 +8,7 @@ class CalendarEventController {
   final Repository _repository;
 
   CalendarEventController(this._repository);
+
   Future<List<CalendarEvent>> getAllEvents() async {
     List<CalendarEvent> events =
         await _repository.getAllObject() as List<CalendarEvent>;

@@ -7,7 +7,7 @@ class CalendarEvent {
   String? id;
   DateTime? eventDate;
   String? userId;
-  List<DayOfProgram> dayProgram = [];
+  List<DayOfProgram> dayProgram = <DayOfProgram>[];
 
   CalendarEvent(
       {this.id, this.eventDate, this.userId, required this.dayProgram});
@@ -16,16 +16,16 @@ class CalendarEvent {
     id = json['_id'];
     eventDate = DateTime.parse(json['eventDate']);
     userId = json['user_id'];
-
-    // List<dynamic> programList = json['programs'];
-    // for (var pg in programList) {
-    //   programs.add(Program.fromJson(jsonDecode(jsonEncode(pg))));
-    // }
-
     List<dynamic> dayProgramList = json['dayProgram'];
     for (var dayPg in dayProgramList) {
-      dayProgram.add(DayOfProgram.fromJson(jsonDecode(jsonEncode(dayPg))));
+      dayProgram.add(DayOfProgram.fromJson(dayPg));
     }
+
+    // List<dynamic> dayProgramList = json['dayProgram'];
+    // for (var dayPg in dayProgramList) {
+    //   dayProgram.add(DayOfProgram.fromJson(dayPg));
+    //   // dayProgram.add(DayOfProgram.fromJson(jsonDecode(jsonEncode(dayPg))));
+    // }
   }
 
   // Map<String, dynamic> toJson() {
