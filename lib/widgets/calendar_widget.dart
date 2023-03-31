@@ -7,6 +7,8 @@ import 'package:frontend/repositories/calendarEvent_repo.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../controllers/calendarEvent_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:frontend/controllers/day_of_program_controller.dart';
+import 'package:frontend/repositories/day_of_program_repo.dart';
 
 class CalendarWidget extends StatefulWidget {
   const CalendarWidget({super.key});
@@ -15,12 +17,14 @@ class CalendarWidget extends StatefulWidget {
   State<CalendarWidget> createState() => _CalendarWidgetState();
 }
 
-enum Actions { Done, Undone }
+enum Actions { Done, Skip }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
   Map<DateTime, List<DayOfProgram>> selectedWorkouts = {};
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
+  DayOfProgramController dayOfProgramController =
+      DayOfProgramController(DayOfProgramRepo());
 
   CalendarEventController calendarEventController =
       CalendarEventController(CalendarEventRepo());
@@ -56,6 +60,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 
   void _onDaySelected(DateTime selectDay, DateTime focusDay) {
+    // Slidable.of(context)!.close();
     setState(() {
       selectedDay = selectDay;
       focusedDay = focusDay;
@@ -112,6 +117,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               child: ListView(children: [
                 ..._getEventsFromDay(selectedDay).map(
                   (e) => Slidable(
+                    enabled: e.workoutStatus == "Done" ? false : true,
                     endActionPane: ActionPane(
                       motion: StretchMotion(),
                       children: [
@@ -126,7 +132,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                           icon: Icons.self_improvement_sharp,
                           label: "Skip",
                           onPressed: (context) =>
-                              _changeStatus(e, Actions.Undone),
+                              _changeStatus(e, Actions.Skip),
                         ),
                       ],
                     ),
@@ -135,52 +141,74 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                         final youtubeUrl = Uri.parse(e.youtubeVid!.url!);
                         await launchUrl(youtubeUrl);
                       },
-                      child: Container(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(7.0),
-                              child: Image.network(
-                                e.youtubeVid!.thumbnail!,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                      child: Stack(children: [
+                        Container(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Stack(
                                 children: [
-                                  Text(
-                                    e.program!.programName!,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(7.0),
+                                    child: Image.network(
+                                      e.youtubeVid!.thumbnail!,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                  Text(
-                                    'Day ${e.numberOfDay}/${e.program!.totalDays!}',
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    e.youtubeVid!.title!,
-                                    // overflow: TextOverflow.ellipsis,
-                                    // maxLines: 2,
-                                    // softWrap: true,
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
+                                  Positioned(
+                                    right: 4,
+                                    bottom: 4,
+                                    child: e.workoutStatus == "Done"
+                                        ? Icon(
+                                            Icons.check_circle_sharp,
+                                            size: 32,
+                                            color: Colors.white,
+                                          )
+                                        : Container(),
+                                  )
                                 ],
                               ),
-                            )
-                          ],
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      e.program!.programName!,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      'Day : ${e.numberOfDay}/${e.program!.totalDays!}',
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      e.youtubeVid!.title!,
+                                      // overflow: TextOverflow.ellipsis,
+                                      // maxLines: 2,
+                                      // softWrap: true,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
+                      ]),
                     ),
                   ),
                 )
@@ -193,18 +221,34 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 
   _changeStatus(DayOfProgram dayOfProgram, Actions action) {
-    setState(() {
-      //call controller to update status
-    });
+    // final day = ;
 
-    switch (action) {
-      case Actions.Done:
-        //call controller to update status
-        break;
-      case Actions.Undone:
-        //call controller to update status
-        break;
-    }
+    setState(() {
+      switch (action) {
+        case Actions.Done:
+          //call controller to update status
+          dayOfProgram.workoutStatus = "Done";
+          dayOfProgramController.updateDayOfProgram(dayOfProgram);
+          _showSnackBar(context,
+              "${dayOfProgram.program!.programName} is done!", Colors.green);
+          break;
+        case Actions.Skip:
+          //call controller to update status
+          dayOfProgram.workoutStatus = "skip";
+          dayOfProgramController.updateDayOfProgram(dayOfProgram);
+          _showSnackBar(context,
+              "${dayOfProgram.program!.programName} is skip!", Colors.green);
+          break;
+      }
+    });
+  }
+
+  void _showSnackBar(BuildContext context, String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 2),
+      backgroundColor: color,
+    ));
   }
 }
 /*Container(child: ListView.separated(itemBuilder: ((context,(context, index) {

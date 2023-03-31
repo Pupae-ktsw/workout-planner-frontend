@@ -9,7 +9,8 @@ import '../config.dart';
 import '../services/api_service.dart';
 
 class DayOfProgramRepo implements Repository {
-  String url = Config.programAPI;
+  String programUrl = Config.programAPI;
+  String dayOfProgramUrl = Config.dayOfProgramAPI;
   var http = CustomHttp();
 
   @override
@@ -25,15 +26,9 @@ class DayOfProgramRepo implements Repository {
   }
 
   @override
-  Future<Object> updateObject(Object obj) {
-    // TODO: implement updateObject
-    throw UnimplementedError();
-  }
-
-  @override
   Future<List<Object>> getAllObjectById(String objId) async {
     DayOfProgram dayOfprogram = DayOfProgram();
-    String getByIdUrl = url + "/" + objId + "/days";
+    String getByIdUrl = programUrl + "/" + objId + "/days";
     List<DayOfProgram> dayOfProgramList = [];
 
     var response = await http.get(Uri.parse(getByIdUrl));
@@ -55,5 +50,21 @@ class DayOfProgramRepo implements Repository {
   Future postObject(Object obj) {
     // TODO: implement createObject
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Object> updateObject(Object obj) async {
+    DayOfProgram dayOfProgram = obj as DayOfProgram;
+    String updateUrl = dayOfProgramUrl + "/" + dayOfProgram.id!;
+    var jsonReq;
+    if (dayOfProgram.workoutStatus == "Done") {
+      jsonReq = jsonEncode({"workoutStatus": "Done"});
+    } else if (dayOfProgram.workoutStatus == "Skip") {
+      jsonReq = jsonEncode({"workoutStatus": "Skip"});
+    }
+
+    var response = http.put(Uri.parse(updateUrl), body: jsonReq);
+
+    return dayOfProgram;
   }
 }
