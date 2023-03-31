@@ -1,6 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/components/format_text.dart';
 import 'package:frontend/views/home_page.dart';
+import 'package:frontend/views/login_page.dart';
 import 'package:frontend/views/planner_page.dart';
 import 'package:frontend/views/profile_page.dart';
 import 'package:frontend/views/program_page.dart';
@@ -16,11 +18,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
+      theme: appTheme(),
       debugShowCheckedModeBanner: false,
-      home: const SearchPage(),
+      home: const LoginPage(),
     );
   }
 }
@@ -40,6 +40,12 @@ class _BottomNavState extends State<BottomNav> {
     ProgramPage(),
     ProfilePage(),
   ];
+  final items = <Widget>[
+    const Icon(Icons.home, color: Colors.white),
+    const Icon(Icons.calendar_month_rounded, color: Colors.white),
+    const Icon(Icons.whatshot_sharp, color: Colors.white),
+    const Icon(Icons.person, color: Colors.white),
+  ];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -50,9 +56,9 @@ class _BottomNavState extends State<BottomNav> {
         bottomNavigationBar: CurvedNavigationBar(
           color: Colors.red.shade600,
           backgroundColor: Colors.transparent,
-          animationDuration: Duration(milliseconds: 300),
+          animationDuration: const Duration(milliseconds: 300),
           onTap: (index) => setState(() => currentIndex = index),
-          items: [
+          items: const [
             Icon(
               Icons.home,
               color: Colors.white,
