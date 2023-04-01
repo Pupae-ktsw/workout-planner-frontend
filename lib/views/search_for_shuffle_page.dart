@@ -5,18 +5,19 @@ import 'package:frontend/models/youtubeVid.dart';
 import 'package:frontend/repositories/youtube_repo.dart';
 import 'package:frontend/views/addProgram_page.dart';
 import 'package:frontend/views/dayOfProgramManage_page.dart';
+import 'package:frontend/views/manageProgram_page.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/programProvider.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+class SearchShufflePage extends StatefulWidget {
+  const SearchShufflePage({super.key});
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  State<SearchShufflePage> createState() => _SearchShufflePageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchShufflePageState extends State<SearchShufflePage> {
   String _programName = "programName";
   String _searchYoutube = "";
   YoutubeController _youtubeController = YoutubeController(YoutubeRepo());
@@ -42,7 +43,7 @@ class _SearchPageState extends State<SearchPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ShowAddProgramPage()));
+                            builder: (context) => ShowManageProgram()));
                   },
                   child: Icon(
                     Icons.arrow_back,
@@ -68,7 +69,6 @@ class _SearchPageState extends State<SearchPage> {
                     cursorHeight: 20,
                     controller: _searchController,
                     decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(left: 10, top: 5),
                         focusColor: Colors.blue,
                         prefixIcon: Icon(Icons.search),
                         border: OutlineInputBorder(
@@ -120,8 +120,8 @@ class _SearchPageState extends State<SearchPage> {
                                           onTap: () {
                                             dayOfProgram = DayOfProgram(
                                                 youtubeVid: youtubeVid);
-                                            programProvider
-                                                .addDayOfProgram(youtubeVid);
+                                            programProvider.shuffleDayOfProgram(
+                                                youtubeVid);
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

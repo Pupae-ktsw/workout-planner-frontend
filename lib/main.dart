@@ -2,12 +2,14 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/components/format_text.dart';
+import 'package:frontend/provider/programProvider.dart';
 import 'package:frontend/views/home_page.dart';
 import 'package:frontend/views/login_page.dart';
 import 'package:frontend/views/planner_page.dart';
 import 'package:frontend/views/profile_page.dart';
 import 'package:frontend/views/program_page.dart';
 import 'package:frontend/views/search_page.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -18,13 +20,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: appTheme(),
-      debugShowCheckedModeBanner: false,
-      home: FutureBuilder(
-        future: FlutterSecureStorage().read(key: 'accessToken'),
-        builder: (context, snapshot) =>
-            snapshot.hasData ? BottomNav() : LoginPage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProgramProvider()),
+      ],
+      child: MaterialApp(
+        theme: appTheme(),
+        debugShowCheckedModeBanner: false,
+        home: FutureBuilder(
+          future: FlutterSecureStorage().read(key: 'accessToken'),
+          builder: (context, snapshot) =>
+              snapshot.hasData ? BottomNav() : LoginPage(),
+        ),
       ),
     );
   }

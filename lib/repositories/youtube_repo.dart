@@ -24,7 +24,7 @@ class YoutubeRepo implements Repository {
 
     var response = await http.get(Uri.parse(getBykeywordUrl));
     var body = json.decode(response.body);
-    print(body);
+
     for (var i = 0; i < body.length; i++) {
       if (body[i] != null) {
         var vid = YoutubeVid.fromJson(body[i]);

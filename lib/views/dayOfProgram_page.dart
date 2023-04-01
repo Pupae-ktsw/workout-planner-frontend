@@ -132,20 +132,6 @@ class DayOfProgramPage extends StatelessWidget {
                                                   width: 200,
                                                 ),
                                               ),
-                                              // Positioned(
-                                              //   top: 20,
-                                              //   left: 62,
-                                              //   child: dayOfProgram
-                                              //               .workoutStatus ==
-                                              //           "Done"
-                                              //       ? Icon(
-                                              //           Icons
-                                              //               .local_fire_department_outlined,
-                                              //           color: Colors.red,
-                                              //           size: 62,
-                                              //         )
-                                              //       : Text(''),
-                                              // ),
                                             ],
                                           ),
                                         ),

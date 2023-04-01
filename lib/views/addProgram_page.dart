@@ -140,19 +140,21 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                 ),
               ),
               const SizedBox(height: 10),
-              Container(
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Text('Program Name',
-                      style: GoogleFonts.prompt(
-                        fontSize: 20,
-                      )),
-                ),
-              ),
+              // Container(
+              //   child: Align(
+              //     alignment: Alignment.topLeft,
+              //     child: Text('Program Name',
+              //         style: GoogleFonts.prompt(
+              //           fontSize: 20,
+              //         )),
+              //   ),
+              // ),
               const SizedBox(height: 10),
-              SizedBox(
+              Container(
                 height: 26,
+                width: 270,
                 child: TextFormField(
+                  cursorHeight: 18,
                   onChanged: (value) {
                     setState(() {
                       _programNameController.text = value;
@@ -161,6 +163,8 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                   },
                   style: TextStyle(fontSize: 16),
                   decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(left: 10, top: 5),
+                    hintText: "Progran name",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),
@@ -180,11 +184,11 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
               ),
               const SizedBox(height: 10),
               Text(
-                _programNameController.text,
+                programProvider.programName!,
                 style: GoogleFonts.prompt(
                     textStyle: Theme.of(context).textTheme.bodyText1),
               ),
-              Text('( videos)',
+              Text('(${programProvider.dayofProgramList.length} videos)',
                   style: GoogleFonts.prompt(
                       textStyle: Theme.of(context).textTheme.bodyText1)),
               InkWell(
@@ -212,11 +216,7 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                   SizedBox(
                       width: 80,
                       child: DropdownButtonFormField(
-                        //   decoration: InputDecoration(
-                        //     border: OutlineInputBorder(
-                        //         borderRadius: BorderRadius.circular(15)),
-                        //   ),
-                        value: _repeatType,
+                        value: programProvider.repeatType,
                         items: _retitionList
                             .map(((e) => DropdownMenuItem(
                                   child: Text(e),
@@ -226,7 +226,7 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                         onChanged: (value) {
                           setState(() {
                             _repeatType = value as String;
-                            programProvider.setRepeatType(value as String);
+                            programProvider.setRepeatType(_repeatType);
                           });
                         },
                       )),
@@ -234,7 +234,7 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
               ),
               const SizedBox(height: 10),
               Visibility(
-                visible: _repeatType == "Weekly",
+                visible: programProvider.repeatType == "Weekly",
                 child: Container(
                   height: 50,
                   width: double.infinity,
@@ -267,7 +267,7 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                     margin: const EdgeInsets.all(3.0),
                                     padding: const EdgeInsets.all(8.0),
                                     decoration: BoxDecoration(
-                                        color: _repeatWeekly!
+                                        color: programProvider.repeatWeekly!
                                                 .contains(option['dayValue'])
                                             ? Colors.red
                                             : Colors.white,
@@ -275,14 +275,15 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                             BorderRadius.circular(20.0),
                                         border: Border.all(
                                             width: 2,
-                                            color: _repeatWeekly!.contains(
-                                                    option['dayValue'])
+                                            color: programProvider.repeatWeekly!
+                                                    .contains(
+                                                        option['dayValue'])
                                                 ? Colors.red
                                                 : Colors.black)),
                                     child: Text(
                                       option['day'],
                                       style: GoogleFonts.prompt(
-                                        color: _repeatWeekly!
+                                        color: programProvider.repeatWeekly!
                                                 .contains(option['dayValue'])
                                             ? Colors.white
                                             : Colors.black,
@@ -299,7 +300,7 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                 ),
               ),
               Visibility(
-                visible: _repeatType == "Daily",
+                visible: programProvider.repeatType == "Daily",
                 child: Row(
                   children: [
                     Text('Daily',
@@ -309,7 +310,7 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                     SizedBox(
                       width: 80,
                       child: DropdownButtonFormField(
-                          value: _repeatDaily,
+                          value: programProvider.repeatDaily,
                           items: _dailyList
                               .map(((e) => DropdownMenuItem(
                                     child: Text(
@@ -344,10 +345,19 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                         const SizedBox(width: 10),
                         InkWell(
                           onTap: () {
-                            _showDatePicker;
-                            setState(() {
-                              programProvider.setStartEndDate(_startEndDate);
-                            });
+                            // _showDatePicker;
+                            showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2019),
+                                    lastDate: DateTime(2025))
+                                .then((value) => setState(() {
+                                      _startDate = value ?? DateTime.now();
+                                      _startEndDate
+                                          .add(StartEndDate(startDate: value));
+                                      programProvider
+                                          .setStartEndDate(_startEndDate);
+                                    }));
                           },
                           child: Container(
                             height: 25,
@@ -357,9 +367,15 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                               borderRadius: BorderRadius.circular(10),
                               color: const Color.fromARGB(255, 206, 203, 203),
                             ),
-                            child: Text(_startDate.toString(),
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.prompt(fontSize: 16)),
+                            child: programProvider.startEndDate?[0] != null
+                                ? Text(
+                                    programProvider.startEndDate![0].startDate
+                                        .toString(),
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.prompt(fontSize: 16))
+                                : Text(DateTime.now().toString(),
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.prompt(fontSize: 16)),
                           ),
                         ),
                       ],
@@ -380,22 +396,27 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                             }
                             setState(() {
                               _workoutTime = newTime;
-                              programProvider
-                                  .setWorkoutTime("${hours}:${minutes}");
+                              // print(_workoutTime.toString());
+
+                              programProvider.setWorkoutTime(
+                                  "${_workoutTime.hour.toString().padLeft(2, '0')}:${_workoutTime.minute.toString().padLeft(2, '0')}");
                             });
                           },
                           child: Container(
-                            height: 25,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(10),
-                              color: const Color.fromARGB(255, 206, 203, 203),
-                            ),
-                            child: Text('${hours}:${minutes}',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.prompt(fontSize: 16)),
-                          ),
+                              height: 25,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(10),
+                                color: const Color.fromARGB(255, 206, 203, 203),
+                              ),
+                              child: programProvider.workoutTime != null
+                                  ? Text(programProvider.workoutTime!,
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.prompt(fontSize: 16))
+                                  : Text("10:30",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.prompt(fontSize: 16))),
                         ),
                       ],
                     ),
@@ -410,8 +431,11 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                           onTap: () {
                             pickColor();
                             setState(() {
-                              programProvider.setColor(
-                                  _color.value.toRadixString(16).substring(2));
+                              programProvider.setColor('#' +
+                                  _color.value
+                                      .toRadixString(16)
+                                      .substring(2)
+                                      .toUpperCase());
                             });
                           },
                           child: Container(
@@ -438,9 +462,9 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                       // },
                       children: [
                         ExpansionPanel(
-                            isExpanded: _isReminder == null
+                            isExpanded: programProvider.isReminder == null
                                 ? false
-                                : _isReminder == false
+                                : programProvider.isReminder == false
                                     ? false
                                     : true,
                             headerBuilder:
@@ -451,23 +475,21 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                   child: Row(
                                     children: [
                                       Checkbox(
-                                          value: _isReminder,
+                                          value: programProvider.isReminder,
                                           tristate: true,
                                           onChanged: (value) {
                                             setState(() {
                                               if (value == null) {
                                                 // _isExpanded = false;
-                                                _isReminder = false;
+
                                                 programProvider
                                                     .setIsReminder(false);
                                               } else {
                                                 // _isExpanded = true;
-                                                _isReminder = true;
+
                                                 programProvider
                                                     .setIsReminder(true);
                                               }
-                                              debugPrint(
-                                                  _isReminder.toString());
                                             });
                                           }),
                                       Text(
@@ -504,6 +526,9 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                             "60 mins",
                                           ],
                                           title: "Time",
+                                          initialValue: programProvider.remindBf
+                                                  .toString() +
+                                              " mins",
                                           onSelectionDone: (value) {
                                             // selectedString = value;
                                             setState(() {
@@ -557,6 +582,10 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                                 "180 mins"
                                               ],
                                               title: "Time",
+                                              initialValue: programProvider
+                                                      .remindAf
+                                                      .toString() +
+                                                  " mins",
                                               onSelectionDone: (value) {
                                                 // selectedString = value;
                                                 setState(() {
@@ -626,20 +655,23 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                 backgroundColor: Colors.black),
                             onPressed: () {
                               Program sendProgram = Program(
-                                programName: _programNameController.text,
-                                color:
-                                    _color.value.toRadixString(16).substring(2),
-                                workoutTime: '$hours:$minutes',
-                                isReminder: _isReminder,
-                                repeatType: _repeatType,
-                                repeatDaily: _repeatDaily,
-                                repeatWeekly: _repeatWeekly,
-                                remindAf: _remindAf,
-                                remindBf: _remindBf,
-                                startEndDate: _startEndDate,
-                                totalDays: 7,
+                                programName: programProvider.programName,
+                                color: programProvider.color,
+                                workoutTime: programProvider.workoutTime,
+                                isReminder: programProvider.isReminder,
+                                repeatType: programProvider.repeatType,
+                                repeatDaily: programProvider.repeatDaily,
+                                repeatWeekly: programProvider.repeatWeekly,
+                                remindAf: programProvider.remindAf,
+                                remindBf: programProvider.remindBf,
+                                startEndDate: programProvider.startEndDate,
+                                dayofProgram: programProvider.dayofProgramList,
                               );
                               programController.postProgram(sendProgram);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProgramPage()));
                             },
                             child: const Text(
                               "SAVE",

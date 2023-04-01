@@ -51,10 +51,11 @@ class ProgramRepo implements Repository {
   Future postObject(Object obj) async {
     Program program = Program();
     program = obj as Program;
-    DayOfProgram dayOfProgram = DayOfProgram();
 
     var response =
         await http.post(Uri.parse(url), body: jsonEncode(program.toJson()));
+    print(jsonEncode(program.toJson()));
+    print(response.body);
   }
 
   @override

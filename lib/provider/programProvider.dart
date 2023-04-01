@@ -7,22 +7,26 @@ import '../models/program.dart';
 class ProgramProvider with ChangeNotifier {
   List<DayOfProgram> _dayOfProgramList = [];
   String? id;
-  String? programName;
+  String? programName = "Program Name";
   String? programStatus;
   List<StartEndDate>? startEndDate;
   String? color;
   String? workoutTime;
-  bool? isReminder;
-  String? repeatType;
-  int? repeatDaily;
-  List<int>? repeatWeekly;
-  int? totalDays;
+  bool? isReminder = false;
+  String? repeatType = "Weekly";
+  int? repeatDaily = 1;
+  List<int>? repeatWeekly = [];
   String? thumbnail;
-  int? latestDay;
-  String? userId;
-  int? remindAf;
-  int? remindBf;
-  List<DayOfProgram>? dayofProgram;
+  int? remindAf = 0;
+  int? remindBf = 0;
+  List<DayOfProgram> dayofProgramList = [];
+  int? numberOfDay = 1;
+  int shuffleIndex = 0;
+
+  setShuffleDay(int shuffleDay) {
+    this.shuffleIndex = shuffleDay;
+    notifyListeners();
+  }
 
   setRepeatDaily(int repeatDaily) {
     this.repeatDaily = repeatDaily;
@@ -74,8 +78,17 @@ class ProgramProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addDayOfProgram(DayOfProgram dayOfProgram) {
-    _dayOfProgramList.add(dayOfProgram);
+  void addDayOfProgram(YoutubeVid youtubeVid) {
+    DayOfProgram dayOfProgram =
+        DayOfProgram(numberOfDay: numberOfDay, youtubeVid: youtubeVid);
+    numberOfDay = numberOfDay! + 1;
+    dayofProgramList.add(dayOfProgram);
+
+    notifyListeners();
+  }
+
+  void shuffleDayOfProgram(YoutubeVid youtubeVid) {
+    dayofProgramList[shuffleIndex].youtubeVid = youtubeVid;
     notifyListeners();
   }
 }
