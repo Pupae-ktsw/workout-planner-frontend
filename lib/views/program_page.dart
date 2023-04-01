@@ -23,18 +23,18 @@ class ProgramPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Program",
-      home: showProgramPage(),
+      home: ShowProgramPage(),
     );
   }
 }
 
-class showProgramPage extends StatefulWidget {
-  const showProgramPage({Key? key}) : super(key: key);
+class ShowProgramPage extends StatefulWidget {
+  const ShowProgramPage({Key? key}) : super(key: key);
   @override
   _ProgramPageState createState() => _ProgramPageState();
 }
 
-class _ProgramPageState extends State<showProgramPage> {
+class _ProgramPageState extends State<ShowProgramPage> {
   final _programTypeList = ["All", "Challenging", "Completed"];
   String _selectedValue = "All";
   Color color1 = Colors.black.withOpacity(0.85);
@@ -78,7 +78,7 @@ class _ProgramPageState extends State<showProgramPage> {
                           onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return showAddProgramPage();
+                              return ShowAddProgramPage();
                             }));
                           },
                           child: Text(

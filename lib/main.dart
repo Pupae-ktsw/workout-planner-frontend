@@ -7,6 +7,7 @@ import 'package:frontend/views/login_page.dart';
 import 'package:frontend/views/planner_page.dart';
 import 'package:frontend/views/profile_page.dart';
 import 'package:frontend/views/program_page.dart';
+import 'package:frontend/views/search_page.dart';
 
 void main() async {
   runApp(const MyApp());

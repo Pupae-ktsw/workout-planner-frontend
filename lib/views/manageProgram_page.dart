@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/views/addProgram_page.dart';
 
-class showManageProgram extends StatefulWidget {
-  const showManageProgram({Key? key}) : super(key: key);
+class ShowManageProgram extends StatefulWidget {
+  const ShowManageProgram({Key? key}) : super(key: key);
 
   @override
   _ManageProgramState createState() => _ManageProgramState();
 }
 
-class _ManageProgramState extends State<showManageProgram> {
+class _ManageProgramState extends State<ShowManageProgram> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +26,7 @@ class _ManageProgramState extends State<showManageProgram> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => showAddProgramPage()));
+                                builder: (context) => ShowAddProgramPage()));
                       },
                       child: Icon(Icons.arrow_back_ios)),
                   Text(

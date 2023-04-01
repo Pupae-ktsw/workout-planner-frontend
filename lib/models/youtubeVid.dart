@@ -26,12 +26,12 @@ class YoutubeVid {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.id;
-    data['url'] = this.url;
-    data['thumbnail'] = this.thumbnail;
-    data['title'] = this.title;
-    data['channel'] = this.channel;
-    data['duration'] = this.duration;
+    data['_id'] = id;
+    data['url'] = url;
+    data['thumbnail'] = thumbnail;
+    data['title'] = title;
+    data['channel'] = channel;
+    data['duration'] = duration;
 
     return data;
   }

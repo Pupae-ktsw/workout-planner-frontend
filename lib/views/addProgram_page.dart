@@ -10,18 +10,19 @@ import 'package:frontend/models/program.dart';
 import 'package:frontend/repositories/program_repo.dart';
 import 'package:frontend/views/manageProgram_page.dart';
 import 'package:frontend/views/program_page.dart';
+import 'package:frontend/views/search_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import '../models/user.dart';
 
-class showAddProgramPage extends StatefulWidget {
-  const showAddProgramPage({super.key});
+class ShowAddProgramPage extends StatefulWidget {
+  const ShowAddProgramPage({super.key});
   @override
   _AddProgramPageState createState() => _AddProgramPageState();
 }
 
-class _AddProgramPageState extends State<showAddProgramPage> {
+class _AddProgramPageState extends State<ShowAddProgramPage> {
   final _retitionList = ["Weekly", "Daily"];
   String _repeatType = "Weekly"; //repeatType
   final _dailyList = [1, 2, 3, 4, 5, 6, 7];
@@ -34,6 +35,7 @@ class _AddProgramPageState extends State<showAddProgramPage> {
   TextEditingController _programNameController =
       TextEditingController(); //programName
   int? _remindAf, _remindBf;
+  int numberOfVideo = 0;
 
   List<StartEndDate> _startEndDate = [];
   List<Map<String, dynamic>> _optionsDays = [
@@ -147,7 +149,11 @@ class _AddProgramPageState extends State<showAddProgramPage> {
               SizedBox(
                 height: 26,
                 child: TextFormField(
-                  controller: _programNameController,
+                  onChanged: (value) {
+                    setState(() {
+                      _programNameController.text = value;
+                    });
+                  },
                   style: TextStyle(fontSize: 16),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -169,19 +175,18 @@ class _AddProgramPageState extends State<showAddProgramPage> {
               ),
               const SizedBox(height: 10),
               Text(
-                'Epic Heat',
+                _programNameController.text,
                 style: GoogleFonts.prompt(
                     textStyle: Theme.of(context).textTheme.bodyText1),
               ),
-              Text('(10 videos)',
+              Text('( videos)',
                   style: GoogleFonts.prompt(
                       textStyle: Theme.of(context).textTheme.bodyText1)),
               InkWell(
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => showManageProgram()),
+                    MaterialPageRoute(builder: (context) => SearchPage()),
                   );
                 },
                 child: Text(
