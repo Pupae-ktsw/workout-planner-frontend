@@ -22,6 +22,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -55,6 +56,7 @@ class _SearchPageState extends State<SearchPage> {
                   height: 40,
                   width: 250,
                   child: TextFormField(
+                    cursorHeight: 16,
                     controller: searchController,
                     decoration: InputDecoration(
                         focusColor: Colors.blue,
@@ -101,12 +103,16 @@ class _SearchPageState extends State<SearchPage> {
 
                                   return Column(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Container(
-                                                height: 90,
-                                                width: 160,
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 20),
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width: 10),
+                                            Expanded(
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
                                                 child: Image.network(
                                                   youtubeVid.thumbnail
                                                       as String,
@@ -116,35 +122,38 @@ class _SearchPageState extends State<SearchPage> {
                                                     return Icon(Icons
                                                         .image_not_supported);
                                                   },
-                                                )),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: Text(
-                                                    youtubeVid.title as String,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
                                                 ),
-                                                SizedBox(height: 5),
-                                                Align(
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                children: [
+                                                  Align(
                                                     alignment:
                                                         Alignment.topLeft,
-                                                    child: Text(youtubeVid
-                                                        .channel as String)),
-                                              ],
+                                                    child: Text(
+                                                      youtubeVid.title
+                                                          as String,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 5),
+                                                  Align(
+                                                      alignment:
+                                                          Alignment.topLeft,
+                                                      child: Text(youtubeVid
+                                                          .channel as String)),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                      SizedBox(height: 10),
                                     ],
                                   );
                                 })

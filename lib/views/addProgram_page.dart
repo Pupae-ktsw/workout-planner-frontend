@@ -35,6 +35,7 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
   TextEditingController _programNameController =
       TextEditingController(); //programName
   int? _remindAf, _remindBf;
+  int numberOfVideo = 0;
 
   List<StartEndDate> _startEndDate = [];
   List<Map<String, dynamic>> _optionsDays = [
@@ -148,7 +149,11 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
               SizedBox(
                 height: 26,
                 child: TextFormField(
-                  controller: _programNameController,
+                  onChanged: (value) {
+                    setState(() {
+                      _programNameController.text = value;
+                    });
+                  },
                   style: TextStyle(fontSize: 16),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -170,11 +175,11 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
               ),
               const SizedBox(height: 10),
               Text(
-                'Epic Heat',
+                _programNameController.text,
                 style: GoogleFonts.prompt(
                     textStyle: Theme.of(context).textTheme.bodyText1),
               ),
-              Text('(10 videos)',
+              Text('( videos)',
                   style: GoogleFonts.prompt(
                       textStyle: Theme.of(context).textTheme.bodyText1)),
               InkWell(
