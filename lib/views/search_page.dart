@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/youtube_controller.dart';
+import 'package:frontend/models/dayOfProgram.dart';
 import 'package:frontend/models/youtubeVid.dart';
 import 'package:frontend/repositories/youtube_repo.dart';
 import 'package:frontend/views/addProgram_page.dart';
+import 'package:frontend/views/dayOfProgramManage_page.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/programProvider.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -12,15 +17,17 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  String programName = "programName";
-  String searchYoutube = "";
-  YoutubeController youtubeController = YoutubeController(YoutubeRepo());
-  YoutubeVid youtubeVid = YoutubeVid();
-  List<YoutubeVid> youtubeVidList = [];
-  TextEditingController searchController = TextEditingController();
+  String _programName = "programName";
+  String _searchYoutube = "";
+  YoutubeController _youtubeController = YoutubeController(YoutubeRepo());
+  YoutubeVid _youtubeVid = YoutubeVid();
+  List<YoutubeVid> _youtubeVidList = [];
+  TextEditingController _searchController = TextEditingController();
+  List<DayOfProgram> _dayOfProgramList = [];
 
   @override
   Widget build(BuildContext context) {
+    var programProvider = Provider.of<ProgramProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -41,7 +48,8 @@ class _SearchPageState extends State<SearchPage> {
                     size: 36,
                   ),
                 ),
-                Text(programName, style: TextStyle(fontSize: 18)),
+                Text(programProvider.programName!,
+                    style: TextStyle(fontSize: 18)),
                 SizedBox(width: 20)
               ],
             ),
@@ -56,8 +64,8 @@ class _SearchPageState extends State<SearchPage> {
                   height: 40,
                   width: 250,
                   child: TextFormField(
-                    cursorHeight: 16,
-                    controller: searchController,
+                    cursorHeight: 20,
+                    controller: _searchController,
                     decoration: InputDecoration(
                         focusColor: Colors.blue,
                         prefixIcon: Icon(Icons.search),
@@ -71,7 +79,7 @@ class _SearchPageState extends State<SearchPage> {
                         ElevatedButton.styleFrom(backgroundColor: Colors.red),
                     onPressed: (() {
                       setState(() {
-                        searchYoutube = searchController.text;
+                        _searchYoutube = _searchController.text;
                       });
                     }),
                     child: Text("Search")),
@@ -82,10 +90,10 @@ class _SearchPageState extends State<SearchPage> {
             ),
             SizedBox(height: 20),
             Expanded(
-              child: searchYoutube == ""
+              child: _searchYoutube == ""
                   ? Container()
                   : FutureBuilder<List<Object>>(
-                      future: youtubeController.getSearchVid(searchYoutube),
+                      future: _youtubeController.getSearchVid(_searchYoutube),
                       builder: ((context, snapshot) {
                         if (snapshot.connectionState == ConnectionState) {
                           return Center(child: CircularProgressIndicator());
@@ -106,52 +114,66 @@ class _SearchPageState extends State<SearchPage> {
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(bottom: 20),
-                                        child: Row(
-                                          children: [
-                                            SizedBox(width: 10),
-                                            Expanded(
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(7),
-                                                child: Image.network(
-                                                  youtubeVid.thumbnail
-                                                      as String,
-                                                  errorBuilder: (context, error,
-                                                      stackTrace) {
-                                                    // Return a placeholder widget when the image fails to load
-                                                    return Icon(Icons
-                                                        .image_not_supported);
-                                                  },
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DayOfProgramManage(
+                                                    youtubeVid: youtubeVid,
+                                                  ),
+                                                ));
+                                          },
+                                          child: Row(
+                                            children: [
+                                              SizedBox(width: 10),
+                                              Expanded(
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(7),
+                                                  child: Image.network(
+                                                    youtubeVid.thumbnail
+                                                        as String,
+                                                    errorBuilder: (context,
+                                                        error, stackTrace) {
+                                                      // Return a placeholder widget when the image fails to load
+                                                      return Icon(Icons
+                                                          .image_not_supported);
+                                                    },
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Expanded(
-                                              child: Column(
-                                                children: [
-                                                  Align(
-                                                    alignment:
-                                                        Alignment.topLeft,
-                                                    child: Text(
-                                                      youtubeVid.title
-                                                          as String,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                  SizedBox(height: 5),
-                                                  Align(
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Align(
                                                       alignment:
                                                           Alignment.topLeft,
-                                                      child: Text(youtubeVid
-                                                          .channel as String)),
-                                                ],
+                                                      child: Text(
+                                                        youtubeVid.title
+                                                            as String,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 5),
+                                                    Align(
+                                                        alignment:
+                                                            Alignment.topLeft,
+                                                        child: Text(
+                                                            youtubeVid.channel
+                                                                as String)),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],

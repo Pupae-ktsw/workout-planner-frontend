@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:frontend/models/dayOfProgram.dart';
 import 'package:frontend/models/program.dart';
 import 'package:frontend/repositories/repository.dart';
 
@@ -50,6 +51,7 @@ class ProgramRepo implements Repository {
   Future postObject(Object obj) async {
     Program program = Program();
     program = obj as Program;
+    DayOfProgram dayOfProgram = DayOfProgram();
 
     var response =
         await http.post(Uri.parse(url), body: jsonEncode(program.toJson()));

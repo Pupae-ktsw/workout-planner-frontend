@@ -13,8 +13,10 @@ import 'package:frontend/views/program_page.dart';
 import 'package:frontend/views/search_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:provider/provider.dart';
 
 import '../models/user.dart';
+import '../provider/programProvider.dart';
 
 class ShowAddProgramPage extends StatefulWidget {
   const ShowAddProgramPage({super.key});
@@ -116,6 +118,8 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
 
   @override
   Widget build(BuildContext context) {
+    //Provider
+    var programProvider = Provider.of<ProgramProvider>(context, listen: false);
     final hours = _workoutTime.hour.toString().padLeft(2, '0');
     final minutes = _workoutTime.minute.toString().padLeft(2, '0');
     return Scaffold(
@@ -152,6 +156,7 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                   onChanged: (value) {
                     setState(() {
                       _programNameController.text = value;
+                      programProvider.setProgramName(value);
                     });
                   },
                   style: TextStyle(fontSize: 16),
@@ -221,6 +226,7 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                         onChanged: (value) {
                           setState(() {
                             _repeatType = value as String;
+                            programProvider.setRepeatType(value as String);
                           });
                         },
                       )),
@@ -250,6 +256,7 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                   _repeatWeekly!.add(option['dayValue']);
                                 }
                                 _repeatWeekly!.sort();
+                                programProvider.setRepeatWeekly(_repeatWeekly!);
 
                                 print(_repeatWeekly.toString());
                               });
@@ -315,6 +322,7 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                           onChanged: (value) {
                             setState(() {
                               _repeatDaily = value as int;
+                              programProvider.setRepeatDaily(value as int);
                             });
                           }),
                     ),
@@ -335,7 +343,12 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         const SizedBox(width: 10),
                         InkWell(
-                          onTap: _showDatePicker,
+                          onTap: () {
+                            _showDatePicker;
+                            setState(() {
+                              programProvider.setStartEndDate(_startEndDate);
+                            });
+                          },
                           child: Container(
                             height: 25,
                             width: 110,
@@ -367,6 +380,8 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                             }
                             setState(() {
                               _workoutTime = newTime;
+                              programProvider
+                                  .setWorkoutTime("${hours}:${minutes}");
                             });
                           },
                           child: Container(
@@ -394,6 +409,10 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                         InkWell(
                           onTap: () {
                             pickColor();
+                            setState(() {
+                              programProvider.setColor(
+                                  _color.value.toRadixString(16).substring(2));
+                            });
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -439,9 +458,13 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                               if (value == null) {
                                                 // _isExpanded = false;
                                                 _isReminder = false;
+                                                programProvider
+                                                    .setIsReminder(false);
                                               } else {
                                                 // _isExpanded = true;
                                                 _isReminder = true;
+                                                programProvider
+                                                    .setIsReminder(true);
                                               }
                                               debugPrint(
                                                   _isReminder.toString());
@@ -486,12 +509,20 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                             setState(() {
                                               if (value == "0 min") {
                                                 _remindBf = 0;
+                                                programProvider
+                                                    .setRemindBf(_remindBf);
                                               } else if (value == "10 mins") {
                                                 _remindBf = 10;
+                                                programProvider
+                                                    .setRemindBf(_remindBf);
                                               } else if (value == "30 mins") {
                                                 _remindBf = 30;
+                                                programProvider
+                                                    .setRemindBf(_remindBf);
                                               } else {
                                                 _remindBf = 60;
+                                                programProvider
+                                                    .setRemindBf(_remindBf);
                                               }
                                             });
                                           },
@@ -531,20 +562,32 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                                 setState(() {
                                                   if (value == "0 min") {
                                                     _remindAf = 0;
+                                                    programProvider
+                                                        .setRemindAf(_remindAf);
                                                   } else if (value ==
                                                       "10 mins") {
                                                     _remindAf = 10;
+                                                    programProvider
+                                                        .setRemindAf(_remindAf);
                                                   } else if (value ==
                                                       "30 mins") {
                                                     _remindAf = 30;
+                                                    programProvider
+                                                        .setRemindAf(_remindAf);
                                                   } else if (value ==
                                                       "60 mins") {
                                                     _remindAf = 60;
+                                                    programProvider
+                                                        .setRemindAf(_remindAf);
                                                   } else if (value ==
                                                       "120 mins") {
                                                     _remindAf = 120;
+                                                    programProvider
+                                                        .setRemindAf(_remindAf);
                                                   } else {
                                                     _remindAf = 180;
+                                                    programProvider
+                                                        .setRemindAf(_remindAf);
                                                   }
                                                 });
                                               },

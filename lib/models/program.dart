@@ -1,22 +1,25 @@
+import 'package:frontend/models/dayOfProgram.dart';
+
 class Program {
-  Program({
-    // this.id,
-    this.programName,
-    // this.programStatus,
-    this.startEndDate,
-    this.color,
-    this.workoutTime,
-    this.isReminder,
-    this.repeatType,
-    this.repeatDaily,
-    this.repeatWeekly,
-    this.remindAf,
-    this.remindBf,
-    this.totalDays,
-    // this.thumbnail,
-    // this.latestDay,
-    // this.userId,
-  });
+  Program(
+      {
+      // this.id,
+      this.programName,
+      // this.programStatus,
+      this.startEndDate,
+      this.color,
+      this.workoutTime,
+      this.isReminder,
+      this.repeatType,
+      this.repeatDaily,
+      this.repeatWeekly,
+      this.remindAf,
+      this.remindBf,
+      this.totalDays,
+      // this.thumbnail,
+      // this.latestDay,
+      // this.userId,
+      this.dayofProgram});
 
   String? id;
   String? programName;
@@ -34,6 +37,7 @@ class Program {
   String? userId;
   int? remindAf;
   int? remindBf;
+  List<DayOfProgram>? dayofProgram;
 
   Program.fromJson(Map<String, dynamic> json) {
     // return Program(
@@ -77,6 +81,8 @@ class Program {
         "remindAf": remindAf ?? '',
         "remindBf": remindBf ?? '',
         "totalDays": totalDays ?? '',
+        "dayOfProgram":
+            List<dynamic>.from(dayofProgram!.map((x) => x.toJson())),
         // "thumbnail": thumbnail,
         // "latestDay": latestDay,
         // "user_id": userId,
