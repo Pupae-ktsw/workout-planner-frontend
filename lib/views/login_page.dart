@@ -228,16 +228,16 @@ class _LoginPageState extends State<LoginPage> {
           }));
       if (response.statusCode == 200) {
         // final storage = FlutterSecureStorage();
-        var body = json.decode(response.body);
-        String token = body['accessToken'];
-        print('token: $token');
-        await MyApp.storage.write(key: 'accessToken', value: token);
-        var userController = UserController(UserRepo());
-        User user = await userController.getLoginUser();
-        print('user encode: ${json.encode(user)}');
-        await MyApp.storage.write(key: 'user', value: json.encode(user));
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => BottomNav()));
+        // var body = json.decode(response.body);
+        // String token = body['accessToken'];
+        // print('token: $token');
+        // await MyApp.storage.write(key: 'accessToken', value: token);
+        // var userController = UserController(UserRepo());
+        // User user = await userController.getLoginUser();
+        // print('user encode: ${json.encode(user)}');
+        // await MyApp.storage.write(key: 'user', value: json.encode(user));
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => BottomNav()));
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Invalid Credentials')));

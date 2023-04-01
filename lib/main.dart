@@ -9,22 +9,23 @@ import 'package:frontend/views/planner_page.dart';
 import 'package:frontend/views/profile_page.dart';
 import 'package:frontend/views/program_page.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  static const storage = FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: appTheme(),
       debugShowCheckedModeBanner: false,
-      home: const LoginPage(),
-      navigatorObservers: [FlutterSmartDialog.observer],
-      builder: FlutterSmartDialog.init(),
+      home: FutureBuilder(
+        future: FlutterSecureStorage().read(key: 'accessToken'),
+        builder: (context, snapshot) =>
+            snapshot.hasData ? BottomNav() : LoginPage(),
+      ),
     );
   }
 }

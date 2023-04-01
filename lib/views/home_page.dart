@@ -55,39 +55,50 @@ class HomePage extends StatelessWidget {
                 height: 10,
               ),
               Container(
-                height: 100,
+                height: 130,
                 child: FutureBuilder(
                   future: _calendarEventController.getAllEvents(),
                   builder: (context, snapshot) {
                     List<CalendarEvent> calendarEventList = [];
+                    List<CalendarEvent> todayEventList = [];
                     if (snapshot.hasData) {
                       calendarEventList = snapshot.data as List<CalendarEvent>;
+                      for (var i in calendarEventList) {
+                        if (i.eventDate == DateTime.utc(2023, 03, 29)) {
+                          todayEventList.add(i);
+                        }
+                      }
                     }
-                    return Text("${calendarEventList.toList()}");
-                    // return snapshot.hasData
-                    //     ? ListView.builder(
-                    //         itemCount: calendarEventList.length,
-                    //         itemBuilder: ((context, index) {
-                    //           CalendarEvent calendarEvent =
-                    //               snapshot.data![index];
-                    //           if (calendarEvent.dayProgram.length <= index) {
-                    //             return Container(); // or return null, if preferred
-                    //           }
-                    //           return FutureBuilder(
-                    //             future: _dayOfProgramController.getDayOfProgram(
-                    //                 calendarEvent.dayProgram[index].id!),
-                    //             builder: (context, snapshot) {
-                    //               DayOfProgram dayOfProgram =
-                    //                   snapshot.data![index] as DayOfProgram;
-                    //               if (!snapshot.hasData) {
-                    //                 return CircularProgressIndicator();
-                    //               }
-                    //               return Text(dayOfProgram.dateCalendar!);
-                    //             },
-                    //           );
-                    //         }),
-                    //       )
-                    //     : Container();
+
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: todayEventList.length,
+                      itemBuilder: (context, index) {
+                        CalendarEvent todayEvent = todayEventList[index];
+                        print(index);
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Container(
+                            width: 225,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(7),
+                              child: Image.network(
+                                todayEvent
+                                    .dayProgram[index].youtubeVid!.thumbnail!,
+                                // width: 200,
+                                // height: 150,
+                                fit: BoxFit
+                                    .cover, // set the fit mode to cover the widget
+                              ),
+                            ),
+                          ),
+
+                          // Text(
+                          // "${todayEvent.dayProgram[index].numberOfDay}");
+                          // );
+                        );
+                      },
+                    );
                   },
                 ),
               ),
