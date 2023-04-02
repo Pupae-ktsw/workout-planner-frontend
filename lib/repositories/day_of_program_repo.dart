@@ -56,4 +56,10 @@ class DayOfProgramRepo implements Repository {
     // TODO: implement createObject
     throw UnimplementedError();
   }
+
+  @override
+  Future deleteObjectById(String id) {
+    // TODO: implement deleteObjectById
+    throw UnimplementedError();
+  }
 }

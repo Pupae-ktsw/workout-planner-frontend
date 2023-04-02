@@ -20,4 +20,8 @@ class ProgramController {
   Future postProgram(Object obj) async {
     return await _repository.postObject(obj);
   }
+
+  Future deleteProgram(String id) async {
+    return await _repository.deleteObjectById(id);
+  }
 }

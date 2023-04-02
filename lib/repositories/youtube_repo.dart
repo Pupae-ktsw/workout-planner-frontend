@@ -59,4 +59,10 @@ class YoutubeRepo implements Repository {
     // TODO: implement getObject
     throw UnimplementedError();
   }
+
+  @override
+  Future deleteObjectById(String id) {
+    // TODO: implement deleteObjectById
+    throw UnimplementedError();
+  }
 }

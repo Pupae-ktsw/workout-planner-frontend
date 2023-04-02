@@ -52,8 +52,7 @@ class ProgramRepo implements Repository {
     Program program = Program();
     program = obj as Program;
 
-    var response =
-        await http.post(Uri.parse(url), body: jsonEncode(program.toJson()));
+    await http.post(Uri.parse(url), body: jsonEncode(program.toJson()));
     // print(jsonEncode(program.toJson()));
     // print(response.body);
   }
@@ -62,5 +61,12 @@ class ProgramRepo implements Repository {
   Future<List<Object>> getAllObjectById(String id) {
     // TODO: implement getAllObjectById
     throw UnimplementedError();
+  }
+
+  @override
+  Future deleteObjectById(String id) async {
+    String deleteByIdUrl = url + "/" + id;
+    var response = await http.delete(Uri.parse(deleteByIdUrl));
+    print(response.body);
   }
 }

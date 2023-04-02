@@ -37,14 +37,43 @@ class DayOfProgramPage extends StatelessWidget {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => ProgramPage()));
                   },
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    size: 36,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      size: 36,
+                    ),
                   )),
               Text('${program.programName}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-              Container(
-                width: 30,
+              InkWell(
+                onTap: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: Center(child: const Text("Delete this Program")),
+                    // content: const Text('AlertDialog description'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          programController.deleteProgram(program.id!);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProgramPage()));
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Icon(Icons.delete_forever, size: 36),
+                ),
               )
             ],
           ),
