@@ -54,8 +54,8 @@ class ProgramRepo implements Repository {
 
     var response =
         await http.post(Uri.parse(url), body: jsonEncode(program.toJson()));
-    print(jsonEncode(program.toJson()));
-    print(response.body);
+    // print(jsonEncode(program.toJson()));
+    // print(response.body);
   }
 
   @override

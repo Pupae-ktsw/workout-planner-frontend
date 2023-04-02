@@ -99,6 +99,9 @@ class ProgramProvider with ChangeNotifier {
 
   void shuffleDayOfProgram(YoutubeVid youtubeVid) {
     dayofProgramList[shuffleIndex].youtubeVid = youtubeVid;
+    if (shuffleIndex == 0) {
+      thumbnail = dayofProgramList[shuffleIndex].youtubeVid!.thumbnail;
+    }
     notifyListeners();
   }
 

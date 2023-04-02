@@ -35,10 +35,10 @@ class DayOfProgram {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['_id'] = id;
+    // data['_id'] = id;
     data['numberOfDay'] = numberOfDay;
-    data['dateCalendar'] = dateCalendar;
-    data['workoutStatus'] = workoutStatus;
+    // data['dateCalendar'] = dateCalendar;
+    // data['workoutStatus'] = workoutStatus;
     if (youtubeVid != null) {
       data['youtubeVid'] = youtubeVid!.toJson();
     }

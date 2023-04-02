@@ -26,7 +26,7 @@ class YoutubeVid {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = id;
+    // data['_id'] = id;
     data['url'] = url;
     data['thumbnail'] = thumbnail;
     data['title'] = title;

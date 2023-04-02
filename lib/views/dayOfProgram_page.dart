@@ -38,8 +38,8 @@ class DayOfProgramPage extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => ProgramPage()));
                   },
                   child: Icon(
-                    Icons.arrow_back,
-                    size: 32,
+                    Icons.arrow_back_ios,
+                    size: 36,
                   )),
               Text('${program.programName}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),

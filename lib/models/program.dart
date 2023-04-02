@@ -76,11 +76,11 @@ class Program {
         "workoutTime": workoutTime ?? '',
         "isReminder": isReminder ?? false,
         "repeatType": repeatType ?? '',
-        "repeatDaily": repeatDaily ?? '',
         "repeatWeekly": repeatWeekly ?? '',
+        "repeatDaily": repeatDaily ?? '',
         "remindAf": remindAf ?? '',
         "remindBf": remindBf ?? '',
-        "totalDays": totalDays ?? '',
+        // "totalDays": totalDays ?? '',
         "dayOfProgram":
             List<dynamic>.from(dayofProgram!.map((x) => x.toJson())),
         // "thumbnail": thumbnail,
