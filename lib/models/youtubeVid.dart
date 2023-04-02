@@ -4,7 +4,7 @@ class YoutubeVid {
   String? thumbnail;
   String? title;
   String? channel;
-  int? duration;
+  String? duration;
 
   YoutubeVid({
     this.id,
@@ -25,8 +25,8 @@ class YoutubeVid {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    // data['_id'] = id;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['_id'] = id;
     data['url'] = url;
     data['thumbnail'] = thumbnail;
     data['title'] = title;
