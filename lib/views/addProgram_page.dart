@@ -8,6 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/controllers/program_controller.dart';
 import 'package:frontend/models/program.dart';
 import 'package:frontend/repositories/program_repo.dart';
+import 'package:frontend/views/dayOfProgramManage_page.dart';
 import 'package:frontend/views/manageProgram_page.dart';
 import 'package:frontend/views/program_page.dart';
 import 'package:frontend/views/search_page.dart';
@@ -178,31 +179,62 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.grey[200],
                 ),
-                // child: Image.network(
-                //     'http://i3.ytimg.com/vi/2MoGxae-zyo/hqdefault.jpg',
-                //     fit: BoxFit.cover),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(7),
+                    child: programProvider.thumbnail != null
+                        ? Stack(
+                            children: [
+                              Image.network(programProvider.thumbnail!,
+                                  fit: BoxFit.cover),
+                              Container(
+                                  height: 150,
+                                  width: 260,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.bottomCenter,
+                                      end: Alignment.topCenter,
+                                      colors: <Color>[
+                                        Colors.black54,
+                                        Colors.transparent
+                                      ],
+                                    ),
+                                  ))
+                            ],
+                          )
+                        : Container(
+                            height: 150,
+                            width: 260,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.grey[200],
+                            ))),
               ),
               const SizedBox(height: 10),
               Text(
                 programProvider.programName!,
                 style: GoogleFonts.prompt(
-                    textStyle: Theme.of(context).textTheme.bodyText1),
+                    textStyle:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
               ),
               Text('(${programProvider.dayofProgramList.length} videos)',
                   style: GoogleFonts.prompt(
-                      textStyle: Theme.of(context).textTheme.bodyText1)),
+                    textStyle: TextStyle(fontSize: 16),
+                  )),
               InkWell(
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SearchPage()),
+                    MaterialPageRoute(
+                        builder: (context) => DayOfProgramManage()),
                   );
                 },
                 child: Text(
-                  'Customize/Select Video',
+                  'Customize/Add Video',
                   style: GoogleFonts.prompt(
                       textStyle: Theme.of(context).textTheme.bodyText1,
-                      color: Colors.blue),
+                      color: Colors.blue,
+                      fontSize: 18),
                 ),
               ),
               const SizedBox(height: 10),
@@ -451,15 +483,6 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                     ),
                     const SizedBox(height: 10),
                     ExpansionPanelList(
-                      // expansionCallback: (int index, bool status) {
-                      //   setState(() {
-                      //     if (status) {
-                      //       _isExpanded = !status;
-                      //     } else {
-                      //       _isExpanded = true;
-                      //     }
-                      //   });
-                      // },
                       children: [
                         ExpansionPanel(
                             isExpanded: programProvider.isReminder == null
@@ -574,10 +597,10 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                             child:
                                                 CustomSingleSelectField<String>(
                                               items: [
-                                                "0 min",
-                                                "10 mins",
-                                                "30 mins",
+                                                "30 min",
+                                                "45 mins",
                                                 "60 mins",
+                                                "90 mins",
                                                 "120 mins",
                                                 "180 mins"
                                               ],
@@ -589,23 +612,23 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                               onSelectionDone: (value) {
                                                 // selectedString = value;
                                                 setState(() {
-                                                  if (value == "0 min") {
-                                                    _remindAf = 0;
-                                                    programProvider
-                                                        .setRemindAf(_remindAf);
-                                                  } else if (value ==
-                                                      "10 mins") {
-                                                    _remindAf = 10;
-                                                    programProvider
-                                                        .setRemindAf(_remindAf);
-                                                  } else if (value ==
-                                                      "30 mins") {
+                                                  if (value == "30 min") {
                                                     _remindAf = 30;
+                                                    programProvider
+                                                        .setRemindAf(_remindAf);
+                                                  } else if (value ==
+                                                      "45 mins") {
+                                                    _remindAf = 45;
                                                     programProvider
                                                         .setRemindAf(_remindAf);
                                                   } else if (value ==
                                                       "60 mins") {
                                                     _remindAf = 60;
+                                                    programProvider
+                                                        .setRemindAf(_remindAf);
+                                                  } else if (value ==
+                                                      "90 mins") {
+                                                    _remindAf = 90;
                                                     programProvider
                                                         .setRemindAf(_remindAf);
                                                   } else if (value ==

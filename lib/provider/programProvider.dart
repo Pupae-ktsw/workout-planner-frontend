@@ -5,7 +5,6 @@ import '../models/dayOfProgram.dart';
 import '../models/program.dart';
 
 class ProgramProvider with ChangeNotifier {
-  List<DayOfProgram> _dayOfProgramList = [];
   String? id;
   String? programName = "Program Name";
   String? programStatus;
@@ -14,21 +13,26 @@ class ProgramProvider with ChangeNotifier {
   String? workoutTime;
   bool? isReminder = false;
   String? repeatType = "Weekly";
-  int? repeatDaily = 1;
+  int? repeatDaily;
   List<int>? repeatWeekly = [];
   String? thumbnail;
-  int? remindAf = 0;
+  int? remindAf = 30;
   int? remindBf = 0;
   List<DayOfProgram> dayofProgramList = [];
-  int? numberOfDay = 1;
+  int numberOfDay = 1;
   int shuffleIndex = 0;
+
+  setThumbnail(String thumbnail) {
+    this.thumbnail = thumbnail;
+    notifyListeners();
+  }
 
   setShuffleDay(int shuffleDay) {
     this.shuffleIndex = shuffleDay;
     notifyListeners();
   }
 
-  setRepeatDaily(int repeatDaily) {
+  setRepeatDaily(dynamic repeatDaily) {
     this.repeatDaily = repeatDaily;
     notifyListeners();
   }
@@ -78,10 +82,16 @@ class ProgramProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  setDayOfProgramList(List<DayOfProgram> dayOfProgramList) {
+    dayofProgramList = dayOfProgramList;
+    notifyListeners();
+  }
+
   void addDayOfProgram(YoutubeVid youtubeVid) {
+    if (dayofProgramList.isEmpty) this.thumbnail = youtubeVid.thumbnail;
     DayOfProgram dayOfProgram =
         DayOfProgram(numberOfDay: numberOfDay, youtubeVid: youtubeVid);
-    numberOfDay = numberOfDay! + 1;
+    numberOfDay = numberOfDay + 1;
     dayofProgramList.add(dayOfProgram);
 
     notifyListeners();
@@ -89,6 +99,25 @@ class ProgramProvider with ChangeNotifier {
 
   void shuffleDayOfProgram(YoutubeVid youtubeVid) {
     dayofProgramList[shuffleIndex].youtubeVid = youtubeVid;
+    notifyListeners();
+  }
+
+  void removeDayOfProgram(int index) {
+    int newNumberOfDay = 1;
+    dayofProgramList.removeAt(index);
+    // print(dayofProgramList.toList());
+    if (dayofProgramList.isEmpty) {
+      numberOfDay = 1;
+    } else if (dayofProgramList.isNotEmpty) {
+      for (var i = 0; i < dayofProgramList.length; i++) {
+        dayofProgramList[i].numberOfDay = newNumberOfDay;
+        newNumberOfDay = newNumberOfDay + 1;
+      }
+      numberOfDay = newNumberOfDay;
+    }
+    dayofProgramList.forEach((element) {
+      print(element.numberOfDay);
+    });
     notifyListeners();
   }
 }

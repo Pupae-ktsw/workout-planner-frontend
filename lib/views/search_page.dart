@@ -34,6 +34,7 @@ class _SearchPageState extends State<SearchPage> {
       body: SafeArea(
         child: Column(
           children: [
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -42,16 +43,19 @@ class _SearchPageState extends State<SearchPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ShowAddProgramPage()));
+                            builder: (context) => DayOfProgramManage()));
                   },
-                  child: Icon(
-                    Icons.arrow_back,
-                    size: 36,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      size: 36,
+                    ),
                   ),
                 ),
                 Text(programProvider.programName!,
                     style: TextStyle(fontSize: 18)),
-                SizedBox(width: 20)
+                SizedBox(width: 40)
               ],
             ),
             SizedBox(height: 20),
@@ -126,9 +130,7 @@ class _SearchPageState extends State<SearchPage> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      DayOfProgramManage(
-                                                    youtubeVid: youtubeVid,
-                                                  ),
+                                                      DayOfProgramManage(),
                                                 ));
                                           },
                                           child: Row(
@@ -185,7 +187,7 @@ class _SearchPageState extends State<SearchPage> {
                                     ],
                                   );
                                 })
-                            : Center(child: Text("No data"));
+                            : Center(child: CircularProgressIndicator());
                       })),
             )
           ],

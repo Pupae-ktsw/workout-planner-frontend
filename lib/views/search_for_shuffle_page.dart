@@ -35,6 +35,7 @@ class _SearchShufflePageState extends State<SearchShufflePage> {
       body: SafeArea(
         child: Column(
           children: [
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -43,11 +44,14 @@ class _SearchShufflePageState extends State<SearchShufflePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ShowManageProgram()));
+                            builder: (context) => DayOfProgramManage()));
                   },
-                  child: Icon(
-                    Icons.arrow_back,
-                    size: 36,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      size: 36,
+                    ),
                   ),
                 ),
                 Text(programProvider.programName!,
@@ -69,6 +73,7 @@ class _SearchShufflePageState extends State<SearchShufflePage> {
                     cursorHeight: 20,
                     controller: _searchController,
                     decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(left: 10, top: 5),
                         focusColor: Colors.blue,
                         prefixIcon: Icon(Icons.search),
                         border: OutlineInputBorder(
@@ -126,9 +131,7 @@ class _SearchShufflePageState extends State<SearchShufflePage> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      DayOfProgramManage(
-                                                    youtubeVid: youtubeVid,
-                                                  ),
+                                                      DayOfProgramManage(),
                                                 ));
                                           },
                                           child: Row(
@@ -185,7 +188,7 @@ class _SearchShufflePageState extends State<SearchShufflePage> {
                                     ],
                                   );
                                 })
-                            : Center(child: Text("No data"));
+                            : Center(child: CircularProgressIndicator());
                       })),
             )
           ],

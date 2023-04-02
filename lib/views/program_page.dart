@@ -197,7 +197,41 @@ class _ProgramPageState extends State<ShowProgramPage> {
                                             width: 400,
                                             height: 200,
                                           ),
-
+                                          Positioned(
+                                            right: 4,
+                                            top: 4,
+                                            child: Row(
+                                              children: [
+                                                program.programStatus ==
+                                                        "Challenging"
+                                                    ? Icon(
+                                                        Icons
+                                                            .local_fire_department_sharp,
+                                                        color: Colors.red,
+                                                        size: 24,
+                                                      )
+                                                    : Icon(
+                                                        Icons.circle,
+                                                        color: Colors.green,
+                                                        size: 24,
+                                                      ),
+                                                BorderedText(
+                                                  strokeColor: Colors.white,
+                                                  strokeWidth: 3,
+                                                  child: Text(
+                                                    program.programStatus ??
+                                                        "No status",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black,
+                                                      fontSize: 22,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           // Text widget
                                           Positioned(
                                             bottom: 10,
@@ -206,18 +240,13 @@ class _ProgramPageState extends State<ShowProgramPage> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                BorderedText(
-                                                  strokeColor: Colors.black,
-                                                  strokeWidth: 2,
-                                                  child: Text(
-                                                    program.programName ??
-                                                        "No program",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white,
-                                                      fontSize: 20,
-                                                    ),
+                                                Text(
+                                                  program.programName ??
+                                                      "No program",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    fontSize: 20,
                                                   ),
                                                 ),
                                                 SizedBox(height: 5),
