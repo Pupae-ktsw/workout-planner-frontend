@@ -13,4 +13,5 @@ class Config {
   static const String eventAPI = "$apiURL/calendarEvents";
   static const String programAPI = "$apiURL/programs";
   static const String dayOfProgramAPI = "$apiURL/dayofprograms";
+  static const String programSuggestAPI = "$apiURL/programs/suggest";
 }

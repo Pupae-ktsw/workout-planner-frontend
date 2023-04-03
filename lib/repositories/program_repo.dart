@@ -8,7 +8,22 @@ import '../services/api_service.dart';
 
 class ProgramRepo implements Repository {
   String url = Config.programAPI;
+  String urlSuggest = Config.programSuggestAPI;
   var http = CustomHttp();
+
+  @override
+  Future<List<Object>> getSuggestPrograms() async {
+    List<Program> programList = [];
+
+    var response = await http.get(Uri.parse(urlSuggest));
+    var body = json.decode(response.body);
+    print(body);
+    for (var i = 0; i < body.length; i++) {
+      programList.add(Program.fromJson(body[i]));
+      // print(body[i].programName);
+    }
+    return programList;
+  }
 
   @override
   Future<Object> getObject() {
