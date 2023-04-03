@@ -10,6 +10,11 @@ class UserController {
   final Repository _repository;
 
   UserController(this._repository);
+
+  Future postUser(Object obj) async {
+    await _repository.postObject(obj);
+  }
+
   Future<User> getLoginUser() async {
     User user = await _repository.getObject() as User;
     return user;

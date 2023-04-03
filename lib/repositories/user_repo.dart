@@ -6,6 +6,7 @@ import 'dart:convert';
 
 class UserRepo implements Repository {
   String url = Config.userAPI;
+  String signUpUrl = Config.signupAPI;
   var http = CustomHttp();
 
   // GET User
@@ -49,5 +50,14 @@ class UserRepo implements Repository {
       return body['message'];
     }
     return null;
+  }
+
+  @override
+  Future postObject(Object obj) async {
+    User user = obj as User;
+    String jsonReq = json.encode(user);
+    print(jsonReq);
+    var response = await http.post(Uri.parse(signUpUrl), body: jsonReq);
+    print(response.body);
   }
 }

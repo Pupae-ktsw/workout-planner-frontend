@@ -2,6 +2,7 @@ class User {
   String? id;
   String? email;
   String? name;
+  String? password;
 
   User({this.id, this.email, this.name});
 
@@ -13,9 +14,9 @@ class User {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = id;
     data['email'] = email;
     data['name'] = name;
+    data['password'] = password;
     return data;
   }
 }
