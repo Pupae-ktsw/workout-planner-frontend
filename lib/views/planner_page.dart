@@ -14,7 +14,7 @@ class PlannerPage extends StatelessWidget {
             // SizedBox(
             //   height: 10,
             // ),
-            Container(
+            /*Container(
               padding: EdgeInsets.all(20),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.55,
@@ -55,7 +55,7 @@ class PlannerPage extends StatelessWidget {
                   );
                 }),
               ),
-            ),
+            ),*/
           ],
         ),
       ),

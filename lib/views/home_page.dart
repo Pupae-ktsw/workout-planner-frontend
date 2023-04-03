@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/calendarEvent_controller.dart';
 import 'package:frontend/controllers/day_of_program_controller.dart';
 import 'package:frontend/controllers/program_controller.dart';
+import 'package:frontend/models/calendarEvent.dart';
+import 'package:frontend/models/dayOfProgram.dart';
 import 'package:frontend/models/program.dart';
+import 'package:frontend/models/youtubeVid.dart';
+import 'package:frontend/repositories/calendarEvent_repo.dart';
 import 'package:frontend/repositories/day_of_program_repo.dart';
+import 'package:frontend/repositories/program_repo.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../repositories/program_repo.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatelessWidget {
   List testData = [
@@ -15,9 +20,32 @@ class HomePage extends StatelessWidget {
     {'name': 'Program 4', 'Type': 'Workout'},
     {'name': 'Program 5', 'Type': 'Workout'}
   ];
-  DayOfProgramController dayOfProgramController =
+  CalendarEventController _calendarEventController =
+      CalendarEventController(CalendarEventRepo());
+  DayOfProgramController _dayOfProgramController =
       DayOfProgramController(DayOfProgramRepo());
-  ProgramController programController = ProgramController(ProgramRepo());
+  ProgramRepo _programRepo = ProgramRepo();
+
+  Future<List<Object>> bodyWeightProgram() async {
+    List<Program> programList =
+        await _programRepo.getSuggestPrograms() as List<Program>;
+    List<Program> bodyWeightProgramList = [];
+
+    for (var i = programList.length - 1; i > 0; i--) {
+      bodyWeightProgramList.add(programList[i]);
+    }
+
+    return bodyWeightProgramList;
+  }
+
+  Future<List<Object>> cardioProgram() async {
+    List<Program> programList =
+        await _programRepo.getSuggestPrograms() as List<Program>;
+
+    programList.shuffle();
+
+    return programList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +58,7 @@ class HomePage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 30,
+                height: 20,
               ),
               Align(
                 alignment: Alignment.topLeft,
@@ -42,7 +70,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 20),
               Align(
                 alignment: Alignment.topLeft,
                 child: Text('Today\'s Programs',
@@ -54,26 +82,90 @@ class HomePage extends StatelessWidget {
                 height: 10,
               ),
               Container(
-                height: 145,
+                height: 130,
                 child: FutureBuilder(
-                  // future: ,
+                  future: _calendarEventController.getAllEvents(),
                   builder: (context, snapshot) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: InkWell(
-                        onTap: () {
-                          debugPrint('tapped');
-                        },
-                        child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
-                              color: Colors.black,
-                            ),
-                            child: SizedBox(
-                              width: 200,
-                            )),
-                      ),
-                    );
+                    List<CalendarEvent> calendarEventList = [];
+                    List<CalendarEvent> todayEventList = [];
+                    if (snapshot.hasData) {
+                      calendarEventList = snapshot.data as List<CalendarEvent>;
+                      for (var i in calendarEventList) {
+                        if (i.eventDate == DateTime.now()) {
+                          todayEventList.add(i);
+                        }
+                      }
+                    }
+
+                    return calendarEventList.isNotEmpty
+                        ? ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: todayEventList.length,
+                            itemBuilder: (context, index) {
+                              CalendarEvent todayEvent = todayEventList[index];
+                              List<DayOfProgram> dayOfProgramList =
+                                  todayEvent.dayProgram;
+                              print(index);
+                              return Row(
+                                children: dayOfProgramList.map((dayOfProgram) {
+                                  return InkWell(
+                                    onTap: () async {
+                                      final youtubeUrl = Uri.parse(
+                                          dayOfProgram.youtubeVid!.url!);
+                                      await launchUrl(youtubeUrl);
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            width: 225,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(7),
+                                              child: Image.network(
+                                                dayOfProgram
+                                                    .youtubeVid!.thumbnail!,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              gradient: LinearGradient(
+                                                begin: Alignment.bottomCenter,
+                                                end: Alignment.topCenter,
+                                                colors: <Color>[
+                                                  Colors.black54,
+                                                  Colors.transparent
+                                                ],
+                                              ),
+                                            ),
+                                            width: 225,
+                                            height: 200,
+                                          ),
+                                          Positioned(
+                                            bottom: 6,
+                                            left: 6,
+                                            child: Text(
+                                              "Day ${dayOfProgram.numberOfDay}/${dayOfProgram.program!.totalDays}",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              );
+                            },
+                          )
+                        : Center(child: Text('Today is rest day!'));
                   },
                 ),
               ),
@@ -89,31 +181,65 @@ class HomePage extends StatelessWidget {
                 height: 10,
               ),
               Container(
-                height: 150,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: testData.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        debugPrint('tapped');
-                      },
-                      child: Container(
-                        width: 300,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                            title: Text(testData[index]['name']),
-                            subtitle: Text(testData[index]['Type']),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+                  height: 125,
+                  child: FutureBuilder(
+                    future: _programRepo.getSuggestPrograms(),
+                    builder: (context, snapshot) {
+                      return snapshot.hasData
+                          ? ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                var program = snapshot.data![index] as Program;
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        width: 225,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(7),
+                                          child: Image.network(
+                                            program.thumbnail!,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          gradient: LinearGradient(
+                                            begin: Alignment.bottomCenter,
+                                            end: Alignment.topCenter,
+                                            colors: <Color>[
+                                              Colors.black54,
+                                              Colors.transparent
+                                            ],
+                                          ),
+                                        ),
+                                        width: 225,
+                                        height: 125,
+                                      ),
+                                      Positioned(
+                                        bottom: 6,
+                                        left: 6,
+                                        child: Text(
+                                          "${program.programName}",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            )
+                          : Container();
+                    },
+                  )),
               SizedBox(height: 20),
               Align(
                 alignment: Alignment.topLeft,
@@ -126,31 +252,65 @@ class HomePage extends StatelessWidget {
                 height: 10,
               ),
               Container(
-                height: 150,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: testData.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        debugPrint('tapped');
-                      },
-                      child: Container(
-                        width: 300,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                            title: Text(testData[index]['name']),
-                            subtitle: Text(testData[index]['Type']),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+                  height: 125,
+                  child: FutureBuilder(
+                    future: bodyWeightProgram(),
+                    builder: (context, snapshot) {
+                      return snapshot.hasData
+                          ? ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                var program = snapshot.data![index] as Program;
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        width: 225,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(7),
+                                          child: Image.network(
+                                            program.thumbnail!,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          gradient: LinearGradient(
+                                            begin: Alignment.bottomCenter,
+                                            end: Alignment.topCenter,
+                                            colors: <Color>[
+                                              Colors.black54,
+                                              Colors.transparent
+                                            ],
+                                          ),
+                                        ),
+                                        width: 225,
+                                        height: 125,
+                                      ),
+                                      Positioned(
+                                        bottom: 6,
+                                        left: 6,
+                                        child: Text(
+                                          "${program.programName}",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            )
+                          : Container();
+                    },
+                  )),
               SizedBox(height: 20),
               Align(
                 alignment: Alignment.topLeft,
@@ -163,31 +323,65 @@ class HomePage extends StatelessWidget {
                 height: 10,
               ),
               Container(
-                height: 150,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: testData.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        debugPrint('tapped');
-                      },
-                      child: Container(
-                        width: 300,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                            title: Text(testData[index]['name']),
-                            subtitle: Text(testData[index]['Type']),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+                  height: 125,
+                  child: FutureBuilder(
+                    future: cardioProgram(),
+                    builder: (context, snapshot) {
+                      return snapshot.hasData
+                          ? ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                var program = snapshot.data![index] as Program;
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        width: 225,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(7),
+                                          child: Image.network(
+                                            program.thumbnail!,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          gradient: LinearGradient(
+                                            begin: Alignment.bottomCenter,
+                                            end: Alignment.topCenter,
+                                            colors: <Color>[
+                                              Colors.black54,
+                                              Colors.transparent
+                                            ],
+                                          ),
+                                        ),
+                                        width: 225,
+                                        height: 125,
+                                      ),
+                                      Positioned(
+                                        bottom: 6,
+                                        left: 6,
+                                        child: Text(
+                                          "${program.programName}",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            )
+                          : Container();
+                    },
+                  )),
             ],
             // ),
           ),
