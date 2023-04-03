@@ -4,6 +4,7 @@ import 'package:frontend/models/calendarEvent.dart';
 import 'package:frontend/models/dayOfProgram.dart';
 import 'package:frontend/models/program.dart';
 import 'package:frontend/repositories/calendarEvent_repo.dart';
+import 'package:frontend/views/planner_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../controllers/calendarEvent_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,7 +12,7 @@ import 'package:frontend/controllers/day_of_program_controller.dart';
 import 'package:frontend/repositories/day_of_program_repo.dart';
 
 class CalendarWidget extends StatefulWidget {
-  const CalendarWidget({super.key});
+  const CalendarWidget({Key? key}) : super(key: key);
 
   @override
   State<CalendarWidget> createState() => _CalendarWidgetState();
@@ -23,6 +24,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   Map<DateTime, List<DayOfProgram>> selectedWorkouts = {};
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
+  bool _isLoading = true;
   DayOfProgramController dayOfProgramController =
       DayOfProgramController(DayOfProgramRepo());
 
@@ -49,6 +51,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         DateTime.utc(focusedDay.year, focusedDay.month, focusedDay.day);
 
     _onDaySelected(selectedDay, focusedDay);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   // List<Program> _getEventsFromDay(DateTime date) {
@@ -234,10 +239,13 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           break;
         case Actions.Skip:
           //call controller to update status
-          dayOfProgram.workoutStatus = "skip";
+          dayOfProgram.workoutStatus = "Skip";
           dayOfProgramController.updateDayOfProgram(dayOfProgram);
           _showSnackBar(context,
-              "${dayOfProgram.program!.programName} is skip!", Colors.green);
+              "${dayOfProgram.program!.programName} is skip!", Colors.red);
+          setState(() {
+            _isLoading = true;
+          });
           break;
       }
     });
@@ -251,45 +259,3 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     ));
   }
 }
-/*Container(child: ListView.separated(itemBuilder: ((context,(context, index) {
-            
-          })), separatorBuilder: separatorBuilder, itemCount: itemCount),
-              padding: EdgeInsets.all(20),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.55,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50)),
-                color: Colors.grey.shade900,
-                // boxShadow: const [
-                //   BoxShadow(
-                //     blurRadius: 10.0,
-                //     color: Colors.black,
-                //   ),
-                // ],
-              ),
-
-          ),*/
-
-          // ..._getEventsFromDay(selectedDay)
-          //   .map((e) => null))
-
-          // ..._getEventsFromDay(selectedDay)
-          //     .map((e) => ListTile(title: Text(e.programName!))),
-
-          // ..._getEventsFromDay(selectedDay)
-          //     .map((e) => Column(
-          //       children: [ Text(e.programName!),
-          //         // var workouts = _getWorkoutsByPgId(selectedDay, e.id);
-          //         // for(int i = 0 ; _getWorkoutsByPgId(selectedDay, e.id));
-          //         for(var workout in _getWorkoutsByPgId(selectedDay, e.id!)) ...[
-          //           Row(
-          //             children: [
-          //               Image.network(workout.)
-          //             ],
-          //           ),
-          //         ]
-
-          //       ],
-          //     )),

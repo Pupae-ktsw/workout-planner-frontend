@@ -35,7 +35,7 @@ class DayOfProgram {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = id;
+    // data['_id'] = id;
     data['numberOfDay'] = numberOfDay;
     data['dateCalendar'] = dateCalendar;
     data['workoutStatus'] = workoutStatus;
