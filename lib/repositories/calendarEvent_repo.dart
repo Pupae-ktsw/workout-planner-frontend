@@ -53,4 +53,16 @@ class CalendarEventRepo implements Repository {
     // TODO: implement postObject
     throw UnimplementedError();
   }
+
+  @override
+  Future deleteObjectById(String id) {
+    // TODO: implement deleteObjectById
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Object>> getAllObjectByKeyword(String keyword) {
+    // TODO: implement getAllObjectByKeyword
+    throw UnimplementedError();
+  }
 }
