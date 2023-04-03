@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // import 'package:frontend/components/circle_tile.dart';
 import 'package:frontend/config.dart';
@@ -227,17 +228,17 @@ class _LoginPageState extends State<LoginPage> {
             'password': pwController.text
           }));
       if (response.statusCode == 200) {
-        // final storage = FlutterSecureStorage();
-        // var body = json.decode(response.body);
-        // String token = body['accessToken'];
-        // print('token: $token');
-        // await MyApp.storage.write(key: 'accessToken', value: token);
-        // var userController = UserController(UserRepo());
-        // User user = await userController.getLoginUser();
-        // print('user encode: ${json.encode(user)}');
-        // await MyApp.storage.write(key: 'user', value: json.encode(user));
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => BottomNav()));
+        final storage = FlutterSecureStorage();
+        var body = json.decode(response.body);
+        String token = body['accessToken'];
+        print('token: $token');
+        await MyApp.storage.write(key: 'accessToken', value: token);
+        var userController = UserController(UserRepo());
+        User user = await userController.getLoginUser();
+        print('user encode: ${json.encode(user)}');
+        await MyApp.storage.write(key: 'user', value: json.encode(user));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => BottomNav()));
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Invalid Credentials')));

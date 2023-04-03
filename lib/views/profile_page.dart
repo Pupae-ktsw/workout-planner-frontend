@@ -39,13 +39,13 @@ class _EditProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> loadData() async {
-    // String userJson = await MyApp.storage.read(key: 'user') ?? '';
-    // print('userJson: $userJson');
-    // if (userJson.isNotEmpty) {
-    //   thisUser = User.fromJson(json.decode(userJson));
-    //   _nameController.text = thisUser.name!;
-    //   _emailController.text = thisUser.email!;
-    // }
+    String userJson = await MyApp.storage.read(key: 'user') ?? '';
+    print('userJson: $userJson');
+    if (userJson.isNotEmpty) {
+      thisUser = User.fromJson(json.decode(userJson));
+      _nameController.text = thisUser.name!;
+      _emailController.text = thisUser.email!;
+    }
   }
 
   @override

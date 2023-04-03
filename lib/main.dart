@@ -12,12 +12,13 @@ import 'package:frontend/views/program_page.dart';
 import 'package:frontend/views/search_page.dart';
 import 'package:provider/provider.dart';
 
-void main() async {
+void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  static const storage = FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +29,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         theme: appTheme(),
         debugShowCheckedModeBanner: false,
-        home: FutureBuilder(
-          future: FlutterSecureStorage().read(key: 'accessToken'),
-          builder: (context, snapshot) =>
-              snapshot.hasData ? BottomNav() : LoginPage(),
-        ),
+        home: const LoginPage(),
+        navigatorObservers: [FlutterSmartDialog.observer],
+        builder: FlutterSmartDialog.init(),
       ),
     );
   }
