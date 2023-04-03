@@ -26,6 +26,27 @@ class HomePage extends StatelessWidget {
       DayOfProgramController(DayOfProgramRepo());
   ProgramRepo _programRepo = ProgramRepo();
 
+  Future<List<Object>> bodyWeightProgram() async {
+    List<Program> programList =
+        await _programRepo.getSuggestPrograms() as List<Program>;
+    List<Program> bodyWeightProgramList = [];
+
+    for (var i = programList.length - 1; i > 0; i--) {
+      bodyWeightProgramList.add(programList[i]);
+    }
+
+    return bodyWeightProgramList;
+  }
+
+  Future<List<Object>> cardioProgram() async {
+    List<Program> programList =
+        await _programRepo.getSuggestPrograms() as List<Program>;
+
+    programList.shuffle();
+
+    return programList;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -233,7 +254,7 @@ class HomePage extends StatelessWidget {
               Container(
                   height: 125,
                   child: FutureBuilder(
-                    future: _programRepo.getSuggestPrograms(),
+                    future: bodyWeightProgram(),
                     builder: (context, snapshot) {
                       return snapshot.hasData
                           ? ListView.builder(
@@ -304,7 +325,7 @@ class HomePage extends StatelessWidget {
               Container(
                   height: 125,
                   child: FutureBuilder(
-                    future: _programRepo.getSuggestPrograms(),
+                    future: cardioProgram(),
                     builder: (context, snapshot) {
                       return snapshot.hasData
                           ? ListView.builder(
