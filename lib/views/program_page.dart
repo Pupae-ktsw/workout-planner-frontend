@@ -10,6 +10,7 @@ import 'package:frontend/controllers/day_of_program_controller.dart';
 import 'package:frontend/controllers/program_controller.dart';
 import 'package:frontend/models/dayOfProgram.dart';
 import 'package:frontend/models/program.dart';
+import 'package:frontend/provider/programProvider.dart';
 import 'package:frontend/repositories/day_of_program_repo.dart';
 import 'package:frontend/repositories/program_repo.dart';
 import 'package:frontend/views/addProgram_page.dart';
@@ -17,6 +18,7 @@ import 'package:frontend/views/dayOfProgram_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:gradients/gradients.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ProgramPage extends StatelessWidget {
   @override
@@ -57,6 +59,7 @@ class _ProgramPageState extends State<ShowProgramPage> {
 
   @override
   Widget build(BuildContext context) {
+    var programProvider = Provider.of<ProgramProvider>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -159,25 +162,37 @@ class _ProgramPageState extends State<ShowProgramPage> {
                                 var program = snapshot.data?[index] as Program;
 
                                 // int dayCount = _checkDay(program);
-                                DateTime? startDate;
+                                DateTime? startDate, endDate;
 
                                 for (var i in program.startEndDate!) {
                                   startDate = i.startDate;
+                                  if (i.endDate != null) {
+                                    endDate = i.endDate;
+                                  }
                                 }
 
                                 String? formattedStartDate =
                                     DateFormat('dd/MM/yyyy').format(startDate!);
+                                String? formattedEndDate =
+                                    DateFormat('dd/MM/yyyy').format(endDate!);
 
                                 return Padding(
                                   padding: EdgeInsets.only(bottom: 40),
                                   child: InkWell(
                                       onTap: () {
+                                        setState(() {
+                                          programProvider
+                                              .setProgramId(program.id!);
+                                          programProvider.setProgramName(
+                                              program.programName!);
+                                        });
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     DayOfProgramPage(
-                                                        program: program)));
+                                                      program: program,
+                                                    )));
                                       },
                                       child: Stack(
                                         children: [
@@ -263,7 +278,7 @@ class _ProgramPageState extends State<ShowProgramPage> {
                                                 SizedBox(height: 5),
                                                 Text(
                                                   formattedStartDate == null
-                                                      ? "No date"
+                                                      ? "end date : $formattedEndDate"
                                                       : "start date : $formattedStartDate",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.bold,

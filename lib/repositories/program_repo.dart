@@ -18,7 +18,7 @@ class ProgramRepo implements Repository {
 
     var response = await http.get(Uri.parse(urlSuggest));
     var body = json.decode(response.body);
-    print(body);
+    // print(body);
     for (var i = 0; i < body.length; i++) {
       programList.add(Program.fromJson(body[i]));
       // print(body[i].programName);

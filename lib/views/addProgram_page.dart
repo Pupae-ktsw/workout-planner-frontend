@@ -710,6 +710,22 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                 dayofProgram: programProvider.dayofProgramList,
                               );
                               programController.postProgram(sendProgram);
+                              setState(() {
+                                programProvider.programName = "Program name";
+                                programProvider.thumbnail = null;
+                                // programProvider.setColor();
+                                programProvider.setWorkoutTime("10:30");
+                                programProvider.setIsReminder(false);
+                                programProvider.setRepeatType("Weekly");
+                                programProvider.setRepeatDaily(1);
+                                programProvider.setRepeatWeekly([]);
+                                programProvider.setRemindAf(30);
+                                programProvider.setRemindBf(0);
+                                programProvider.setStartEndDate([]);
+                                programProvider.setDayOfProgramList([]);
+                                programProvider.setshuffleIndex(0);
+                                programProvider.setNumberOfDay(1);
+                              });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

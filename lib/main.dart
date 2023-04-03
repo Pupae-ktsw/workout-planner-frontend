@@ -47,7 +47,7 @@ class BottomNav extends StatefulWidget {
 class _BottomNavState extends State<BottomNav> {
   int currentIndex = 0;
   final screens = [
-    HomePage(),
+    Homepage(),
     PlannerPage(),
     ProgramPage(),
     ProfilePage(),

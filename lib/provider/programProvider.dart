@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/day_of_program_controller.dart';
+import 'package:frontend/controllers/program_controller.dart';
 import 'package:frontend/models/youtubeVid.dart';
+import 'package:frontend/repositories/day_of_program_repo.dart';
+import 'package:frontend/repositories/program_repo.dart';
 
 import '../models/dayOfProgram.dart';
 import '../models/program.dart';
@@ -10,7 +14,7 @@ class ProgramProvider with ChangeNotifier {
   String? programStatus;
   List<StartEndDate> startEndDate = [];
   String? color;
-  String? workoutTime;
+  String? workoutTime = "10:30";
   bool? isReminder = false;
   String? repeatType = "Weekly";
   int? repeatDaily = 1;
@@ -19,8 +23,22 @@ class ProgramProvider with ChangeNotifier {
   int? remindAf = 30;
   int? remindBf = 0;
   List<DayOfProgram> dayofProgramList = [];
+  // List<DayOfProgram> dayofProgramSuggestList = [];
   int numberOfDay = 1;
   int shuffleIndex = 0;
+
+  DayOfProgramController dayOfProgramController =
+      DayOfProgramController(DayOfProgramRepo());
+
+  setProgramId(String prograamId) {
+    id = prograamId;
+    notifyListeners();
+  }
+
+  // setDayOfProgramListSuggest(List<DayOfProgram> dayOfProgramListSuggest) {
+  //   dayofProgramSuggestList = dayOfProgramListSuggest;
+  //   notifyListeners();
+  // }
 
   setshuffleIndex(int index) {
     this.shuffleIndex = index;
@@ -92,10 +110,26 @@ class ProgramProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  setDayOfProgramList(List<DayOfProgram> dayOfProgramList) {
-    dayofProgramList = dayOfProgramList;
+  setDayOfProgramList(List<DayOfProgram> dayOfProgramListInput) {
+    dayofProgramList = dayOfProgramListInput;
+    if (thumbnail == null && dayofProgramList.isNotEmpty) {
+      thumbnail = dayofProgramList[0].youtubeVid!.thumbnail;
+    }
     notifyListeners();
   }
+
+  // void addFromSuggest(String id) async {
+  //   List<DayOfProgram> dayOfProgramSuggest =
+  //       await dayOfProgramController.getDayOfProgram(id) as List<DayOfProgram>;
+  //   numberOfDay = 1;
+  //   for (var i = 0; i < dayOfProgramSuggest.length; i++) {
+  //     DayOfProgram dayOfProgram = DayOfProgram(
+  //         numberOfDay: numberOfDay,
+  //         youtubeVid: dayOfProgramSuggest[i].youtubeVid);
+
+  //     numberOfDay++;
+  //   }
+  // }
 
   void addDayOfProgram(YoutubeVid youtubeVid) {
     if (dayofProgramList.isEmpty) this.thumbnail = youtubeVid.thumbnail;

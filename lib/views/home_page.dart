@@ -11,7 +11,9 @@ import 'package:frontend/repositories/calendarEvent_repo.dart';
 import 'package:frontend/repositories/day_of_program_repo.dart';
 import 'package:frontend/repositories/program_repo.dart';
 import 'package:frontend/views/addProgram_page.dart';
+import 'package:frontend/views/dayOfProgramSuggest_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Homepage extends StatefulWidget {
@@ -27,7 +29,6 @@ class _HomepageState extends State<Homepage> {
   DayOfProgramController _dayOfProgramController =
       DayOfProgramController(DayOfProgramRepo());
   ProgramRepo _programRepo = ProgramRepo();
-  ProgramProvider programProvider = ProgramProvider();
 
   Future<List<Object>> bodyWeightProgram() async {
     List<Program> programList =
@@ -52,6 +53,9 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    DayOfProgramController dayOfProgramController =
+        DayOfProgramController(DayOfProgramRepo());
+    var programProvider = Provider.of<ProgramProvider>(context, listen: false);
     return Scaffold(
         body: SafeArea(
       child: Padding(
@@ -206,11 +210,17 @@ class _HomepageState extends State<Homepage> {
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: InkWell(
                                     onTap: (() {
+                                      setState(() {
+                                        programProvider.setProgramName(
+                                            program.programName!);
+                                        programProvider
+                                            .setProgramId(program.id!);
+                                      });
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  ShowAddProgramPage()));
+                                                  DayOfSuggestPage()));
                                     }),
                                     child: Stack(
                                       children: [
@@ -288,7 +298,19 @@ class _HomepageState extends State<Homepage> {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: InkWell(
-                                    onTap: (() {}),
+                                    onTap: (() {
+                                      setState(() {
+                                        programProvider.setProgramName(
+                                            program.programName!);
+                                        programProvider
+                                            .setProgramId(program.id!);
+                                      });
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DayOfSuggestPage()));
+                                    }),
                                     child: Stack(
                                       children: [
                                         Container(
@@ -365,7 +387,19 @@ class _HomepageState extends State<Homepage> {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: InkWell(
-                                    onTap: (() {}),
+                                    onTap: (() {
+                                      setState(() {
+                                        programProvider.setProgramName(
+                                            program.programName!);
+                                        programProvider
+                                            .setProgramId(program.id!);
+                                      });
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DayOfSuggestPage()));
+                                    }),
                                     child: Stack(
                                       children: [
                                         Container(

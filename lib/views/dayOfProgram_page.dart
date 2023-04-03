@@ -7,6 +7,7 @@ import 'package:frontend/repositories/day_of_program_repo.dart';
 import 'package:frontend/repositories/program_repo.dart';
 import 'package:frontend/views/program_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/program.dart';
 
@@ -113,70 +114,79 @@ class DayOfProgramPage extends StatelessWidget {
                                     SizedBox(
                                       height: 10,
                                     ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Stack(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Image.network(
-                                                  dayOfProgram.youtubeVid!
-                                                          .thumbnail ??
-                                                      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%",
-                                                ),
-                                              ),
-                                              Container(
-                                                decoration: BoxDecoration(
+                                    InkWell(
+                                      onTap: () async {
+                                        final youtubeUrl = Uri.parse(
+                                            dayOfProgram.youtubeVid!.url!);
+                                        await launchUrl(youtubeUrl);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Stack(
+                                              children: [
+                                                ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(10),
-                                                  color: dayOfProgram
-                                                              .workoutStatus ==
-                                                          "Done"
-                                                      ? Colors.black
-                                                          .withOpacity(0.47)
-                                                      : Colors.black
-                                                          .withOpacity(0),
+                                                  child: Image.network(
+                                                    dayOfProgram.youtubeVid!
+                                                            .thumbnail ??
+                                                        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%",
+                                                  ),
                                                 ),
-                                                child: SizedBox(
-                                                  height: 100,
-                                                  width: 200,
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color: dayOfProgram
+                                                                .workoutStatus ==
+                                                            "Done"
+                                                        ? Colors.black
+                                                            .withOpacity(0.47)
+                                                        : Colors.black
+                                                            .withOpacity(0),
+                                                  ),
+                                                  child: SizedBox(
+                                                    height: 100,
+                                                    width: 200,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          child: Column(children: [
-                                            Align(
-                                              alignment: Alignment.topLeft,
-                                              child: Text(
-                                                dayOfProgram
-                                                        .youtubeVid!.title ??
-                                                    "No program",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Expanded(
+                                            child: Column(children: [
+                                              Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(
+                                                  dayOfProgram
+                                                          .youtubeVid!.title ??
+                                                      "No program",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16),
+                                                ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Align(
-                                              alignment: Alignment.topLeft,
-                                              child: Text(
-                                                dayOfProgram
-                                                        .youtubeVid!.channel ??
-                                                    "No program",
+                                              SizedBox(
+                                                height: 5,
                                               ),
-                                            ),
-                                          ]),
-                                        )
-                                      ],
+                                              Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(
+                                                  dayOfProgram.youtubeVid!
+                                                          .channel ??
+                                                      "No program",
+                                                ),
+                                              ),
+                                            ]),
+                                          )
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),
