@@ -52,9 +52,10 @@ class ProgramRepo implements Repository {
     Program program = Program();
     program = obj as Program;
 
-    await http.post(Uri.parse(url), body: jsonEncode(program.toJson()));
+    var response =
+        await http.post(Uri.parse(url), body: jsonEncode(program.toJson()));
     // print(jsonEncode(program.toJson()));
-    // print(response.body);
+    print(response.body);
   }
 
   @override
@@ -68,5 +69,11 @@ class ProgramRepo implements Repository {
     String deleteByIdUrl = url + "/" + id;
     var response = await http.delete(Uri.parse(deleteByIdUrl));
     print(response.body);
+  }
+
+  @override
+  Future<List<Object>> getAllObjectByKeyword(String keyword) {
+    // TODO: implement getAllObjectByKeyword
+    throw UnimplementedError();
   }
 }

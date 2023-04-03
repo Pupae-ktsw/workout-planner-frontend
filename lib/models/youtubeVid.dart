@@ -4,7 +4,7 @@ class YoutubeVid {
   String? thumbnail;
   String? title;
   String? channel;
-  int? duration;
+  String? duration;
 
   YoutubeVid({
     this.id,

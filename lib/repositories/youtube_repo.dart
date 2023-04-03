@@ -9,6 +9,7 @@ import '../services/api_service.dart';
 
 class YoutubeRepo implements Repository {
   String url = Config.youtubeAPI;
+  String url2 = Config.youtubePlayListAPI;
   var http = CustomHttp();
 
   @override
@@ -18,7 +19,26 @@ class YoutubeRepo implements Repository {
   }
 
   @override
-  Future<List<Object>> getAllObjectById(String keyword) async {
+  Future<List<Object>> getAllObjectById(String id) async {
+    String urlPlaylist = url2 + "/" + id;
+    List<YoutubeVid> vidList = [];
+
+    var response = await http.get(Uri.parse(urlPlaylist));
+    var body = json.decode(response.body);
+
+    for (var i = 0; i < body.length; i++) {
+      if (body[i] != null) {
+        var vid = YoutubeVid.fromJson(body[i]);
+
+        vidList.add(vid);
+      }
+    }
+
+    return vidList;
+  }
+
+  @override
+  Future<List<Object>> getAllObjectByKeyword(String keyword) async {
     String getBykeywordUrl = url + "/" + keyword;
     List<YoutubeVid> vidList = [];
 

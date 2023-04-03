@@ -115,7 +115,8 @@ class _SearchShufflePageState extends State<SearchShufflePage> {
                                 itemBuilder: (context, index) {
                                   YoutubeVid youtubeVid =
                                       snapshot.data![index] as YoutubeVid;
-
+                                  bool _isPlaylist =
+                                      youtubeVid.url!.contains("playlist");
                                   return Column(
                                     children: [
                                       Padding(
@@ -123,34 +124,86 @@ class _SearchShufflePageState extends State<SearchShufflePage> {
                                             const EdgeInsets.only(bottom: 20),
                                         child: InkWell(
                                           onTap: () {
-                                            dayOfProgram = DayOfProgram(
-                                                youtubeVid: youtubeVid);
-                                            programProvider.shuffleDayOfProgram(
-                                                youtubeVid);
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      DayOfProgramManage(),
-                                                ));
+                                            if (_isPlaylist == false) {
+                                              dayOfProgram = DayOfProgram(
+                                                  youtubeVid: youtubeVid);
+                                              programProvider
+                                                  .shuffleDayOfProgram(
+                                                      youtubeVid);
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DayOfProgramManage(),
+                                                  ));
+                                            }
                                           },
                                           child: Row(
                                             children: [
                                               SizedBox(width: 10),
                                               Expanded(
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(7),
-                                                  child: Image.network(
-                                                    youtubeVid.thumbnail
-                                                        as String,
-                                                    errorBuilder: (context,
-                                                        error, stackTrace) {
-                                                      // Return a placeholder widget when the image fails to load
-                                                      return Icon(Icons
-                                                          .image_not_supported);
-                                                    },
-                                                  ),
+                                                child: Stack(
+                                                  children: [
+                                                    ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(7),
+                                                        child: Image.network(
+                                                          youtubeVid.thumbnail!,
+                                                          errorBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  Object
+                                                                      exception,
+                                                                  StackTrace?
+                                                                      stackTrace) {
+                                                            if (exception
+                                                                is NetworkImageLoadException) {
+                                                              // Handle the error here
+                                                              return Image.network(
+                                                                  "https://www.shape.com/thmb/DjCIHGX6cWaIniuqHeBAAreNE08=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/best-cardio-exercises-promo-2000-498cbfb8f07541b78572bf810e7fb600.jpg");
+                                                            }
+                                                            throw exception; // re-throw the exception if it's not a NetworkImageLoadException
+                                                          },
+                                                        )),
+                                                    Positioned(
+                                                        top: 4,
+                                                        left: 4,
+                                                        child: Container(
+                                                          height: 30,
+                                                          width: 60,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        7),
+                                                            color: Colors.black
+                                                                .withOpacity(
+                                                                    0.8),
+                                                          ),
+                                                          child: _isPlaylist
+                                                              ? Center(
+                                                                  child: Text(
+                                                                    "playlist",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            16),
+                                                                  ),
+                                                                )
+                                                              : Center(
+                                                                  child: Text(
+                                                                      "video",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              16)),
+                                                                ),
+                                                        ))
+                                                  ],
                                                 ),
                                               ),
                                               SizedBox(

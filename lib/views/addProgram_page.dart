@@ -378,6 +378,11 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                         InkWell(
                           onTap: () {
                             // _showDatePicker;
+                            setState(() {
+                              _startEndDate
+                                  .add(StartEndDate(startDate: DateTime.now()));
+                              programProvider.setStartEndDate(_startEndDate);
+                            });
                             showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
@@ -399,9 +404,9 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                               borderRadius: BorderRadius.circular(10),
                               color: const Color.fromARGB(255, 206, 203, 203),
                             ),
-                            child: programProvider.startEndDate?[0] != null
+                            child: programProvider.startEndDate.length > 0
                                 ? Text(
-                                    programProvider.startEndDate![0].startDate
+                                    programProvider.startEndDate[0].startDate
                                         .toString(),
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.prompt(fontSize: 16))
@@ -463,11 +468,8 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                           onTap: () {
                             pickColor();
                             setState(() {
-                              programProvider.setColor('#' +
-                                  _color.value
-                                      .toRadixString(16)
-                                      .substring(2)
-                                      .toUpperCase());
+                              programProvider.setColor('0x' +
+                                  _color.value.toRadixString(16).substring(2));
                             });
                           },
                           child: Container(
@@ -663,6 +665,23 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                           style: OutlinedButton.styleFrom(
                               backgroundColor: Colors.white),
                           onPressed: () {
+                            setState(() {
+                              programProvider.programName = "Program name";
+                              programProvider.thumbnail = null;
+                              // programProvider.setColor();
+                              programProvider.setWorkoutTime("10:30");
+                              programProvider.setIsReminder(false);
+                              programProvider.setRepeatType("Weekly");
+                              programProvider.setRepeatDaily(1);
+                              programProvider.setRepeatWeekly([]);
+                              programProvider.setRemindAf(30);
+                              programProvider.setRemindBf(0);
+                              programProvider.setStartEndDate([]);
+                              programProvider.setDayOfProgramList([]);
+                              programProvider.setshuffleIndex(0);
+                              programProvider.setNumberOfDay(1);
+                            });
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

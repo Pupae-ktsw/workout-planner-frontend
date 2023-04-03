@@ -202,6 +202,9 @@ class _DayOfProgramManageState extends State<DayOfProgramManage> {
                                   MaterialPageRoute(
                                       builder: (context) => ProgramPage()));
                               setState(() {
+                                programProvider.setProgramName("Program name");
+                                programProvider.setshuffleIndex(0);
+                                programProvider.setNumberOfDay(1);
                                 programProvider.setRepeatType("Weekly");
                                 programProvider.setDayOfProgramList([]);
                                 programProvider.setStartEndDate([]);
@@ -210,6 +213,7 @@ class _DayOfProgramManageState extends State<DayOfProgramManage> {
                                 programProvider.setRepeatDaily(null);
                                 programProvider.setRepeatWeekly([]);
                                 programProvider.setIsReminder(false);
+                                programProvider.thumbnail = null;
                               });
                             }),
                             child: Text(

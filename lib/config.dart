@@ -12,4 +12,5 @@ class Config {
   static const String eventAPI = "/events";
   static const String programAPI = "$apiURL/programs";
   static const String youtubeAPI = "$apiURL/search?search_query=";
+  static const String youtubePlayListAPI = "$apiURL/search/playlist";
 }

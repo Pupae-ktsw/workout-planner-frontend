@@ -8,12 +8,12 @@ class ProgramProvider with ChangeNotifier {
   String? id;
   String? programName = "Program Name";
   String? programStatus;
-  List<StartEndDate>? startEndDate;
+  List<StartEndDate> startEndDate = [];
   String? color;
   String? workoutTime;
   bool? isReminder = false;
   String? repeatType = "Weekly";
-  int? repeatDaily;
+  int? repeatDaily = 1;
   List<int>? repeatWeekly = [];
   String? thumbnail;
   int? remindAf = 30;
@@ -21,6 +21,16 @@ class ProgramProvider with ChangeNotifier {
   List<DayOfProgram> dayofProgramList = [];
   int numberOfDay = 1;
   int shuffleIndex = 0;
+
+  setshuffleIndex(int index) {
+    this.shuffleIndex = index;
+    notifyListeners();
+  }
+
+  setNumberOfDay(int numberOfDay) {
+    this.numberOfDay = numberOfDay;
+    notifyListeners();
+  }
 
   setThumbnail(String thumbnail) {
     this.thumbnail = thumbnail;

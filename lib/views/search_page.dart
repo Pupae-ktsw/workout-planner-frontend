@@ -114,6 +114,13 @@ class _SearchPageState extends State<SearchPage> {
                                 itemBuilder: (context, index) {
                                   YoutubeVid youtubeVid =
                                       snapshot.data![index] as YoutubeVid;
+                                  print(youtubeVid.title);
+                                  String playlistId = "";
+                                  bool _isPlaylist =
+                                      youtubeVid.url!.contains("playlist");
+                                  if (_isPlaylist) {
+                                    playlistId = youtubeVid.url!.substring(9);
+                                  }
 
                                   return Column(
                                     children: [
@@ -122,10 +129,25 @@ class _SearchPageState extends State<SearchPage> {
                                             const EdgeInsets.only(bottom: 20),
                                         child: InkWell(
                                           onTap: () {
+                                            if (_isPlaylist) {
+                                              _youtubeController
+                                                  .getVidInPlayList(playlistId)
+                                                  .then((value) {
+                                                _youtubeVidList =
+                                                    value as List<YoutubeVid>;
+
+                                                for (var i in _youtubeVidList) {
+                                                  programProvider
+                                                      .addDayOfProgram(i);
+                                                }
+                                              });
+                                            } else {
+                                              programProvider
+                                                  .addDayOfProgram(youtubeVid);
+                                            }
                                             dayOfProgram = DayOfProgram(
                                                 youtubeVid: youtubeVid);
-                                            programProvider
-                                                .addDayOfProgram(youtubeVid);
+
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -137,19 +159,65 @@ class _SearchPageState extends State<SearchPage> {
                                             children: [
                                               SizedBox(width: 10),
                                               Expanded(
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(7),
-                                                  child: Image.network(
-                                                    youtubeVid.thumbnail
-                                                        as String,
-                                                    errorBuilder: (context,
-                                                        error, stackTrace) {
-                                                      // Return a placeholder widget when the image fails to load
-                                                      return Icon(Icons
-                                                          .image_not_supported);
-                                                    },
-                                                  ),
+                                                child: Stack(
+                                                  children: [
+                                                    ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(7),
+                                                        child: Image.network(
+                                                          youtubeVid.thumbnail!,
+                                                          errorBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  Object
+                                                                      exception,
+                                                                  StackTrace?
+                                                                      stackTrace) {
+                                                            return Image.network(
+                                                                "https://www.shape.com/thmb/DjCIHGX6cWaIniuqHeBAAreNE08=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/best-cardio-exercises-promo-2000-498cbfb8f07541b78572bf810e7fb600.jpg");
+
+                                                            // re-throw the exception if it's not a NetworkImageLoadException
+                                                          },
+                                                        )),
+                                                    Positioned(
+                                                        top: 4,
+                                                        left: 4,
+                                                        child: Container(
+                                                          height: 30,
+                                                          width: 60,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        7),
+                                                            color: Colors.black
+                                                                .withOpacity(
+                                                                    0.8),
+                                                          ),
+                                                          child: _isPlaylist
+                                                              ? Center(
+                                                                  child: Text(
+                                                                    "playlist",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            16),
+                                                                  ),
+                                                                )
+                                                              : Center(
+                                                                  child: Text(
+                                                                      "video",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              16)),
+                                                                ),
+                                                        ))
+                                                  ],
                                                 ),
                                               ),
                                               SizedBox(

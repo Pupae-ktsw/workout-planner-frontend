@@ -47,29 +47,12 @@ class DayOfProgramPage extends StatelessWidget {
               Text('${program.programName}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               InkWell(
-                onTap: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: Center(child: const Text("Delete this Program")),
-                    // content: const Text('AlertDialog description'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'Cancel'),
-                        child: const Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          programController.deleteProgram(program.id!);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProgramPage()));
-                        },
-                        child: const Text('OK'),
-                      ),
-                    ],
-                  ),
-                ),
+                onTap: () {
+                  programController.deleteProgram(program.id!);
+
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProgramPage()));
+                },
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: Icon(Icons.delete_forever, size: 36),

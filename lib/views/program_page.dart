@@ -40,10 +40,20 @@ class _ProgramPageState extends State<ShowProgramPage> {
   Color color1 = Colors.black.withOpacity(0.85);
   Color color2 = Colors.black.withOpacity(0);
   int dayCount = 0;
-
   ProgramController _programController = ProgramController(ProgramRepo());
   DayOfProgramController _dayOfProgramController =
       DayOfProgramController(DayOfProgramRepo());
+  List<Program> programList = [];
+
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    programList = await _programController.getAllProgram() as List<Program>;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +86,11 @@ class _ProgramPageState extends State<ShowProgramPage> {
                             )),
                           ),
                           onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return ShowAddProgramPage();
-                            }));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ShowAddProgramPage()));
                           },
                           child: Text(
                             'Add Program',
@@ -122,7 +133,7 @@ class _ProgramPageState extends State<ShowProgramPage> {
               Expanded(
                 child: FutureBuilder<List<Object>>(
                     future: _programController.getAllProgram(),
-                    builder: (context, snapshot) {
+                    builder: (BuildContext context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
                       }

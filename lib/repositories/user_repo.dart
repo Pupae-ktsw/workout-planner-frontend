@@ -60,4 +60,10 @@ class UserRepo implements Repository {
     // TODO: implement deleteObjectById
     throw UnimplementedError();
   }
+
+  @override
+  Future<List<Object>> getAllObjectByKeyword(String keyword) {
+    // TODO: implement getAllObjectByKeyword
+    throw UnimplementedError();
+  }
 }
