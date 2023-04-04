@@ -154,40 +154,40 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 40,
-              ),
-              Divider(
-                color: Colors.black,
-                thickness: 1.0,
-                indent: 20,
-                endIndent: 20,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //google
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.white,
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage(urlImage),
-                      backgroundColor: Colors.white,
-                      radius: 20,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text('Sign up with Google',
-                      style: GoogleFonts.prompt(
-                        textStyle: Theme.of(context).textTheme.bodyText2,
-                      ))
-                ],
-              ),
+              // SizedBox(
+              //   height: 40,
+              // ),
+              // Divider(
+              //   color: Colors.black,
+              //   thickness: 1.0,
+              //   indent: 20,
+              //   endIndent: 20,
+              // ),
+              // SizedBox(
+              //   height: 20,
+              // ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     //google
+              //     CircleAvatar(
+              //       radius: 30,
+              //       backgroundColor: Colors.white,
+              //       child: CircleAvatar(
+              //         backgroundImage: AssetImage(urlImage),
+              //         backgroundColor: Colors.white,
+              //         radius: 20,
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 20,
+              //     ),
+              //     Text('Sign up with Google',
+              //         style: GoogleFonts.prompt(
+              //           textStyle: Theme.of(context).textTheme.bodyText2,
+              //         ))
+              // ],
+              // ),
             ],
           ),
         ),
