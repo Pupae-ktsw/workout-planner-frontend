@@ -378,11 +378,11 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                         InkWell(
                           onTap: () {
                             // _showDatePicker;
-                            setState(() {
-                              _startEndDate
-                                  .add(StartEndDate(startDate: DateTime.now()));
-                              programProvider.setStartEndDate(_startEndDate);
-                            });
+                            // setState(() {
+                            //   _startEndDate
+                            //       .add(StartEndDate(startDate: DateTime.now()));
+                            //   programProvider.setStartEndDate(_startEndDate);
+                            // });
                             showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
@@ -390,11 +390,12 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                     lastDate: DateTime(2025))
                                 .then((value) => setState(() {
                                       _startDate = value ?? DateTime.now();
-                                      _startEndDate
-                                          .add(StartEndDate(startDate: value));
+                                      _startEndDate.add(
+                                          StartEndDate(startDate: _startDate));
                                       programProvider
                                           .setStartEndDate(_startEndDate);
                                     }));
+                            print(programProvider.startEndDate[0].startDate);
                           },
                           child: Container(
                             height: 25,
@@ -404,7 +405,7 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                               borderRadius: BorderRadius.circular(10),
                               color: const Color.fromARGB(255, 206, 203, 203),
                             ),
-                            child: programProvider.startEndDate.length > 0
+                            child: programProvider.startEndDate.isNotEmpty
                                 ? Text(
                                     programProvider.startEndDate[0].startDate
                                         .toString(),
@@ -711,8 +712,8 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                               );
                               programController.postProgram(sendProgram);
                               setState(() {
-                                programProvider.programName = "Program name";
-                                programProvider.thumbnail = null;
+                                programProvider.setProgramName("Program name");
+                                programProvider.setThumbnail("");
                                 // programProvider.setColor();
                                 programProvider.setWorkoutTime("10:30");
                                 programProvider.setIsReminder(false);

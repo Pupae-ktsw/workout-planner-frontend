@@ -35,11 +35,6 @@ class ProgramProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // setDayOfProgramListSuggest(List<DayOfProgram> dayOfProgramListSuggest) {
-  //   dayofProgramSuggestList = dayOfProgramListSuggest;
-  //   notifyListeners();
-  // }
-
   setshuffleIndex(int index) {
     this.shuffleIndex = index;
     notifyListeners();
@@ -117,19 +112,6 @@ class ProgramProvider with ChangeNotifier {
     }
     notifyListeners();
   }
-
-  // void addFromSuggest(String id) async {
-  //   List<DayOfProgram> dayOfProgramSuggest =
-  //       await dayOfProgramController.getDayOfProgram(id) as List<DayOfProgram>;
-  //   numberOfDay = 1;
-  //   for (var i = 0; i < dayOfProgramSuggest.length; i++) {
-  //     DayOfProgram dayOfProgram = DayOfProgram(
-  //         numberOfDay: numberOfDay,
-  //         youtubeVid: dayOfProgramSuggest[i].youtubeVid);
-
-  //     numberOfDay++;
-  //   }
-  // }
 
   void addDayOfProgram(YoutubeVid youtubeVid) {
     if (dayofProgramList.isEmpty) this.thumbnail = youtubeVid.thumbnail;

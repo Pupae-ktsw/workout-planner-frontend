@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
 
               //log in button
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  padding: const EdgeInsets.all(25.0),
                   child: ElevatedButton(
                     onPressed: (() {
                       login();
