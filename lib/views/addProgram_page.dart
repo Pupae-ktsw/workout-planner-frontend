@@ -389,13 +389,14 @@ class _AddProgramPageState extends State<ShowAddProgramPage> {
                                     firstDate: DateTime(2019),
                                     lastDate: DateTime(2025))
                                 .then((value) => setState(() {
-                                      _startDate = value ?? DateTime.now();
+                                      _startDate = value as DateTime;
+                                      _startEndDate.clear();
                                       _startEndDate.add(
                                           StartEndDate(startDate: _startDate));
                                       programProvider
                                           .setStartEndDate(_startEndDate);
                                     }));
-                            print(programProvider.startEndDate[0].startDate);
+                            // print(programProvider.startEndDate[0].startDate);
                           },
                           child: Container(
                             height: 25,
