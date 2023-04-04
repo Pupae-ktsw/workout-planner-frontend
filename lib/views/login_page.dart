@@ -162,60 +162,60 @@ class _LoginPageState extends State<LoginPage> {
                   )
                 ],
               ),
-              SizedBox(height: 40),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 52.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 1.0,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      'Or Log in with',
-                      style: GoogleFonts.prompt(
-                        textStyle: Theme.of(context).textTheme.bodyText2,
-                      ),
-                    ),
-                    Expanded(
-                        child: Divider(
-                      thickness: 1.0,
-                      color: Colors.black,
-                    ))
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //google
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.white,
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage(urlImage),
-                      backgroundColor: Colors.white,
-                      radius: 20,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text('Log in with Google',
-                      style: GoogleFonts.prompt(
-                        textStyle: Theme.of(context).textTheme.bodyText2,
-                      ))
-                ],
-              ),
+              // SizedBox(height: 40),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 52.0),
+              //   child: Row(
+              //     children: [
+              //       Expanded(
+              //         child: Divider(
+              //           thickness: 1.0,
+              //           color: Colors.black,
+              //         ),
+              //       ),
+              //       Text(
+              //         'Or Log in with',
+              //         style: GoogleFonts.prompt(
+              //           textStyle: Theme.of(context).textTheme.bodyText2,
+              //         ),
+              //       ),
+              //       Expanded(
+              //           child: Divider(
+              //         thickness: 1.0,
+              //         color: Colors.black,
+              //       ))
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 20,
+              // ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     //google
+              //     CircleAvatar(
+              //       radius: 30,
+              //       backgroundColor: Colors.white,
+              //       child: CircleAvatar(
+              //         backgroundImage: AssetImage(urlImage),
+              //         backgroundColor: Colors.white,
+              //         radius: 20,
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 20,
+              //     ),
+              //     Text('Log in with Google',
+              //         style: GoogleFonts.prompt(
+              //           textStyle: Theme.of(context).textTheme.bodyText2,
+              //         ))
             ],
           ),
+          // ],
         ),
       ),
+      // ),
     );
   }
 
