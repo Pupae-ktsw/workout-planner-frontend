@@ -142,11 +142,15 @@ class _EditProfilePageState extends State<ProfilePage> {
                             thisUser.email = _emailController.text;
                             User? updatedUser =
                                 await userController.updateUser(thisUser);
+                            loadData();
+                            setState(() {
+                              isEdited = !isEdited;
+                            });
                             if (updatedUser != null) {
-                              loadData();
-                              setState(() {
-                                isEdited = !isEdited;
-                              });
+                              // loadData();
+                              // setState(() {
+                              //   isEdited = !isEdited;
+                              // });
                               CherryToast.success(
                                       title: const Text(
                                           'Update user successfully'))

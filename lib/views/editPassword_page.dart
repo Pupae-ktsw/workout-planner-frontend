@@ -20,7 +20,7 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
   final TextEditingController _oldPwController = TextEditingController();
   final TextEditingController _newPwController = TextEditingController();
   final TextEditingController _cfNewPwController = TextEditingController();
-  bool isEnable = true;
+  bool isEnable = false;
   User thisUser = User();
 
   var userController = UserController(UserRepo());
@@ -110,7 +110,7 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
         padding: const EdgeInsets.only(top: 25),
         child: TextFormField(
           validator: (value) {
-            /*String field = value ?? '';
+            String field = value ?? '';
             if (labelText != 'Current Password') {
               WidgetsBinding.instance.addPostFrameCallback(
                   (_) => setState(() => isEnable = false));
@@ -133,7 +133,7 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
             } else {
               WidgetsBinding.instance.addPostFrameCallback(
                   (_) => setState(() => isEnable = false));
-            }*/
+            }
             return null;
           },
           controller: controller,
