@@ -14,6 +14,6 @@ class Config {
   static const String programAPI = "$apiURL/programs";
   static const String youtubeAPI = "$apiURL/search?search_query=";
   static const String youtubePlayListAPI = "$apiURL/search/playlist";
-  static const String dayOfProgramAPI = "$apiURL/dayofprograms";
+  static const String dayOfProgramAPI = "$apiURL/dayOfPrograms";
   static const String programSuggestAPI = "$apiURL/programs/suggest";
 }

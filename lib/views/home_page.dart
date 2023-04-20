@@ -108,8 +108,13 @@ class _HomepageState extends State<Homepage> {
                         }
                       }
                     }
+                    bool isRestDay = todayEventList.isNotEmpty
+                        ? todayEventList[0].dayProgram.isNotEmpty
+                            ? false
+                            : true
+                        : true;
 
-                    return calendarEventList.isNotEmpty
+                    return !isRestDay
                         ? ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: todayEventList.length,

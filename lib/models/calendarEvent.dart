@@ -28,11 +28,12 @@ class CalendarEvent {
     // }
   }
 
-  // Map<String, dynamic> toJson() {
-  //   Map<String, dynamic> _data = new Map<String, dynamic>();
-  //   // _data['_id'] = id;
-  //   _data['eventDate'] = eventDate;
-  //   _data['user_id'] = userId;
-  //   return _data;
-  // }
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> _data = new Map<String, dynamic>();
+    _data['_id'] = id;
+    _data['eventDate'] = eventDate;
+    _data['user_id'] = userId;
+    _data['dayProgram'] = List<dynamic>.from(dayProgram.map((x) => x.toJson()));
+    return _data;
+  }
 }
